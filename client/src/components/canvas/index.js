@@ -1,31 +1,91 @@
 import React, { Component } from "react";
 import p5 from "p5";
+// import Tile from "util";
+
+class Tile {
+    constructor(name, points, x, y) {
+        this.name = name;
+        this.points = points;
+        this.pos = { x, y };
+    }
+}
 
 class CanvasTest extends Component {
-    state = {};
     constructor(props) {
         super(props);
         this.canvasRef = React.createRef();
+        const tileWidth = 50;
+
+        // const { rows, cols } = this.state;
+        const rows = 11;
+        const cols = 11;
+        const tiles = [];
+        for (let i = 0; i < rows; i++) {
+            tiles.push(new Tile("a", 1, 100 + i * 50, 100));
+        }
+        for (let i = 1; i < cols; i++) {
+            tiles.push(new Tile("a", 1, 100 + (rows - 1) * 50, 100 + i * 50));
+        }
+        for (let i = rows - 1; i > 1; i--) {
+            tiles.push(
+                new Tile("a", 1, 100 + (i - 1) * 50, 100 + (cols - 1) * 50)
+            );
+        }
+        for (let i = cols - 1; i >= 1; i--) {
+            tiles.push(new Tile("a", 1, 100, 100 + i * 50));
+        }
         this.state = {
-            x: 100,
-            y: 100,
+            width: 700,
+            rows: rows,
+            cols: cols,
+            height: 800,
+            player: {
+                index: 0,
+            },
+
+            tiles: tiles,
         };
     }
 
     componentDidMount() {
+        //! DONT DESTRUCTURE STATE IN COMPONENT_DID_MOUNT
+
+        // const { width, height, tiles, player } = this.state;
+        // console.log("Tile", Tile);
+        // const a = new Tile("a", 1, 2, 3);
+        // console.log(a);
+
         this.sketch = new p5((p) => {
             p.setup = () => {
-                p.createCanvas(700, 410).parent(this.canvasRef.current);
-                p.frameRate(5);
+                const { width, height } = this.state;
+                p.createCanvas(width, height).parent(this.canvasRef.current);
+                p.frameRate(60);
                 // p.noLoop();
             };
 
             p.draw = () => {
+                const {
+                    tiles,
+                    player: { index: pIndex },
+                    rows,
+                    cols,
+                } = this.state;
+
                 p.background(0);
-                p.fill(255);
-                // console.log("pos", pos);
-                // p.rect(pos.x, pos.y, 50, 50);
-                p.rect(this.state.x, this.state.y, 50, 50);
+                p.noFill();
+                p.stroke(255);
+
+                tiles.forEach((t) => p.rect(t.pos.x, t.pos.y, 50, 50));
+                if (pIndex >= tiles.length) {
+                    p.noLoop();
+                    // alert("NA BHAIIIIIIIIIIIIIIIII");
+                    return;
+                }
+
+                let x = 25 + tiles[pIndex].pos.x;
+                let y = tiles[pIndex].pos.y;
+
+                p.circle(x, y + 25, 25);
             };
         });
     }
@@ -33,10 +93,17 @@ class CanvasTest extends Component {
         console.log("u=> ", this.state);
     }
 
-    incValue = () => {
+    movePlayer = () => {
+        let player = { ...this.state.player };
+
+        // let r = Math.ceil(Math.random() * 3);
+        // player.index += r;
+        player.index += 1;
+        if (player.index >= this.state.tiles.length) player.index = 0;
         this.setState({
-            x: this.state.x + 25,
-            y: this.state.y + 25,
+            player: {
+                ...player,
+            },
         });
     };
 
@@ -45,7 +112,7 @@ class CanvasTest extends Component {
         return (
             <>
                 <div ref={this.canvasRef}></div>
-                <button onClick={this.incValue}>INC </button>
+                <button onClick={this.movePlayer}>move </button>
             </>
         );
     }
