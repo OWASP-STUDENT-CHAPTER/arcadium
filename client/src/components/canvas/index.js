@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 import p5 from "p5";
-// import Tile from "util";
-
-class Tile {
-    constructor(name, points, x, y) {
-        this.name = name;
-        this.points = points;
-        this.pos = { x, y };
-    }
-}
+import Tile from "./Tile";
 
 class CanvasTest extends Component {
     constructor(props) {
@@ -16,7 +8,6 @@ class CanvasTest extends Component {
         this.canvasRef = React.createRef();
         const tileWidth = 50;
 
-        // const { rows, cols } = this.state;
         const rows = 11;
         const cols = 11;
         const tiles = [];
@@ -50,25 +41,17 @@ class CanvasTest extends Component {
     componentDidMount() {
         //! DONT DESTRUCTURE STATE IN COMPONENT_DID_MOUNT
 
-        // const { width, height, tiles, player } = this.state;
-        // console.log("Tile", Tile);
-        // const a = new Tile("a", 1, 2, 3);
-        // console.log(a);
-
         this.sketch = new p5((p) => {
             p.setup = () => {
                 const { width, height } = this.state;
                 p.createCanvas(width, height).parent(this.canvasRef.current);
                 p.frameRate(60);
-                // p.noLoop();
             };
 
             p.draw = () => {
                 const {
                     tiles,
                     player: { index: pIndex },
-                    rows,
-                    cols,
                 } = this.state;
 
                 p.background(0);
@@ -76,12 +59,6 @@ class CanvasTest extends Component {
                 p.stroke(255);
 
                 tiles.forEach((t) => p.rect(t.pos.x, t.pos.y, 50, 50));
-                if (pIndex >= tiles.length) {
-                    p.noLoop();
-                    // alert("NA BHAIIIIIIIIIIIIIIIII");
-                    return;
-                }
-
                 let x = 25 + tiles[pIndex].pos.x;
                 let y = tiles[pIndex].pos.y;
 
@@ -90,25 +67,24 @@ class CanvasTest extends Component {
         });
     }
     componentDidUpdate() {
-        console.log("u=> ", this.state);
+        console.log("s=> ", this.state);
     }
 
     movePlayer = () => {
         let player = { ...this.state.player };
 
-        // let r = Math.ceil(Math.random() * 3);
+        let r = Math.ceil(Math.random() * 6);
         // player.index += r;
+        // console.log("dice move ", r);
         player.index += 1;
-        if (player.index >= this.state.tiles.length) player.index = 0;
+        if (player.index >= this.state.tiles.length)
+            player.index = player.index % this.state.tiles.length;
         this.setState({
-            player: {
-                ...player,
-            },
+            player,
         });
     };
 
     render() {
-        // this.sketch.redraw();
         return (
             <>
                 <div ref={this.canvasRef}></div>
