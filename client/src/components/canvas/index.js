@@ -11,6 +11,7 @@ class CanvasTest extends Component {
         const rows = 11;
         const cols = 11;
         const tiles = [];
+
         for (let i = 0; i < rows; i++) {
             tiles.push(new Tile("a", 1, 100 + i * 50, 100));
         }
@@ -25,6 +26,7 @@ class CanvasTest extends Component {
         for (let i = cols - 1; i >= 1; i--) {
             tiles.push(new Tile("a", 1, 100, 100 + i * 50));
         }
+
         this.state = {
             width: 700,
             rows: rows,
