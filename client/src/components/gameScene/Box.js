@@ -1,29 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera, TransformControls } from "@react-three/drei";
+import * as THREE from "three";
+import { camPosOffset } from "../config/CONSTANTS";
 
 // const myMesh = new THREE.Mesh();
 const Box = ({ initPositionOffset, x, y }) => {
   const boxMesh = useRef();
   //   console.log("y", y);
+  const { camera } = useThree();
+
   useFrame(({ clock }) => {
     // console.log(clock);
     let fy = y;
     let fby = boxMesh.current.position.y;
     let fx = x;
     let fbx = boxMesh.current.position.x;
-    // let fy = Number(y);
-    // let fby = Number(boxMesh.current.position.y);
-    // let fx = Number(x);
-    // let fbx = Number(boxMesh.current.position.x);
 
-    console.log("fbx,fby", fbx, fby);
-    console.log("fx,fy", fx, fy);
-    // console.log("y", fy);
-    // console.log("boxMesh.current.position.y", fby);
-    // let dx = Math.sin(clock.elapsedTime * Math.PI);
-    // let dx = Math.abs(Math.sin(clock.elapsedTime));
-    // console.log("dx", dx);
     let dx = boxMesh.current.position.x,
       dy = boxMesh.current.position.y;
     if (fby < fy) {
@@ -42,21 +35,42 @@ const Box = ({ initPositionOffset, x, y }) => {
 
     if (Math.abs(y - dy) < 0.05) dy = fy;
     if (Math.abs(x - dx) < 0.05) dx = fx;
-
     boxMesh.current.position.y = dy;
     boxMesh.current.position.x = dx;
-
+    // const oorginal = camera.position;
+    // const offsetX = -8,
+    //   offsetY = -6;
+    const [camX_Offset, camY_Offset] = camPosOffset;
+    camera.position.x = dx + camX_Offset;
+    camera.position.y = dy + camY_Offset;
+    // camera.rotation.x = 0.6;
+    // camera.rotation.y = -0.6;
+    // camera.rotation.z = -0.6;
     // console.log(Math.sin(clock.elapsedTime));
     // else if (fby >= fy) boxMesh.current.position.y -= 0.01;
   });
-  const { camera } = useThree();
+  // useEffect(() => {
+  //   console.log(camera.rotation);
+
+  //   camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
+  //   // camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
+  // }, [y]);
+  useEffect(() => {
+    console.log(camera.rotation);
+    // camera.rotateX(5);
+    // camera.rotateX(-5);
+    // camera.rotateY(-0.1);
+    // camera.rotateY(-5);
+    // camera.rotateOnAxis(new THREE.Vector3(0, 0.5, 0.5), -0.5);
+    // camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
+  }, [y]);
 
   return (
     <mesh ref={boxMesh} position={initPositionOffset}>
       {/* <planeGeometry args={[10, 20, 30]} />
                     <meshPhongMaterial /> */}
       {/* <boxGeometry  attach="geometry" args={[1, 2, 3]} /> */}
-      <boxGeometry args={[0.5, 0.5, 0.5]} />
+      <boxGeometry args={[0.5, 0.5, 1]} />
       <meshStandardMaterial metalness={0.1} attach="material" emissive="red" />
       {/* <TransformControls /> */}
     </mesh>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, Suspense } from "react";
-import { useLoader } from "@react-three/fiber";
+import { useLoader, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import { PLANE, TILE } from "../config/CONSTANTS";
 // import img from "../../util/tile-14-14.png";
@@ -79,6 +79,7 @@ const Plane = ({ initPositionOffset, tiles, children }) => {
   const planeMesh = useRef();
   const centerRef = useRef();
   // const tiles = 11;
+
   return (
     <group ref={planeMesh} position={initPositionOffset}>
       {tiles.map((t) => (

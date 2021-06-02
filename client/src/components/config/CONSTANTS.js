@@ -1,12 +1,12 @@
 const PLANE = {
   height: 5,
   width: 5,
-  depth: 0.1,
+  depth: 0.4,
 };
 const TILE = {
   length: 2,
   width: 1,
   depth: PLANE.depth,
 };
-
-export { PLANE, TILE };
+const camPosOffset = [-8, -8, 1.5];
+export { PLANE, TILE, camPosOffset };
