@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useLoader } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
-import { PLANE } from "../config/CONSTANTS";
+import { PLANE, TILE } from "../config/CONSTANTS";
 // import img from "../../util/tile-14-14.png";
 import { BoxGeometry, EdgesGeometry } from "three";
 import * as THREE from "three";
@@ -17,9 +17,7 @@ import t2 from "./tiles/tile-14-15-15.jpeg";
 
 const numTilesInRow = 9;
 const cornerSide = 0;
-const tileLength = 2;
-const tileWidth = 1;
-const tileDepth = PLANE.depth;
+
 // import z from ''
 const Tile = ({ tile }) => {
   // const texture1 = useLoader(THREE.TextureLoader, t1);
@@ -30,8 +28,8 @@ const Tile = ({ tile }) => {
   // let texture = id % 2 ? texture1 : texture2;
   // console.log(texture2);
   const tileMesh = useRef();
-  if (type === "corner") size = [tileLength, tileLength, tileDepth];
-  else size = [tileLength, tileWidth, tileDepth];
+  if (type === "corner") size = [TILE.length, TILE.length, TILE.depth];
+  else size = [TILE.length, TILE.width, TILE.depth];
   return (
     <group>
       <mesh ref={tileMesh} position={position} rotation={rotation}>
@@ -77,10 +75,10 @@ const Tile = ({ tile }) => {
 //   return <Dice p={position} />;
 // };
 
-const Plane = ({ initPositionOffset }) => {
+const Plane = ({ initPositionOffset, tiles, children }) => {
   const planeMesh = useRef();
   const centerRef = useRef();
-  const tiles = genBoard(tileLength, tileWidth, tileDepth);
+  // const tiles = 11;
   return (
     <group ref={planeMesh} position={initPositionOffset}>
       {tiles.map((t) => (
@@ -100,6 +98,7 @@ const Plane = ({ initPositionOffset }) => {
             emissive="#F4A201"
           />
         </mesh>
+        {children}
       </group>
     </group>
   );

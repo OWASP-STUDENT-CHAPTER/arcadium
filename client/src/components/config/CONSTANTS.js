@@ -3,5 +3,10 @@ const PLANE = {
   width: 5,
   depth: 0.1,
 };
+const TILE = {
+  length: 2,
+  width: 1,
+  depth: PLANE.depth,
+};
 
-export { PLANE };
+export { PLANE, TILE };
