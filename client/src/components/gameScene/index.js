@@ -1,20 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { PerspectiveCamera } from "@react-three/drei";
 import Box from "./box";
+import Dice from "../dice/dice";
 import Plane from "./plane";
+import PlaneORG from "./plane_o";
 import Camera from "../camera/";
 import { PLANE } from "../config/CONSTANTS";
 // import {ref}
 // import { Object3D } from "three";
-
-// const refPoint = ({ position }) => (
-//   <mesh position={position}>
-//     <sphereBufferGeometry args={[0.1, 30, 30]} attach="geometry" />
-//     <meshBasicMaterial color="red" attach="material" />
-//   </mesh>
-// );
-
+import RefPoint from "../../util/refPoint";
 // const myMesh = new THREE.Mesh();
 const GameScene = () => {
   // const boxMesh = useRef();
@@ -29,30 +24,51 @@ const GameScene = () => {
   const camProps = {
     fov: 120,
     position: [0, 0, 0],
-    // rotation: [0.5, -0.2, -0.2],
+    // rotation: [1, 0, 0],
   };
   return (
     <div id="canvas-container" style={{ width: "1200px", height: "1200px" }}>
       <Canvas>
-        <directionalLight color="#0xffffff" position={[0, 0, 5]} />
-        <Plane initPositionOffset={initPlanePositionOffset} />
-        {/* <group position={[0, 0, 0]}> */}
+        <Suspense fallback={null}>
+          <Dice />
+          {/* <group position={[-5, -5, 0]}> */}
+          <group position={[-2, -2, -1]}>
+            {/* <directionalLight color="#0xffffff" position={[-5.5, -5.5, 0]} />
+            <directionalLight color="#0xffffff" position={[-5.5, -5.5, -5.5]} /> */}
+            {/* <directionalLight color="#0xffffff" position={[0, -5.5, 5.5]} />
+            <directionalLight color="#0xffffff" position={[-5.5, 0, 5.5]} />
+             */}
+            <ambientLight brightness={2.6} color={"#bdefff"} />
+            {/* <directionalLight color="#0xffffff" position={[-5.5, -5.5, 0]} />
+            <directionalLight color="#0xffffff" position={[-5.5, -5.5, 0]} />
+            <directionalLight color="#0xffffff" position={[-5.5, -5.5, 0]} /> */}
+            {/* <pointLight
+              intensity={20}
+              color="#0xffffff"
+              position={[-5.5, -5.5, 0]}
+            /> */}
+            <Plane initPositionOffset={[-5.5, -5.5, 0]} />
+            {/* <PlaneORG initPositionOffset={initPlanePositionOffset} /> */}
+            {/* <group position={[0, 0, 0]}> */}
 
-        {/* <group position={[-PLANE.height / 2, -PLANE.width / 2, 4]}> */}
-        <group position={[-PLANE.width / 2, -PLANE.height / 2, 4]}>
-          {/* <group rotation={rotationOffset}> */}
-          <PerspectiveCamera makeDefault {...camProps} />
-          {/* </group> */}
-          <Box initPositionOffset={[0, 0, 0]} />
-          {/* <mesh position={[-PLANE.width / 2, -PLANE.height / 2, -4]}> */}
-          {/* //   <refPoint position={[0, 0, -0.5]} /> */}
-          {/* // <mesh position={position}> */}
-          <mesh position={[0, 0, -0.5]}>
+            {/* <group position={[-PLANE.height / 2, -PLANE.width / 2, 4]}> */}
+            {/* <group position={[-PLANE.width / 2, -PLANE.height / 2, 4]}> */}
+            <group position={[0, 0, 4]}>
+              {/* <group rotation={rotationOffset}> */}
+              <PerspectiveCamera makeDefault {...camProps} />
+              {/* </group> */}
+              <Box initPositionOffset={[0, 0, 0]} />
+              {/* <mesh position={[-PLANE.width / 2, -PLANE.height / 2, -4]}> */}
+              <RefPoint position={[0, 0, -0.5]} />
+              {/* // <mesh position={position}> */}
+              {/* <mesh position={[0, 0, -0.5]}>
             <sphereBufferGeometry args={[0.1, 30, 30]} attach="geometry" />
             <meshBasicMaterial color="red" attach="material" />
-          </mesh>
-        </group>
-        {/* </group> */}
+          </mesh> */}
+            </group>
+            {/* </group> */}
+          </group>
+        </Suspense>
       </Canvas>
     </div>
   );
