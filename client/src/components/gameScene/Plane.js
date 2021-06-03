@@ -7,6 +7,7 @@ import { BoxGeometry, EdgesGeometry } from "three";
 import * as THREE from "three";
 import genBoard from "../../util/genBoard";
 import Dice from "../dice/dice";
+import RefPoint from "../../util/refPoint";
 
 // import t1 from "../dice/textures/t6.jpeg";
 import t1 from "./tiles/tile-14-14.jpeg";
@@ -66,6 +67,13 @@ const Tile = ({ tile }) => {
           // attach="material"
           // emissive={emissive}
         />
+        <meshStandardMaterial
+          map={texture2}
+          metalness={0.1}
+          attachArray="material"
+          // attach="material"
+          // emissive={emissive}
+        />
       </mesh>
     </group>
   );
@@ -75,31 +83,35 @@ const Tile = ({ tile }) => {
 //   return <Dice p={position} />;
 // };
 
-const Plane = ({ initPositionOffset, tiles, children }) => {
+const Plane = ({ initPositionOffset, tiles, children, x, y }) => {
   const planeMesh = useRef();
   const centerRef = useRef();
   // const tiles = 11;
 
   return (
-    <group ref={planeMesh} position={initPositionOffset}>
-      {tiles.map((t) => (
-        <Tile key={t.id} tile={t} />
-      ))}
+    <group position={[0, 0, 0]} rotation={[0, 0, 0]}>
+      <group ref={planeMesh} position={initPositionOffset}>
+        {tiles.map((t) => (
+          <Tile key={t.id} tile={t} />
+        ))}
 
-      <group>
-        <mesh ref={centerRef} position={[5.5, 5, 0]}>
-          <boxGeometry
-            attach="geometry"
-            // args={[tileLength, tileWidth, tileDepth, ,]}
-            args={[9, 9, PLANE.depth]}
-          />
-          <meshStandardMaterial
-            metalness={0.1}
-            attach="material"
-            emissive="#F4A201"
-          />
-        </mesh>
-        {children}
+        <group>
+          <mesh ref={centerRef} position={[5.5, 5, 0]}>
+            <RefPoint position={[0, 0, 1]} />
+
+            <boxGeometry
+              attach="geometry"
+              // args={[tileLength, tileWidth, tileDepth, ,]}
+              args={[9, 9, PLANE.depth]}
+            />
+            <meshStandardMaterial
+              metalness={0.1}
+              attach="material"
+              emissive="#F4A201"
+            />
+          </mesh>
+          {children}
+        </group>
       </group>
     </group>
   );

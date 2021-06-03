@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { PerspectiveCamera, TransformControls } from "@react-three/drei";
+import {
+  OrbitControls,
+  PerspectiveCamera,
+  TransformControls,
+} from "@react-three/drei";
 import * as THREE from "three";
 import { camPosOffset } from "../config/CONSTANTS";
 
@@ -40,9 +44,10 @@ const Box = ({ initPositionOffset, x, y }) => {
     // const oorginal = camera.position;
     // const offsetX = -8,
     //   offsetY = -6;
+
     const [camX_Offset, camY_Offset] = camPosOffset;
-    camera.position.x = dx + camX_Offset;
-    camera.position.y = dy + camY_Offset;
+    // camera.position.x = dx + camX_Offset;
+    // camera.position.y = dy + camY_Offset;
     // camera.rotation.x = 0.6;
     // camera.rotation.y = -0.6;
     // camera.rotation.z = -0.6;
@@ -55,24 +60,35 @@ const Box = ({ initPositionOffset, x, y }) => {
   //   camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
   //   // camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
   // }, [y]);
-  useEffect(() => {
-    console.log(camera.rotation);
-    // camera.rotateX(5);
-    // camera.rotateX(-5);
-    // camera.rotateY(-0.1);
-    // camera.rotateY(-5);
-    // camera.rotateOnAxis(new THREE.Vector3(0, 0.5, 0.5), -0.5);
-    // camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
-  }, [y]);
+  // useEffect(() => {
+  //   console.log(camera.rotation);
+  //   // camera.rotateX(5);
+  //   // camera.rotateX(-5);
+  //   // camera.rotateY(-0.1);
+  //   // camera.rotateY(-5);
+  //   // camera.rotateOnAxis(new THREE.Vector3(0, 0.5, 0.5), -0.5);
+  //   // camera.rotateOnAxis(new THREE.Vector3(0, 0, 0.5), -0.5);
+  // }, [y]);
+
+  // useEffect(() => {
+  //   camera.translateOnAxis(new THREE.Vector3(x % 4, -(y % 4) * 0.1, 0.5), -0.5);
+  // }, [x, y]);
 
   return (
+    // <TransformControls camera={camera}>
     <mesh ref={boxMesh} position={initPositionOffset}>
       {/* <planeGeometry args={[10, 20, 30]} />
+      
                     <meshPhongMaterial /> */}
       {/* <boxGeometry  attach="geometry" args={[1, 2, 3]} /> */}
-      <boxGeometry args={[0.5, 0.5, 1]} />
+      {/* <OrbitControls
+        // position={[-7, -7, 0]}
+        // rotation={[0.6, -0.52, -0.6]}
+        camera={camera}
+      /> */}
+      <boxGeometry args={[0.5, 0.5, 0.5]} />
+
       <meshStandardMaterial metalness={0.1} attach="material" emissive="red" />
-      {/* <TransformControls /> */}
     </mesh>
   );
 };

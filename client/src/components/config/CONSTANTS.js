@@ -8,5 +8,5 @@ const TILE = {
   width: 1,
   depth: PLANE.depth,
 };
-const camPosOffset = [-8, -8, 1.5];
+const camPosOffset = [-8, -8, 1.3];
 export { PLANE, TILE, camPosOffset };

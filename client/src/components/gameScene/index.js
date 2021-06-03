@@ -7,7 +7,7 @@ import {
   CubeCamera,
   TransformControls,
 } from "@react-three/drei";
-import Box from "./box";
+import Box from "./Box.js";
 import Dice from "../dice/dice";
 import Plane from "./plane";
 import PlaneORG from "./plane_o";
@@ -40,7 +40,7 @@ const GameScene = () => {
   const camProps = {
     fov: 90,
     position: camPosOffset,
-    rotation: [0.6, -0.6, -0.6],
+    rotation: [0.6, -0.52, -0.6],
   };
   useEffect(() => {
     const {
@@ -85,19 +85,20 @@ const GameScene = () => {
       </div>
       <div id="canvas-container" style={{ width: "1200px", height: "1200px" }}>
         <Canvas>
-          {/* <OrbitControls /> */}
-
           <Suspense fallback={null}>
             <group position={[-2, -2, -1]}>
               <ambientLight brightness={2.6} color={"#bdefff"} />
 
               <Plane tiles={board} initPositionOffset={[-5.5, -5.5, 0]}>
-                <Box initPositionOffset={[0, 0, 0]} x={xPos} y={yPos} />
+                <Box
+                  initPositionOffset={[0, 0, PLANE.depth]}
+                  x={xPos}
+                  y={yPos}
+                />
               </Plane>
 
               <group position={[0, 0, 4]}>
                 <PerspectiveCamera makeDefault {...camProps} />
-                <RefPoint position={[0, 0, -0.5]} />
               </group>
             </group>
           </Suspense>
