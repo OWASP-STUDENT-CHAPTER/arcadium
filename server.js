@@ -96,7 +96,7 @@ require("./init/initSocket")(io);
 
 // * Production setup
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.resolve(__dirname, "Client", "build")));
+  app.use(express.static(path.resolve(__dirname, "client", "build")));
   app.get("/*", function (req, res) {
     // this -->
     // res.cookie("XSRF-TOKEN", req.csrfToken());
