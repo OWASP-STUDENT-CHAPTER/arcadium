@@ -99,7 +99,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "Client", "build")));
   app.get("/*", function (req, res) {
     // this -->
-    res.cookie("XSRF-TOKEN", req.csrfToken());
+    // res.cookie("XSRF-TOKEN", req.csrfToken());
     res.sendFile(path.resolve(__dirname, "Client", "build", "index.html"));
   });
 
