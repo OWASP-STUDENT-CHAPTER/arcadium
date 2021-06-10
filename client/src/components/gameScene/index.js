@@ -14,7 +14,6 @@ import {
   CubeCamera,
   TransformControls,
 } from "@react-three/drei";
-import Plane from "./plane.js";
 import Box from "./Box.js";
 // import Dice from "../dice/dice";
 // import PlaneORG from "./plane_o";
@@ -25,6 +24,7 @@ import genBoard from "../../util/genBoard";
 import { PLANE, TILE, camPosOffset } from "../config/CONSTANTS";
 
 import { GameContext } from "../../context/gameContext";
+import Plane from "./planeZ.js";
 
 // import {ref}
 // import { Object3D } from "three";
