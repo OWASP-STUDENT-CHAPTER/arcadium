@@ -14,9 +14,9 @@ import {
   CubeCamera,
   TransformControls,
 } from "@react-three/drei";
+import Plane from "./plane.js";
 import Box from "./Box.js";
 // import Dice from "../dice/dice";
-import Plane from "./plane";
 // import PlaneORG from "./plane_o";
 // import Camera from "../camera/";
 // import { PLANE } from "../config/CONSTANTS";
