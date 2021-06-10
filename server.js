@@ -20,11 +20,11 @@ require("./init/db");
 
 require("./init/initModels");
 
-// app.use(
-//   helmet({
-//     contentSecurityPolicy: false,
-//   })
-// );
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors({ origin: `${process.env.CLIENT_URL}`, credentials: true }));
@@ -93,3 +93,22 @@ io.use(async function (socket, next) {
 // io.set("origins", process.env.CLIENT_URL);
 
 require("./init/initSocket")(io);
+
+// * Production setup
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.resolve(__dirname, "Client", "build")));
+  app.get("/*", function (req, res) {
+    // this -->
+    res.cookie("XSRF-TOKEN", req.csrfToken());
+    res.sendFile(path.resolve(__dirname, "Client", "build", "index.html"));
+  });
+
+  // Handle unhandled promise rejections
+  process.on("unhandledRejection", (err, promise) => {
+    console.log(`Error: ${err.message}`);
+  });
+
+  process.on("uncaughtException", (err, promise) => {
+    console.log(`Error: ${err.message}`);
+  });
+}

@@ -75,6 +75,7 @@ const initSocket = (io) => {
       //! save move
       const rID = team.room;
       // console.log('a')
+      // socket.to(rID).emit("player_move", {
       socket.to(rID).emit("player_move", {
         pos: data.pos,
         teamId: team._id,
