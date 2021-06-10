@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext } from "react";
 import { useQuery } from "react-query";
 
 import axios from "../util/axios";
@@ -11,6 +11,7 @@ const AuthProvider = ({ children }) => {
     () => axios.get("/team/profile").then((res) => res.data),
     {
       retry: false,
+      staleTime: Infinity,
       //! optimise
     }
   );

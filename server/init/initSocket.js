@@ -3,18 +3,12 @@ const Team = require("../team/model");
 const Room = require("../model/roomModel");
 
 const initSocket = (io) => {
-  // io.on("connection ", async (socket) => {
   io.on("connection", async (socket) => {
-    // console.log("socket.handshake.query");
-    console.log("team socket.handshake.query", socket.handshake.query.teamId);
-    // socket.join
+    // console.log("team socket.handshake.query", socket.handshake.query.teamId);
 
     const team = await Team.findById(socket.handshake.query.teamId);
-    console.log(1);
     if (!team) return;
-    console.log(2);
     let room;
-    // let connectedTeams;
     if (!team.room) {
       let eventConfig = await EventConfig.findOne();
 
@@ -39,7 +33,6 @@ const initSocket = (io) => {
         room = await Room.findOne({ _id: eventConfig.room.id });
       }
 
-      // console.log(room);
       team.room = room.id;
       room.teams.push(team.id);
 
@@ -55,27 +48,16 @@ const initSocket = (io) => {
       if (!found) room.connectedTeams.push(team.id);
       await room.save();
     }
-    // await ;
-    // room = await room.populate("connectedTeams");
+
     room = await Room.populate(room, { path: "connectedTeams" });
-    console.log(room);
-    // return;
-    // console.log("team", team);
-    // console.log("room", room);
+
     socket.join(team.room);
 
-    io.in(team.room).emit("testMSG", { teams: room.connectedTeams }); //! send all teams or send the newly joined one
-
-    // console.log("room.id", team.room);
-    // const connectedTeams = io.sockets.adapter.rooms.forEach((e) =>
-    //   console.log(e)
-    // );
-    // const connectedTeams = io.sockets.adapter.rooms[team.room];
-    // console.log("connected teams", connectedTeams);
+    io.in(team.room).emit("connected_teams_update", {
+      teams: room.connectedTeams,
+    }); //! send all teams or send the newly joined one
 
     socket.on("disconnect", async (reason) => {
-      console.log("disconnect reason", reason);
-      console.log("leaving team", team);
       const room = await Room.findById(team.room).populate("connectedTeams");
       // //! mantain only active teams or all teams ?
       room.connectedTeams = room.connectedTeams.filter(
@@ -87,11 +69,18 @@ const initSocket = (io) => {
       });
       await room.save();
     });
-    // await eventConfig.save();
-    // await room.save();
-  });
 
-  // io.on("di")
+    socket.on("move", (data) => {
+      console.log("a move", data);
+      //! save move
+      const rID = team.room;
+      // console.log('a')
+      socket.to(rID).emit("player_move", {
+        pos: data.pos,
+        teamId: team._id,
+      });
+    });
+  });
 };
 
 module.exports = initSocket;

@@ -9,7 +9,7 @@ import * as THREE from "three";
 import { camPosOffset } from "../config/CONSTANTS";
 
 // const myMesh = new THREE.Mesh();
-const Box = ({ initPositionOffset, x, y }) => {
+const Box = ({ initPositionOffset, x, y, color }) => {
   const boxMesh = useRef();
   //   console.log("y", y);
   const { camera } = useThree();
@@ -88,7 +88,11 @@ const Box = ({ initPositionOffset, x, y }) => {
       /> */}
       <boxGeometry args={[0.5, 0.5, 0.5]} />
 
-      <meshStandardMaterial metalness={0.1} attach="material" emissive="red" />
+      <meshStandardMaterial
+        metalness={0.1}
+        attach="material"
+        emissive={color}
+      />
     </mesh>
   );
 };

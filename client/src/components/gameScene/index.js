@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  Suspense,
+  useContext,
+  useCallback,
+} from "react";
 import { Canvas, useFrame, useThree, useResource } from "@react-three/fiber";
 import {
   PerspectiveCamera,
@@ -8,22 +15,32 @@ import {
   TransformControls,
 } from "@react-three/drei";
 import Box from "./Box.js";
-import Dice from "../dice/dice";
+// import Dice from "../dice/dice";
 import Plane from "./plane";
-import PlaneORG from "./plane_o";
-import Camera from "../camera/";
+// import PlaneORG from "./plane_o";
+// import Camera from "../camera/";
 // import { PLANE } from "../config/CONSTANTS";
-import TEST_CUBE from "../camera/cubeCamera";
+// import TEST_CUBE from "../camera/cubeCamera";
 import genBoard from "../../util/genBoard";
 import { PLANE, TILE, camPosOffset } from "../config/CONSTANTS";
 
+import { GameContext } from "../../context/gameContext";
+
 // import {ref}
 // import { Object3D } from "three";
-import RefPoint from "../../util/refPoint";
+// import RefPoint from "../../util/refPoint";
+import { AuthContext } from "../../context/authContext.js";
 // const myMesh = new THREE.Mesh();
-const GameScene = () => {
-  const camRef = useRef();
-  const testRef = useRef();
+const GameScene = ({ socket }) => {
+  console.log("abcd");
+  // const camRef = useRef();
+  // const testRef = useRef();
+  const { teams, updatePos } = useContext(GameContext);
+  const { team: user } = useContext(AuthContext);
+
+  console.log(teams);
+  console.log(user);
+
   const [yPos, setYPos] = useState(-2);
   const [xPos, setXPos] = useState(-2);
   const [index, setIndex] = useState(0);
@@ -64,24 +81,54 @@ const GameScene = () => {
   //     testRef.current.position.y = Math.sin(1 + clock.elapsedTime) * 5;
 
   // });
+  useEffect(() => {
+    if (!socket) return;
+    console.log("a");
+    socket.removeAllListeners("player_move"); //!
+    socket.on("player_move", (data) => {
+      console.log("oponnent move", data);
+      // let {
+      //   position: [x, y],
+      // } = board[data.pos];
+
+      updatePos(data.teamId, data.pos);
+    });
+  }, [socket, teams]);
 
   // console.log(camera);
+  const movePlayer = () => {
+    let i = index;
 
+    i += 1;
+    // if(i>= )
+
+    i = i % board.length;
+    setIndex(i);
+    console.log("making move ");
+    socket.emit("move", {
+      pos: i,
+    });
+    //! use diff useEffect ?
+  };
+  const Opp = ({ pos }) => {
+    console.log(pos);
+    // if (!board) return<></>;
+    let {
+      position: [x, y],
+    } = board[pos];
+    return (
+      <Box
+        color="#98f5ff"
+        initPositionOffset={[0, 0, PLANE.depth]}
+        x={x}
+        y={y}
+      />
+    );
+  };
   return (
     <>
       <div>
-        <button
-          onClick={() => {
-            let i = index;
-
-            i += 1;
-            // if(i>= )
-
-            i = i % board.length;
-            setIndex(i);
-          }}>
-          MOVEEEEEEEEE
-        </button>
+        <button onClick={movePlayer}>MOVEEEEEEEEE</button>
       </div>
       <div id="canvas-container" style={{ width: "1200px", height: "1200px" }}>
         <Canvas>
@@ -94,7 +141,13 @@ const GameScene = () => {
                   initPositionOffset={[0, 0, PLANE.depth]}
                   x={xPos}
                   y={yPos}
+                  color="red"
                 />
+                {teams
+                  .filter((t) => t._id !== user.teams[0]._id)
+                  .map((t) => (
+                    <Opp pos={t.game.posIndex} />
+                  ))}
               </Plane>
 
               <group position={[0, 0, 4]}>
