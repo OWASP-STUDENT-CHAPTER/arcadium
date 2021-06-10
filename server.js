@@ -100,7 +100,7 @@ if (process.env.NODE_ENV === "production") {
   app.get("/*", function (req, res) {
     // this -->
     // res.cookie("XSRF-TOKEN", req.csrfToken());
-    res.sendFile(path.resolve(__dirname, "Client", "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 
   // Handle unhandled promise rejections
