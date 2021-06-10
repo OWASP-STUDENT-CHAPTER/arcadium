@@ -4,9 +4,10 @@
   "description": "",
   "main": "test.js",
   "scripts": {
-    "server": "node server.js",
+    "start": "node server.js",
     "server:dev": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix Client && npm run build --prefix Client"
   },
   "keywords": [],
   "author": "",
