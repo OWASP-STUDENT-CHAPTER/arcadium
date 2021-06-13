@@ -20,11 +20,11 @@ const initSocket = (io) => {
 
       if (eventConfig.room.size > process.env.ROOM_SIZE) {
         eventConfig.room.size = 1;
-        eventConfig.room.id++;
+        // eventConfig.room.id++;
 
         room = new Room({
           // id: String(eventConfig.room.id),
-          _id: eventConfig.room.id,
+          _id: eventConfig.room.id + 1,
         });
 
         console.log(room);
