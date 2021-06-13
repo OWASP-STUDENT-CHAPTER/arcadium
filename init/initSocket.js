@@ -17,11 +17,8 @@ const initSocket = (io) => {
       session.startTransaction();
       try {
         if (!team.room) {
-          currentRoom = await Room.findOne(
-            {},
-            {},
-            { sort: { created_at: -1 } }
-          );
+          currentRoom = await Room.findOne({}, {}, { sort: { created_at: 1 } });
+          console.log("currentRoom", currentRoom);
           if (!currentRoom) {
             // console.log("creating first room ");
             currentRoom = new Room({
