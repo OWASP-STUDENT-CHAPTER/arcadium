@@ -37,6 +37,7 @@ const Opp = ({ pos, board }) => {
   } = board[pos];
   return (
     <Box
+      index={pos}
       player={false}
       color="#98f5ff"
       initPositionOffset={[0, 0, PLANE.depth]}
