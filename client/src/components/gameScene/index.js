@@ -36,10 +36,10 @@ const GameScene = ({ socket }) => {
   // const camRef = useRef();
   // const testRef = useRef();
   const { teams, updatePos } = useContext(GameContext);
-  const { team: user } = useContext(AuthContext);
+  const { team } = useContext(AuthContext);
 
-  console.log(teams);
-  console.log(user);
+  // console.log(teams);
+  // console.log(user);
 
   const [yPos, setYPos] = useState(-2);
   const [xPos, setXPos] = useState(-2);
@@ -144,7 +144,7 @@ const GameScene = ({ socket }) => {
                   color="red"
                 />
                 {teams
-                  .filter((t) => t._id !== user.teams[0]._id)
+                  .filter((t) => t._id !== team._id)
                   .map((t) => (
                     <Opp pos={t.game.posIndex} />
                   ))}

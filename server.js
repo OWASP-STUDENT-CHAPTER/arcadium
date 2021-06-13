@@ -12,9 +12,9 @@ const path = require("path");
 // * Models
 const Team = require("./team/model");
 
-// *  init event config
-require("./init/initConfig");
-//
+//* reset connected teams in room model
+require("./util/resetConnections")();
+
 // * init DB
 require("./init/db");
 
@@ -39,7 +39,7 @@ app.use(cors({ origin: `${process.env.CLIENT_URL}`, credentials: true }));
 
 app.use(
   session({
-    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI_COMMON_DB }),
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI_EVENT_DB }), //! change
     // store: MongoStore.create({ client: commonDB}),
     secret: process.env.COOKIE_SECRET,
     resave: false,
@@ -63,6 +63,10 @@ const server = app.listen(port, console.log(`Server started on port ${port}`));
 // * io setup
 
 const io = require("socket.io")(server, { cors: true });
+const session_handler = require("io-session-handler").from(io, {
+  timeout: 5000,
+});
+app.set("session_handler", session_handler);
 // const io = require("socket.io")(server, {
 // cors: {
 //   origin: process.env.CLIENT_URL,

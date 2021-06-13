@@ -7,23 +7,29 @@ import { GameContext } from "../context/gameContext";
 import GameScene from "../components/gameScene";
 
 const GameStart = () => {
-  const { team: user } = useContext(AuthContext); //! fix
+  const { team } = useContext(AuthContext); //! fix
   const { teams, setTeams } = useContext(GameContext);
   const [socket, setSocket] = useState(null);
   useEffect(() => {
+    //! retry connection
     const s = io(process.env.REACT_APP_BASE_URL, {
       query: {
-        teamId: user.teams[0]._id,
+        teamId: team._id,
       },
     });
     setSocket(s);
-  }, [user]);
+  }, [team]);
 
   useEffect(() => {
     if (!socket) return;
     socket.on("connected_teams_update", (data) => {
       console.log(data);
       setTeams(data.teams);
+    });
+
+    socket.on("retry", (data) => {
+      console.log(data);
+      //! reset connection
     });
 
     socket.on("team_left", (data) => {
@@ -35,7 +41,7 @@ const GameStart = () => {
     <>
       <h1>START GAME </h1>
       {/* <Link to="/game">GO TO GAME</Link> */}
-      <h1>MY TEAM : {user.teams[0].teamName} </h1>
+      <h1>MY TEAM : {team.teamName} </h1>
       <ul>
         {teams.map((t) => (
           <li key={t._id}>{t.teamName}</li>

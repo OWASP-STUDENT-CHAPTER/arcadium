@@ -11,7 +11,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.CLIENT_URL}/api/auth/login/callback`,
+      callbackURL: `${process.env.SERVER_URL}/api/auth/login/callback`,
       passReqToCallback: true,
     },
     async (req, accessToken, refreshToken, profile, done) => {
@@ -44,18 +44,21 @@ passport.use(
         });
       }
 
-      const eventTeam = await Team.findById(baseTeam.id);
+      let eventTeam = await Team.findById(baseTeam._id);
+      console.log("baseTeam._id", baseTeam._id);
+      console.log("event team", eventTeam);
+
       if (!eventTeam) {
-        const newEventTeam = new Team({
+        eventTeam = new Team({
           teamName: baseTeam.teamName,
           _id: baseTeam._id,
           members: baseTeam.members,
         });
-        await newEventTeam.save();
+        await eventTeam.save();
       }
 
       // done(null, { id: participant._id, accessToken });
-      done(null, { id: participant._id, accessToken });
+      done(null, { id: eventTeam._id, accessToken });
     }
   )
 );
@@ -67,14 +70,23 @@ passport.serializeUser((obj, done) => {
 
 // * Passport deserializeUser
 passport.deserializeUser(async (obj, done) => {
-  const participant = await Participant.findById(obj.id).populate("teams");
-  //! change
-
-  const [team] = participant.teams.filter(
-    (team) => team.toJSON().event.toString() === process.env.EVENT_ID
-  );
-
-  participant.teams = [team];
-  participant.accessToken = obj.accessToken;
-  done(null, participant);
+  const team = await Team.findById(obj.id)
+    .populate("teams")
+    .populate("members", "name email profilePicLink");
+  team.accessToken = obj.accessToken;
+  done(null, team);
 });
+
+// // * Passport deserializeUser
+// passport.deserializeUser(async (obj, done) => {
+//   const participant = await Participant.findById(obj.id).populate("teams");
+//   //! change
+
+//   const [team] = participant.teams.filter(
+//     (team) => team.toJSON().event.toString() === process.env.EVENT_ID
+//   );
+
+//   participant.teams = [team];
+//   participant.accessToken = obj.accessToken;
+//   done(null, participant);
+// });
