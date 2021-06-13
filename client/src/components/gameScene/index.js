@@ -28,7 +28,7 @@ import { AuthContext } from "../../context/authContext.js";
 
 import { GameContext } from "../../context/gameContext";
 import Plane from "./planeZ.js";
-import { range } from "rxjs";
+
 const Opp = ({ pos, board }) => {
   console.log(pos);
   // if (!board) return<></>;

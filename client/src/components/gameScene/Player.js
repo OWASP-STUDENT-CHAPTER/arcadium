@@ -10,7 +10,7 @@ import { camPosOffset } from "../config/CONSTANTS";
 import { useSpring, a } from "@react-spring/three";
 
 // const myMesh = new THREE.Mesh();
-const Player = ({ initPositionOffset, x, y, color, player }) => {
+const Player = ({ initPositionOffset, x, y, color, player, index, board }) => {
   const boxMesh = useRef();
   const { camera } = useThree();
 
