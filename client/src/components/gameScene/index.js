@@ -18,7 +18,6 @@ import {
 import Box from "./Box.js";
 import Player from "./Player.js";
 // import Dice from "../dice/dice";
-// import PlaneORG from "./plane_o";
 // import Camera from "../camera/";
 // import { PLANE } from "../config/CONSTANTS";
 // import TEST_CUBE from "../camera/cubeCamera";
