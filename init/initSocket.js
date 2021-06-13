@@ -38,7 +38,7 @@ const initSocket = (io) => {
         } else {
           currentRoom = await Room.findById(team.room);
         }
-        const found = currentRoom.connectedTeams.includes(team.id);
+        const found = currentRoom.connectedTeams.includes(team._id);
         if (!found) currentRoom.connectedTeams.push(team.id);
 
         await currentRoom.save();

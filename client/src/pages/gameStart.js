@@ -7,9 +7,10 @@ import { GameContext } from "../context/gameContext";
 import GameScene from "../components/gameScene";
 
 const GameStart = () => {
-  const { team } = useContext(AuthContext); //! fix
+  const { team } = useContext(AuthContext);
   const { teams, setTeams } = useContext(GameContext);
   const [socket, setSocket] = useState(null);
+
   useEffect(() => {
     //! retry connection
     const s = io(process.env.REACT_APP_BASE_URL, {
@@ -40,7 +41,6 @@ const GameStart = () => {
   return (
     <>
       <h1>START GAME </h1>
-      {/* <Link to="/game">GO TO GAME</Link> */}
       <h1>MY TEAM : {team.teamName} </h1>
       <ul>
         {teams.map((t) => (

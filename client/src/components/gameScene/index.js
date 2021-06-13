@@ -3,6 +3,7 @@ import {
   useEffect,
   useRef,
   Suspense,
+  useMemo,
   useContext,
   useCallback,
 } from "react";
@@ -15,6 +16,7 @@ import {
   TransformControls,
 } from "@react-three/drei";
 import Box from "./Box.js";
+import Player from "./Player.js";
 // import Dice from "../dice/dice";
 // import PlaneORG from "./plane_o";
 // import Camera from "../camera/";
@@ -22,14 +24,30 @@ import Box from "./Box.js";
 // import TEST_CUBE from "../camera/cubeCamera";
 import genBoard from "../../util/genBoard";
 import { PLANE, TILE, camPosOffset } from "../config/CONSTANTS";
+import { AuthContext } from "../../context/authContext.js";
 
 import { GameContext } from "../../context/gameContext";
 import Plane from "./planeZ.js";
-
+import { range } from "rxjs";
+const Opp = ({ pos, board }) => {
+  console.log(pos);
+  // if (!board) return<></>;
+  let {
+    position: [x, y],
+  } = board[pos];
+  return (
+    <Box
+      player={false}
+      color="#98f5ff"
+      initPositionOffset={[0, 0, PLANE.depth]}
+      x={x}
+      y={y}
+    />
+  );
+};
 // import {ref}
 // import { Object3D } from "three";
 // import RefPoint from "../../util/refPoint";
-import { AuthContext } from "../../context/authContext.js";
 // const myMesh = new THREE.Mesh();
 const GameScene = ({ socket }) => {
   console.log("abcd");
@@ -44,8 +62,17 @@ const GameScene = ({ socket }) => {
   const [yPos, setYPos] = useState(-2);
   const [xPos, setXPos] = useState(-2);
   const [index, setIndex] = useState(0);
+  const [newIndex, setNewIndex] = useState(0);
+
+  // useFrame();
+
+  // const [old, setOld] = useState(0);
   // const myCamera = useCamera();
-  const [board] = useState(genBoard(TILE.length, TILE.width, TILE.depth));
+  // const [board] = useState(genBoard(TILE.length, TILE.width, TILE.depth));
+  const board = useMemo(
+    () => genBoard(TILE.length, TILE.width, TILE.depth),
+    []
+  );
   // useFrame(() => {
   //     boxMesh.current.rotation.y += 0.01;
   // });
@@ -97,34 +124,36 @@ const GameScene = ({ socket }) => {
 
   // console.log(camera);
   const movePlayer = () => {
+    let oldIndex = index;
     let i = index;
 
-    i += 1;
-    // if(i>= )
+    const dice = Math.floor(Math.random() * 6) + 1;
 
+    console.log("dice", dice);
+    i += dice;
+    // i += 7;
     i = i % board.length;
+    // setNewIndex(i);
     setIndex(i);
+
+    // //emit 1-10 in sequence
+    // const source = range(oldIndex + 1, dice);
+    // //output: 1,2,3,4,5,6,7,8,9,10
+    // const example = source.subscribe((val) => {
+    //   console.log("val", val);
+    //   // console.log("dice", dice);
+
+    //   setIndex(val % board.length);
+    // });
+    // example.unsubscribe();
     console.log("making move ");
     socket.emit("move", {
       pos: i,
     });
+
     //! use diff useEffect ?
   };
-  const Opp = ({ pos }) => {
-    console.log(pos);
-    // if (!board) return<></>;
-    let {
-      position: [x, y],
-    } = board[pos];
-    return (
-      <Box
-        color="#98f5ff"
-        initPositionOffset={[0, 0, PLANE.depth]}
-        x={x}
-        y={y}
-      />
-    );
-  };
+
   return (
     <>
       <div>
@@ -137,16 +166,29 @@ const GameScene = ({ socket }) => {
               <ambientLight brightness={2.6} color={"#bdefff"} />
 
               <Plane tiles={board} initPositionOffset={[-5.5, -5.5, 0]}>
-                <Box
+                {/* <Player
+                  board={board}
+                  index={index}
                   initPositionOffset={[0, 0, PLANE.depth]}
                   x={xPos}
                   y={yPos}
                   color="red"
+                  player={true}
+                /> */}
+                <Box
+                  board={board}
+                  index={index}
+                  // movePerFrame={movePerFrame}
+                  initPositionOffset={[0, 0, PLANE.depth]}
+                  x={xPos}
+                  y={yPos}
+                  color="red"
+                  player={true}
                 />
                 {teams
                   .filter((t) => t._id !== team._id)
                   .map((t) => (
-                    <Opp pos={t.game.posIndex} />
+                    <Opp board={board} key={t._id} pos={t.game.posIndex} />
                   ))}
               </Plane>
 
