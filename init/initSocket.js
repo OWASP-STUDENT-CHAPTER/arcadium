@@ -54,12 +54,18 @@ const initSocket = (io) => {
 
       const room = await Room.populate(currentRoom, { path: "connectedTeams" });
       socket.join(team.room);
+      socket.emit("start", { pos: team.game.posIndex });
 
       io.in(team.room).emit("connected_teams_update", {
         teams: room.connectedTeams,
       }); //! send all teams or send the newly joined one
     }
-    const { disconnect, move } = getSocketFunction(io, socket, team);
+    const { disconnect, move } = getSocketFunction(
+      io,
+      socket,
+      team._id,
+      team.room
+    );
 
     socket.on("disconnect", disconnect);
     socket.on("move", move);

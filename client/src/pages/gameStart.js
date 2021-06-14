@@ -10,7 +10,6 @@ const GameStart = () => {
   const { team } = useContext(AuthContext);
   const { teams, setTeams } = useContext(GameContext);
   const [socket, setSocket] = useState(null);
-
   useEffect(() => {
     //! retry connection
     const s = io(process.env.REACT_APP_BASE_URL, {

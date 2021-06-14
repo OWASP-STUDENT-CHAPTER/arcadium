@@ -1,28 +1,37 @@
 const Room = require("../model/roomModel");
+const Team = require("../team/model");
 
-module.exports = (io, socket, team) => {
+module.exports = (io, socket, teamId, roomId) => {
   const disconnect = async (reason) => {
     console.log("disconnect reason", reason);
-    const room = await Room.findById(team.room).populate("connectedTeams");
+    const room = await Room.findById(roomId).populate("connectedTeams");
 
     room.connectedTeams = room.connectedTeams.filter(
-      (t) => String(t._id) !== String(team._id)
+      (t) => String(t._id) !== String(teamId)
     );
 
-    socket.to(team.room).emit("team_left", {
+    socket.to(roomId).emit("team_left", {
       teams: room.connectedTeams,
     });
     await room.save();
   };
 
-  const move = (data) => {
+  const move = async (data) => {
     console.log("a move", data);
     //! save move
-    const rID = team.room;
-    socket.to(rID).emit("player_move", {
+    const team = await Team.findById(teamId);
+
+    team.game.posIndex = data.pos;
+
+    socket.to(roomId).emit("player_move", {
       pos: data.pos,
-      teamId: team._id,
+      teamId: teamId,
     });
+    await team.save();
+
+    //! wait for save?
+
+    setTimeout(() => socket.emit("allow_moving"), 3000); //! change
   };
 
   return {

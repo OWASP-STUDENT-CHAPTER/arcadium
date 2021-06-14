@@ -1,29 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import {
-  OrbitControls,
-  PerspectiveCamera,
-  TransformControls,
-} from "@react-three/drei";
+import React, { useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { camPosOffset } from "../config/CONSTANTS";
+import { camPosOffset } from "../../config/CONSTANTS";
 
-// const myMesh = new THREE.Mesh();
-const Box = ({ initPositionOffset, x, y, color, player, index }) => {
+const Pawn = ({ initPositionOffset, board, color, player, index }) => {
   const boxMesh = useRef();
   const { camera } = useThree();
-  // const movePerFrame =
-
-  // useFrame(() => {
-  //   console.log("in movePerFrame");
-  //   console.log("index", index);
-  //   console.log("newIndex", newIndex);
-  //   if (index < newIndex) {
-  //     setIndex(index + 1);
-  //   }
-  // });
   useFrame(() => {
-    // if(movePerFrame)movePerFrame();
+    let {
+      position: [x, y],
+    } = board[index];
     let fy = y;
     let fby = boxMesh.current.position.y;
     let fx = x;
@@ -75,8 +61,9 @@ const Box = ({ initPositionOffset, x, y, color, player, index }) => {
 
     boxMesh.current.position.y = dy;
     boxMesh.current.position.x = dx;
-    if (!player) return;
 
+    if (!player) return;
+    // * update camera
     const [camX_Offset, camY_Offset] = camPosOffset;
     // camera.position.x = dx + camX_Offset;
     // camera.position.y = dy + camY_Offset;
@@ -85,10 +72,9 @@ const Box = ({ initPositionOffset, x, y, color, player, index }) => {
   return (
     <mesh ref={boxMesh} position={initPositionOffset}>
       <boxGeometry args={[0.5, 0.5, 0.5]} />
-      {/* <meshStandardMaterial */}
       <meshBasicMaterial metalness={0.1} attach="material" color={color} />
     </mesh>
   );
 };
 
-export default Box;
+export default Pawn;

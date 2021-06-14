@@ -20,20 +20,23 @@ passport.use(
       }).populate("teams");
 
       //! change function properly
-      // console.log(participant);
+
       if (!participant) {
         return done(null, false, {
           message: "This google ID not registered.",
         });
       }
+
       let baseTeam = participant.teams.find(
         (team) => team.toJSON().event.toString() === process.env.EVENT_ID
       );
+
       if (!baseTeam) {
         return done(null, false, {
           message: "No team for this event found.",
         });
       }
+
       baseTeam = baseTeam.toJSON();
 
       const minTeamLength = Number(process.env.MIN_TEAM_LENGTH);
@@ -45,8 +48,8 @@ passport.use(
       }
 
       let eventTeam = await Team.findById(baseTeam._id);
-      console.log("baseTeam._id", baseTeam._id);
-      console.log("event team", eventTeam);
+      // console.log("baseTeam._id", baseTeam._id);
+      // console.log("event team", eventTeam);
 
       if (!eventTeam) {
         eventTeam = new Team({

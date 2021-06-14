@@ -1,30 +1,19 @@
-import { useState, useEffect, createContext, useCallback } from "react";
+import { useState, createContext, useMemo } from "react";
+
+import genBoard from "../util/genBoard";
 
 const GameContext = createContext();
 
 const GameProvider = ({ children }) => {
   const [teams, setTeams] = useState([]);
+  const board = useMemo(() => genBoard(), []);
 
-  // const updatePos = (teamId, x, y) => {
   const updatePos = (teamId, pos) => {
     const t = [...teams];
-    // console.log(teamId, x, y);
-    console.log(teams);
-    const i = t.findIndex((team) => {
-      // console.log(team._id);
-      return team._id === teamId;
-    });
-    console.log(i);
-    // return;
-    // t[i].game.pos = { x, y };
-
+    const i = t.findIndex((team) => team._id === teamId);
     t[i].game.posIndex = pos;
     setTeams(t);
   };
-
-  useEffect(() => {
-    console.log("new teams", teams);
-  }, [teams]);
 
   return (
     <GameContext.Provider
@@ -32,6 +21,7 @@ const GameProvider = ({ children }) => {
         teams,
         setTeams,
         updatePos,
+        board,
       }}>
       {children}
     </GameContext.Provider>
