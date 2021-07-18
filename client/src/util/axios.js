@@ -1,7 +1,8 @@
 import axios from "axios";
+import URL from "./URL";
 
 export default axios.create({
-  baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
+  baseURL: `${URL}/api`,
   responseType: "json",
   withCredentials: true,
 });

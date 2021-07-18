@@ -1,6 +1,9 @@
+const envConfig = {
+  path: process.env.NODE_ENV === "production" ? "prod.env" : ".env",
+};
+require("dotenv").config(envConfig);
 const express = require("express");
 const app = express();
-require("dotenv").config();
 const cors = require("cors");
 // const cookieSession = require("cookie-session");
 const session = require("express-session");
