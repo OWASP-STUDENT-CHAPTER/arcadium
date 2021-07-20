@@ -99,8 +99,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
         style={{
           //  margin: "auto",
 
-          width: '1200px',
-          height: '1200px',
+          width: '500px',
+          height: '500px',
         }}
       >
         <Canvas>

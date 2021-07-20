@@ -2,7 +2,7 @@ import React, { Suspense, useRef } from 'react';
 import { useFrame, useThree, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import { camPosOffset } from '../../config/CONSTANTS';
-import CaptainAmeraShield from '../col1.gltf';
+// import CaptainAmeraShield from '../col1.gltf';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Box } from '@react-three/drei';
 const Pawn = ({ initPositionOffset, board, color, player, index }) => {
