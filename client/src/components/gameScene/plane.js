@@ -26,11 +26,12 @@ const Tile = ({ tile }) => {
     <group>
       <mesh ref={tileMesh} position={position} rotation={rotation}>
         <boxBufferGeometry attach="geometry" args={size} />
-        <meshStandardMaterial attachArray="material" />
-        <meshStandardMaterial attachArray="material" />
-        <meshStandardMaterial attachArray="material" />
-        <meshStandardMaterial attachArray="material" />
-        <meshStandardMaterial map={texture} attachArray="material" />
+        {/* <meshStandardMaterial attachArray="material" /> */}
+        <meshBasicMaterial attachArray="material" />
+        <meshBasicMaterial attachArray="material" />
+        <meshBasicMaterial attachArray="material" />
+        <meshBasicMaterial attachArray="material" />
+        <meshBasicMaterial map={texture} attachArray="material" />
         <meshStandardMaterial
           map={texture2}
           attachArray="material"
@@ -66,15 +67,15 @@ const Plane = ({ initPositionOffset, board, children, dice, index }) => {
   //   //   config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 },
   // });
   const rotation = spring.to((v) => {
-    console.log("v", v);
+    // console.log("v", v);
     // if(v>0)
     if (sprVal >= 0 && sprVal < 10 && v <= 39 && v > 10) {
       return sprVal + 40;
     }
-    console.log(sprVal);
+    // console.log(sprVal);
 
-    console.log("index", index);
-    console.log("index*0.05", index * 0.05);
+    // console.log("index", index);
+    // console.log("index*0.05", index * 0.05);
 
     return v;
   });
