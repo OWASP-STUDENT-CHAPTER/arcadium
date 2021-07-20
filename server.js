@@ -59,6 +59,7 @@ app.use(passport.session());
 // * Routes
 app.use("/api/auth", require("./auth/routes"));
 app.use("/api/team", require("./team/routes"));
+app.use("/api/question", require("./routes/question"));
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, console.log(`Server started on port ${port}`));

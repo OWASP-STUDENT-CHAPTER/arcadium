@@ -1,11 +1,19 @@
+<<<<<<< HEAD
 import React, { Suspense, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { camPosOffset } from "../../config/CONSTANTS";
+=======
+import React, { Suspense, useRef } from 'react';
+import { useFrame, useThree, useLoader } from '@react-three/fiber';
+import * as THREE from 'three';
+import { camPosOffset } from '../../config/CONSTANTS';
+>>>>>>> c03deddbbf2fa3fda0296d6f24d2a674e0398160
 // import CaptainAmeraShield from "../col1.glb";
 // import Model from "../Col1";
 // import Shoe from "../Shoe-draco";
 // import Dr from "../Col-dr";
+<<<<<<< HEAD
 import Shield from "../Models/shield";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Box } from "@react-three/drei";
@@ -18,6 +26,12 @@ const Pawn = ({
   showPropertyPopUp,
   setShowPropertyPopUp,
 }) => {
+=======
+import Shield from '../Models/shield';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { Box } from '@react-three/drei';
+const Pawn = ({ initPositionOffset, board, color, player, index }) => {
+>>>>>>> c03deddbbf2fa3fda0296d6f24d2a674e0398160
   const boxMesh = useRef();
   const { camera } = useThree();
 

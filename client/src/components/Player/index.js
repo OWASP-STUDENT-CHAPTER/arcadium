@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 import Pawn from "../common/Pawn";
 import PawnModel from "../common/PawnModel";
 import { useState, useEffect } from "react";
+=======
+import Pawn from '../common/Pawn';
+import PawnModel from '../common/PawnModel';
+>>>>>>> c03deddbbf2fa3fda0296d6f24d2a674e0398160
 
 const Player = ({ board, index, initPositionOffset }) => {
   const [showPropertyPopUp, setShowPropertyPopUp] = useState(false);
@@ -24,7 +29,7 @@ const Player = ({ board, index, initPositionOffset }) => {
       board={board}
       index={index}
       initPositionOffset={initPositionOffset}
-      color="red"
+      color='red'
       player={true}
     />
   );
