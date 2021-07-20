@@ -2,19 +2,18 @@ import React, { Suspense, useRef } from 'react';
 import { useFrame, useThree, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 import { camPosOffset } from '../../config/CONSTANTS';
-// import CaptainAmeraShield from '../col1.gltf';
+// import CaptainAmeraShield from "../col1.glb";
+// import Model from "../Col1";
+// import Shoe from "../Shoe-draco";
+// import Dr from "../Col-dr";
+import Shield from '../Models/shield';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Box } from '@react-three/drei';
 const Pawn = ({ initPositionOffset, board, color, player, index }) => {
   const boxMesh = useRef();
   const { camera } = useThree();
-  // console.log("board   dscfdfkhbdjhfs j n", board, );
   useFrame(() => {
-    if (!board || !index) return;
-
-    // console.log("board   dscfdfkhbdjhfs j n", index);
-    // console.log("board   dscfdfkhbdjhfs j n", board);
-    // return;
+    // if( )
     let {
       position: [x, y],
     } = board[index];
@@ -79,13 +78,25 @@ const Pawn = ({ initPositionOffset, board, color, player, index }) => {
   // const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
   return (
     <Suspense fallback={<Box />}>
-      <primitive
-        // object={gltf.scene}
+      {/* <primitive
+        object={gltf.scene}
         rotation={[1.5, 0, 0]}
         position={[0, 0, 0.5]}
         // scale={[0.5, 0.5, 0.5]}
         scale={[1, 1, 1]}
+      /> */}
+      {/* <Model /> */}
+      {/* <Shoe rotation={[1, 1, 1]} position={[0, 0, 0.5]} /> */}
+      <Shield
+        meshRef={boxMesh}
+        rotation={[1.5, 0, 0]}
+        position={[0, 0, 0.5]}
+        scale={[0.15, 0.15, 0.15]}
       />
+      {/* <mesh ref={boxMesh} position={initPositionOffset}>
+      <boxGeometry args={[0.5, 0.5, 0.5]} />
+      <meshBasicMaterial metalness={0.1} attach="material" color={color} />
+    </mesh> */}
     </Suspense>
   );
   // return <></>;

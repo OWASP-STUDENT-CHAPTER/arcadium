@@ -134,6 +134,39 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
               <group position={[0, 0, 4]}>
                 {/* <CameraControls /> */}
                 {/* <OrbitControls /> */}
+                {/* <directionalLight
+                  intensity={2}
+                  // decay={2}
+                  rotation={[-Math.PI / 2, 0, 0]}
+                  position={[3, 4, 4]}
+                />
+                <directionalLight
+                  intensity={2}
+                  // decay={2}
+                  rotation={[-Math.PI / 2, 0, 0]}
+                  position={[-3, -5, 4]}
+                />
+              */}
+                {/* <directionalLight
+                  intensity={2}
+                  // decay={2}
+                  rotation={[-Math.PI / 2, 0, 0]}
+                  position={[0, 0, 0]}
+                /> */}
+                {/* <pointLight
+                  intensity={3}
+                  // decay={2}
+                  // rotation={[-Math.PI / 2, 0, 0]}
+                  // position={[-2, 0, -2]}
+                  position={[1, 0, 0]}
+                /> */}
+                <pointLight
+                  intensity={3}
+                  // decay={2}
+                  // rotation={[-Math.PI / 2, 0, 0]}
+                  // position={[-2, 0, -2]}
+                  position={[-5, -5, 0]}
+                />
                 <PerspectiveCamera makeDefault {...camProps} />
               </group>
             </group>

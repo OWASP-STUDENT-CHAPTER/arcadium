@@ -27,14 +27,14 @@ module.exports = (io, socket, teamId, roomId) => {
       pos: data.pos,
       teamId: teamId,
     });
-    // await team.save();//!
+    await team.save(); //!
 
     //! wait for save?
 
     setTimeout(() => {
       console.log("allow");
       socket.emit("allow_moving");
-    }, 500); //! change
+    }, 1500); //! change
   };
 
   return {
