@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TeamDetails from "../components/TeamDetails/TeamDetails";
 import Cards from "../components/RightDashboard/Cards";
 import RollDice from "../components/RightDashboard/RollDice";
@@ -8,13 +8,17 @@ import "../assets/css/MainPage.css";
 import GameScene from "../components/gameScene";
 import AllTeamDetails from "../components/TopDashboard/AllTeamDetails";
 import HeaderButtons from "../components/TopDashboard/HeaderButtons";
+import QuestionModel from "../components/Questions/questionModel";
+import { GameContext } from "../context/gameContext";
 
 const MainPage = ({ team, socket, teams }) => {
   const [canMove, setCanMove] = useState(true);
   const [dice, setDice] = useState(0);
-
+  const { properties } = useContext(GameContext);
+  if (properties.length == 0) return <>LOADIN</>;
   return (
     <div className="main-container">
+      <QuestionModel socket={socket} />
       <div className="main-header">
         <div className="logo">
           <img src={arcadiumLogo} alt="Logo" className="arcadium-logo" />

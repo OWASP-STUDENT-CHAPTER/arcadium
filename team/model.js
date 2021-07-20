@@ -16,9 +16,13 @@ const teamSchema = new mongoose.Schema({
   room: {
     // type: mongoose.Schema.Types.ObjectId,
     type: Number,
-    ref: "Ref",
+    ref: "Room",
   },
   game: {
+    money: {
+      type: Number,
+      default: 15000,
+    },
     posIndex: {
       type: Number,
       default: 0,

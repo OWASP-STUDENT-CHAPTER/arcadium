@@ -1,6 +1,14 @@
 const mongoose = require("mongoose");
 const { eventDB } = require("../init/db");
 
+const mapDefalut = {};
+
+for (let i = 1; i <= 40; i++) {
+  mapDefalut[i] = {
+    type: mongoose.Types.ObjectId,
+  };
+}
+
 const roomSchema = new mongoose.Schema(
   {
     _id: {
@@ -14,6 +22,9 @@ const roomSchema = new mongoose.Schema(
         default: [],
       },
     ],
+    ownershipMap: {
+      ...mapDefalut,
+    },
     connectedTeams: [
       {
         type: mongoose.Types.ObjectId,
@@ -27,7 +38,6 @@ const roomSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 roomSchema.virtual("size").get(function () {
   return this.teams.length;
 });

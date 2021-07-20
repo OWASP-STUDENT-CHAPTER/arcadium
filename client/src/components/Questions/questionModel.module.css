@@ -1,0 +1,12 @@
+.popUp {
+  position: absolute;
+  top: 200px;
+  left: 300px;
+  width: 350px;
+  height: 350px;
+
+  backdrop-filter: blur(10px);
+  border: 10px solid rebeccapurple;
+  /* backdrop-filter: ; */
+  z-index: 100;
+}
