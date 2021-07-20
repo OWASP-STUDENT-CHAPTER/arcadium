@@ -31,7 +31,10 @@ module.exports = (io, socket, teamId, roomId) => {
 
     //! wait for save?
 
-    setTimeout(() => socket.emit("allow_moving"), 3000); //! change
+    setTimeout(() => {
+      console.log("allow");
+      socket.emit("allow_moving");
+    }, 3000); //! change
   };
 
   return {

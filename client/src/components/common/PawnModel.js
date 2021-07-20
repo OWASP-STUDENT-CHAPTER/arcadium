@@ -2,7 +2,7 @@ import React, { Suspense, useRef } from "react";
 import { useFrame, useThree, useLoader } from "@react-three/fiber";
 import * as THREE from "three";
 import { camPosOffset } from "../../config/CONSTANTS";
-import CaptainAmeraShield from "../cap10.gltf";
+// import CaptainAmeraShield from "../cap10.gltf";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Box } from "@react-three/drei";
 const Pawn = ({ initPositionOffset, board, color, player, index }) => {
@@ -76,18 +76,19 @@ const Pawn = ({ initPositionOffset, board, color, player, index }) => {
     // camera.position.x = dx + camX_Offset;
     // camera.position.y = dy + camY_Offset;
   });
-  const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
-  return (
-    <Suspense fallback={<Box />}>
-      <primitive
-        object={gltf.scene}
-        rotation={[1.5, 0, 0]}
-        position={[0, 0, 0.5]}
-        // scale={[0.5, 0.5, 0.5]}
-        scale={[1, 1, 1]}
-      />
-    </Suspense>
-  );
+  // const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
+  // return (
+  //   <Suspense fallback={<Box />}>
+  //     <primitive
+  //       object={gltf.scene}
+  //       rotation={[1.5, 0, 0]}
+  //       position={[0, 0, 0.5]}
+  //       // scale={[0.5, 0.5, 0.5]}
+  //       scale={[1, 1, 1]}
+  //     />
+  //   </Suspense>
+  // );
+  return <></>;
 };
 
 export default Pawn;

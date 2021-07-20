@@ -5,6 +5,7 @@ import io from "socket.io-client";
 import { AuthContext } from "../context/authContext";
 import { GameContext } from "../context/gameContext";
 import GameScene from "../components/gameScene";
+import URL from "../util/URL";
 
 const GameStart = () => {
   const { team } = useContext(AuthContext);
@@ -12,7 +13,7 @@ const GameStart = () => {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     //! retry connection
-    const s = io(process.env.REACT_APP_BASE_URL, {
+    const s = io(URL, {
       query: {
         teamId: team._id,
       },
