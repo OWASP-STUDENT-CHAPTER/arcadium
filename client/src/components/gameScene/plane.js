@@ -1,23 +1,16 @@
-<<<<<<< HEAD
 import { useRef } from "react";
 import { useLoader } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { a } from "@react-spring/three";
 import { useSpring } from "@react-spring/core";
-=======
-import { useRef } from 'react';
-import { useLoader } from '@react-three/fiber';
-import { useTexture } from '@react-three/drei';
-import * as THREE from 'three';
->>>>>>> c10bc410691fb95d5f1ab12e5fdd2909774434b1
 
-import RefPoint from '../../util/refPoint';
+import RefPoint from "../../util/refPoint";
 
-import { PLANE, TILE } from '../../config/CONSTANTS';
+import { PLANE, TILE } from "../../config/CONSTANTS";
 
 // import textureFile1 from './textures/tiles/tile-14-14.jpeg';
-import textureFile2 from './textures/tiles/tile-14-15-15.jpeg';
+import textureFile2 from "./textures/tiles/tile-14-15-15.jpeg";
 
 const Tile = ({ tile }) => {
   let { position, rotation, size, type, tileImage } = tile;
@@ -26,21 +19,21 @@ const Tile = ({ tile }) => {
 
   const tileMesh = useRef();
 
-  if (type === 'CORNER') size = [TILE.length, TILE.length, TILE.depth];
+  if (type === "CORNER") size = [TILE.length, TILE.length, TILE.depth];
   else size = [TILE.length, TILE.width, TILE.depth];
 
   return (
     <group>
       <mesh ref={tileMesh} position={position} rotation={rotation}>
-        <boxBufferGeometry attach='geometry' args={size} />
-        <meshStandardMaterial attachArray='material' />
-        <meshStandardMaterial attachArray='material' />
-        <meshStandardMaterial attachArray='material' />
-        <meshStandardMaterial attachArray='material' />
-        <meshStandardMaterial map={texture} attachArray='material' />
+        <boxBufferGeometry attach="geometry" args={size} />
+        <meshStandardMaterial attachArray="material" />
+        <meshStandardMaterial attachArray="material" />
+        <meshStandardMaterial attachArray="material" />
+        <meshStandardMaterial attachArray="material" />
+        <meshStandardMaterial map={texture} attachArray="material" />
         <meshStandardMaterial
           map={texture2}
-          attachArray='material'
+          attachArray="material"
           // metalness={0.1}
           // attach="material"
           // emissive={emissive}
@@ -104,11 +97,11 @@ const Plane = ({ initPositionOffset, board, children, dice, index }) => {
             // scale-z={scale}
             position={[5.5, 5, 0]}>
             {/* <RefPoint position={[0, 0, 1]} /> */}
-            <boxGeometry attach='geometry' args={[9, 9, PLANE.depth]} />
+            <boxGeometry attach="geometry" args={[9, 9, PLANE.depth]} />
             <meshStandardMaterial
               metalness={0.1}
-              attach='material'
-              emissive='#F4A201'
+              attach="material"
+              emissive="#F4A201"
             />
           </mesh>
           {children}
