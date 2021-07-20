@@ -7,11 +7,6 @@ const questionSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.Url,
     required: true,
   },
-  isAttempted: {
-    type: Boolean,
-    required: true,
-    default: false,
-  },
   rentReduction: {
     type: Number,
     required: true,

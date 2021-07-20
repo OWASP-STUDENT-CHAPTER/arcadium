@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { eventDB } = require("../init/db");
-const Participant = require("../baseTeam/participantModel");
+const mongoose = require('mongoose');
+const { eventDB } = require('../init/db');
+const Participant = require('../baseTeam/participantModel');
 
 const teamSchema = new mongoose.Schema({
   teamName: {
@@ -16,7 +16,7 @@ const teamSchema = new mongoose.Schema({
   room: {
     // type: mongoose.Schema.Types.ObjectId,
     type: Number,
-    ref: "Ref",
+    ref: 'Ref',
   },
   game: {
     posIndex: {
@@ -27,8 +27,12 @@ const teamSchema = new mongoose.Schema({
       type: Number,
       default: 0,
     },
+    questionsAttempted: {
+      type: Array,
+      default: [],
+    },
   },
 });
 
-const Team = eventDB.model("Team", teamSchema);
+const Team = eventDB.model('Team', teamSchema);
 module.exports = Team;
