@@ -69,10 +69,10 @@ const Pawn = ({ initPositionOffset, board, color, player, index }) => {
     // camera.position.y = dy + camY_Offset;
   });
 
-  useEffect(() => {
-    const { position } = board[index];
-    console.log("useEffect board", position);
-  }, [index]);
+  // useEffect(() => {
+  //   const { position } = board[index];
+  //   console.log("useEffect board", position);
+  // }, [index]);
 
   return (
     <mesh ref={boxMesh} position={initPositionOffset}>
