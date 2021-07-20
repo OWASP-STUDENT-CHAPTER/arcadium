@@ -6,6 +6,7 @@ import Dice from "../dice/dice";
 import ReactDice from "../dice/ReactDice";
 
 const RollDice = ({ socket, dice, setDice, canMove }) => {
+  console.log("canMove", canMove);
   return (
     <div className="dice-container">
       {/* <div className='dice'></div> */}
@@ -13,13 +14,15 @@ const RollDice = ({ socket, dice, setDice, canMove }) => {
         Roll
       </button> */}
       {/* <ReactDice disabled={!canMove} onClick={movePlayer} /> */}
-      <ReactDice
-        disabled={!canMove}
-        rollDone={(diceVal) => {
-          // const d = Math.floor(Math.random() * 6) + 1;
-          setDice(diceVal);
-        }}
-      />
+      {canMove && (
+        <ReactDice
+          disabled={!canMove}
+          rollDone={(diceVal) => {
+            // const d = Math.floor(Math.random() * 6) + 1;
+            setDice(diceVal);
+          }}
+        />
+      )}
       {/* <Player
         board={board}
         index={index}

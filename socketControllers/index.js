@@ -27,10 +27,10 @@ module.exports = (io, socket, teamId, roomId) => {
       pos: data.pos,
       teamId: teamId,
     });
-    await team.save(); //!
+    // await team.save(); //!
 
     //! wait for save?
-
+    // check for not allowed
     setTimeout(() => {
       console.log("allow");
       socket.emit("allow_moving");

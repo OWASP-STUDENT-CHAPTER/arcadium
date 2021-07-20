@@ -1,27 +1,27 @@
 const envConfig = {
-  path: process.env.NODE_ENV === 'production' ? 'prod.env' : '.env',
+  path: process.env.NODE_ENV === "production" ? "prod.env" : ".env",
 };
-require('dotenv').config(envConfig);
-const express = require('express');
+require("dotenv").config(envConfig);
+const express = require("express");
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 // const cookieSession = require("cookie-session");
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const cookieParser = require('cookie-parser');
-const helmet = require('helmet');
-const passport = require('passport');
-const path = require('path');
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const cookieParser = require("cookie-parser");
+const helmet = require("helmet");
+const passport = require("passport");
+const path = require("path");
 // * Models
-const Team = require('./team/model');
+const Team = require("./team/model");
 
 //* reset connected teams in room model
-require('./util/resetConnections')();
+require("./util/resetConnections")();
 
 // * init DB
-require('./init/db');
+require("./init/db");
 
-require('./init/initModels');
+require("./init/initModels");
 
 app.use(
   helmet({
@@ -52,25 +52,25 @@ app.use(
 );
 
 // * init passport
-require('./init/passportParticipant');
+require("./init/passportParticipant");
 app.use(passport.initialize());
 app.use(passport.session());
 
 // * Routes
-app.use('/api/auth', require('./auth/routes'));
-app.use('/api/team', require('./team/routes'));
-app.use('/api/question', require('./routes/question'));
+app.use("/api/auth", require("./auth/routes"));
+app.use("/api/team", require("./team/routes"));
+app.use("/api/question", require("./routes/question"));
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, console.log(`Server started on port ${port}`));
 
 // * io setup
 
-const io = require('socket.io')(server, { cors: true });
-const session_handler = require('io-session-handler').from(io, {
+const io = require("socket.io")(server, { cors: true });
+const session_handler = require("io-session-handler").from(io, {
   timeout: 5000,
 });
-app.set('session_handler', session_handler);
+app.set("session_handler", session_handler);
 // const io = require("socket.io")(server, {
 // cors: {
 //   origin: process.env.CLIENT_URL,
@@ -93,30 +93,31 @@ io.use(async function (socket, next) {
   const team = await Team.findById(socket.handshake.query.teamId);
   // console.log("team ", team);
   if (!team) {
-    next(new Error('Authentication error'));
+    next(new Error("Authentication error"));
   }
   return next();
   // call next() with an Error if you need to reject the connection.
 });
 // io.set("origins", process.env.CLIENT_URL);
 
-require('./init/initSocket')(io);
+require("./init/initSocket")(io);
 
 // * Production setup
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, 'client', 'build')));
-  app.get('/*', function (req, res) {
+if (process.env.NODE_ENV === "production") {
+  console.log("prod");
+  app.use(express.static(path.resolve(__dirname, "client", "build")));
+  app.get("/*", function (req, res) {
     // this -->
     // res.cookie("XSRF-TOKEN", req.csrfToken());
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 
   // Handle unhandled promise rejections
-  process.on('unhandledRejection', (err, promise) => {
+  process.on("unhandledRejection", (err, promise) => {
     console.log(`Error: ${err.message}`);
   });
 
-  process.on('uncaughtException', (err, promise) => {
+  process.on("uncaughtException", (err, promise) => {
     console.log(`Error: ${err.message}`);
   });
 }
