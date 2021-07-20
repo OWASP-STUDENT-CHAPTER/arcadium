@@ -60,7 +60,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
   }, [socket, teams]);
   const movePlayer = () => {
     if (!socket) return;
-
+    if (dice == 0) return;
+    console.log("dice in effect", dice);
     let i = index;
     // const d = Math.floor(Math.random() * 6) + 1;
 

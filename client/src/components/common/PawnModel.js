@@ -1,5 +1,5 @@
 import React, { Suspense, useRef } from "react";
-import { useFrame, useThree, useLoader } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { camPosOffset } from "../../config/CONSTANTS";
 // import CaptainAmeraShield from "../col1.glb";
@@ -9,9 +9,18 @@ import { camPosOffset } from "../../config/CONSTANTS";
 import Shield from "../Models/shield";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Box } from "@react-three/drei";
-const Pawn = ({ initPositionOffset, board, color, player, index }) => {
+const Pawn = ({
+  initPositionOffset,
+  board,
+  color,
+  player,
+  index,
+  showPropertyPopUp,
+  setShowPropertyPopUp,
+}) => {
   const boxMesh = useRef();
   const { camera } = useThree();
+
   useFrame(() => {
     // if( )
     let {
@@ -68,7 +77,9 @@ const Pawn = ({ initPositionOffset, board, color, player, index }) => {
 
     boxMesh.current.position.y = dy;
     boxMesh.current.position.x = dx;
-
+    if (dy == y && x == dx) {
+      if (showPropertyPopUp == false) setShowPropertyPopUp(true);
+    } else setShowPropertyPopUp(false);
     if (!player) return;
     // * update camera
     const [camX_Offset, camY_Offset] = camPosOffset;

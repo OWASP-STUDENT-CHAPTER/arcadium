@@ -5,6 +5,9 @@ import DiceContainer from "./DiceContainer";
 const ReactDice = React.forwardRef((props, ref) => {
   const totalCb = (total, diceValues) => {
     console.log("total", total);
+    if (props.disabled) {
+      return alert("cant");
+    }
     props.rollDone(total, diceValues);
   };
 
