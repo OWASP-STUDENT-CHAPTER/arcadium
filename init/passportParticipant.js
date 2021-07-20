@@ -48,8 +48,8 @@ passport.use(
       }
 
       let eventTeam = await Team.findById(baseTeam._id);
-      // console.log("baseTeam._id", baseTeam._id);
-      // console.log("event team", eventTeam);
+      // console.log('baseTeam._id', baseTeam._id);
+      // console.log('event team', eventTeam);
 
       if (!eventTeam) {
         eventTeam = new Team({
@@ -80,9 +80,9 @@ passport.deserializeUser(async (obj, done) => {
   done(null, team);
 });
 
-// // * Passport deserializeUser
+// * Passport deserializeUser
 // passport.deserializeUser(async (obj, done) => {
-//   const participant = await Participant.findById(obj.id).populate("teams");
+//   const participant = await Participant.findById(obj.id).populate('teams');
 //   //! change
 
 //   const [team] = participant.teams.filter(

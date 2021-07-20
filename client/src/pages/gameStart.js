@@ -4,8 +4,12 @@ import io from "socket.io-client";
 
 import { AuthContext } from "../context/authContext";
 import { GameContext } from "../context/gameContext";
-import GameScene from "../components/gameScene";
 import URL from "../util/URL";
+// import GameScene from "../components/gameScene";
+// import { AuthContext } from '../context/authContext';
+// import { GameContext } from '../context/gameContext';
+import GameScene from "../components/gameScene";
+import MainPage from "./MainPage";
 
 const GameStart = () => {
   const { team } = useContext(AuthContext);
@@ -40,14 +44,15 @@ const GameStart = () => {
 
   return (
     <>
-      <h1>START GAME </h1>
+      <MainPage team={team} socket={socket} teams={teams} />
+      {/* <h1>START GAME </h1>
       <h1>MY TEAM : {team.teamName} </h1>
       <ul>
         {teams.map((t) => (
           <li key={t._id}>{t.teamName}</li>
         ))}
-      </ul>
-      <GameScene socket={socket} />
+      </ul> */}
+      {/* <GameScene socket={socket} /> */}
     </>
   );
 };
