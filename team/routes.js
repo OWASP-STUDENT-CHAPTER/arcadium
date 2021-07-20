@@ -21,9 +21,12 @@ router.get("/profile", isAuthenticated, (req, res) => {
 // * import all baseTeams and create event teams
 router.get("/import", async (req, res) => {
   //! filter event specific teams (process.evn.EVENT_ID)
+  console.log(process.env.EVENT_ID);
   const baseTeams = await BaseTeam.find({
     event: mongoose.Types.ObjectId(process.env.EVENT_ID),
   });
+
+  console.log(baseTeams);
   // .populate('members');
 
   const teamsPromises = [];

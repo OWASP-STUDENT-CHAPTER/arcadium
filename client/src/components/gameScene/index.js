@@ -1,16 +1,30 @@
 import { useState, useEffect, Suspense, useMemo, useContext } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { PerspectiveCamera } from '@react-three/drei';
-
+import { Canvas, useLoader } from '@react-three/fiber';
+import { Box, PerspectiveCamera, OrbitControls } from '@react-three/drei';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Player from '../Player';
 import Opponent from '../Opponent';
-
+import CaptainAmeraShield from '../cap10.gltf';
 import { PLANE, camPosOffset } from '../../config/CONSTANTS';
 
 import { AuthContext } from '../../context/authContext.js';
 import { GameContext } from '../../context/gameContext';
-
+// import CameraControls from "../camera/orbit";
 import Plane from './plane.js';
+
+function Duck() {
+  console.log('a');
+  const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
+  return (
+    <primitive
+      object={gltf.scene}
+      rotation={[1.5, 0, 0]}
+      position={[0, 0, 0.5]}
+      // scale={[0.5, 0.5, 0.5]}
+      scale={[1, 1, 1]}
+    />
+  );
+}
 
 const GameScene = ({ socket }) => {
   const { teams, updatePos, board } = useContext(GameContext);
@@ -75,6 +89,11 @@ const GameScene = ({ socket }) => {
               <ambientLight brightness={2.6} color={'#bdefff'} />
 
               <Plane board={board} initPositionOffset={[-5.5, -5.5, 0]}>
+                {/* <captainA /> */}
+                {/* <Suspense fallback={<Box />}>
+                  <Duck />
+                </Suspense> */}
+
                 <Player
                   board={board}
                   index={index}
@@ -87,6 +106,8 @@ const GameScene = ({ socket }) => {
                   ))}
               </Plane>
               <group position={[0, 0, 4]}>
+                {/* <CameraControls /> */}
+                {/* <OrbitControls /> */}
                 <PerspectiveCamera makeDefault {...camProps} />
               </group>
             </group>
