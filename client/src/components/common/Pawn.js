@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { camPosOffset } from "../../config/CONSTANTS";
@@ -68,6 +68,11 @@ const Pawn = ({ initPositionOffset, board, color, player, index }) => {
     // camera.position.x = dx + camX_Offset;
     // camera.position.y = dy + camY_Offset;
   });
+
+  // useEffect(() => {
+  //   const { position } = board[index];
+  //   console.log("useEffect board", position);
+  // }, [index]);
 
   return (
     <mesh ref={boxMesh} position={initPositionOffset}>

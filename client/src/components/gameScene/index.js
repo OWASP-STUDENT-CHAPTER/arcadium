@@ -4,7 +4,7 @@ import { Box, PerspectiveCamera, OrbitControls } from '@react-three/drei';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Player from '../Player';
 import Opponent from '../Opponent';
-// import CaptainAmeraShield from '../cap10.gltf';
+// import CaptainAmeraShield from "../cap10.gltf";
 import { PLANE, camPosOffset } from '../../config/CONSTANTS';
 
 import { AuthContext } from '../../context/authContext.js';
@@ -13,7 +13,7 @@ import { GameContext } from '../../context/gameContext';
 import Plane from './plane.js';
 
 // function Duck() {
-//   console.log('a');
+//   console.log("a");
 //   const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
 //   return (
 //     <primitive
@@ -26,22 +26,23 @@ import Plane from './plane.js';
 //   );
 // }
 
-const GameScene = ({ socket }) => {
+const GameScene = ({ socket, dice, setDice, setCanMove }) => {
   const { teams, updatePos, board } = useContext(GameContext);
   const { team } = useContext(AuthContext);
 
   const [index, setIndex] = useState(team.game.posIndex);
-  const [dice, setDice] = useState(0);
-  const [canMove, setCanMove] = useState(true);
 
+  const [camRot, setCamRot] = useState([0, 0, 0]);
   // const rotationOffset = [0.75, 0.5, 0];
   // const initPlanePositionOffset = [0, 0, 0];
   //   const initPlanePositionOffset = [0, 0, 0];
   //   const initBoxPositionOffset = [-2, -2, 0];
   const camProps = {
     fov: 90,
+    // fov: 500,
     position: camPosOffset,
     rotation: [0.6, -0.52, -0.6],
+    // rotation: [0, 0, 0],
   };
 
   useEffect(() => {
@@ -57,22 +58,33 @@ const GameScene = ({ socket }) => {
       setCanMove(true); //! change
     });
   }, [socket, teams]);
-
   const movePlayer = () => {
-    let i = index;
-    const d = Math.floor(Math.random() * 6) + 1;
+    if (!socket) return;
 
-    i += d;
+    let i = index;
+    // const d = Math.floor(Math.random() * 6) + 1;
+
+    i += dice;
     i = i % board.length;
     setIndex(i);
-    setDice(d);
+    // const { spring } = useSpring({
+    //   spring: active,
+    //   config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 },
+    // });
+    // setCamRot([0, 0, camRot[2] + 0.1 * d]);
+    // setDice(d);
     setCanMove(false);
-
+    console.log('moving');
     socket.emit('move', {
       pos: i,
     });
   };
 
+  useEffect(movePlayer, [dice, socket]);
+
+  // const scale = spring.to([0, 1], [1, 5]);
+  // const rotation = spring.to([0, 1], [0, Math.PI]);
+  // const color = spring.to([0, 1], ["#6246ea", "#e45858"]);
   return (
     <>
       {/* <div>
@@ -82,13 +94,27 @@ const GameScene = ({ socket }) => {
         <h4>dice: {dice}</h4>
         <h4>pos: {index}</h4>
       </div> */}
-      <div id='canvas-container' style={{ width: '500px', height: '500px' }}>
+      <div
+        id='canvas-container'
+        style={{
+          //  margin: "auto",
+
+          width: '1200px',
+          height: '1200px',
+        }}
+      >
         <Canvas>
           <Suspense fallback={null}>
             <group position={[-2, -2, -1]}>
               <ambientLight brightness={2.6} color={'#bdefff'} />
 
-              <Plane board={board} initPositionOffset={[-5.5, -5.5, 0]}>
+              <Plane
+                // rotation={camRot}
+                index={index}
+                board={board}
+                dice={dice}
+                initPositionOffset={[-5.5, -5.5, 0]}
+              >
                 {/* <captainA /> */}
                 {/* <Suspense fallback={<Box />}>
                   <Duck />

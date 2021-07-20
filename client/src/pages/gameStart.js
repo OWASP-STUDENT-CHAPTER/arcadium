@@ -1,11 +1,15 @@
-import { useContext, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import io from 'socket.io-client';
+import { useContext, useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import io from "socket.io-client";
 
-import { AuthContext } from '../context/authContext';
-import { GameContext } from '../context/gameContext';
-import GameScene from '../components/gameScene';
-import MainPage from './MainPage';
+import { AuthContext } from "../context/authContext";
+import { GameContext } from "../context/gameContext";
+import URL from "../util/URL";
+// import GameScene from "../components/gameScene";
+// import { AuthContext } from '../context/authContext';
+// import { GameContext } from '../context/gameContext';
+import GameScene from "../components/gameScene";
+import MainPage from "./MainPage";
 
 const GameStart = () => {
   const { team } = useContext(AuthContext);
@@ -13,7 +17,7 @@ const GameStart = () => {
   const [socket, setSocket] = useState(null);
   useEffect(() => {
     //! retry connection
-    const s = io(process.env.REACT_APP_BASE_URL, {
+    const s = io(URL, {
       query: {
         teamId: team._id,
       },
@@ -23,17 +27,17 @@ const GameStart = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on('connected_teams_update', (data) => {
+    socket.on("connected_teams_update", (data) => {
       console.log(data);
       setTeams(data.teams);
     });
 
-    socket.on('retry', (data) => {
+    socket.on("retry", (data) => {
       console.log(data);
       //! reset connection
     });
 
-    socket.on('team_left', (data) => {
+    socket.on("team_left", (data) => {
       setTeams(data.teams);
     });
   }, [socket]);

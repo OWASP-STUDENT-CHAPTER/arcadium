@@ -1,9 +1,9 @@
-const passport = require('passport');
-const googleStrategy = require('passport-google-oauth2').Strategy;
+const passport = require("passport");
+const googleStrategy = require("passport-google-oauth2").Strategy;
 
 // * Models
-const Team = require('../team/model');
-const Participant = require('../baseTeam/participantModel');
+const Team = require("../team/model");
+const Participant = require("../baseTeam/participantModel");
 
 // * Settingup Passport google strategy
 passport.use(
@@ -17,13 +17,13 @@ passport.use(
     async (req, accessToken, refreshToken, profile, done) => {
       let participant = await Participant.findOne({
         email: profile.email,
-      }).populate('teams');
+      }).populate("teams");
 
       //! change function properly
 
       if (!participant) {
         return done(null, false, {
-          message: 'This google ID not registered.',
+          message: "This google ID not registered.",
         });
       }
 
@@ -33,7 +33,7 @@ passport.use(
 
       if (!baseTeam) {
         return done(null, false, {
-          message: 'No team for this event found.',
+          message: "No team for this event found.",
         });
       }
 
@@ -74,8 +74,8 @@ passport.serializeUser((obj, done) => {
 // * Passport deserializeUser
 passport.deserializeUser(async (obj, done) => {
   const team = await Team.findById(obj.id)
-    .populate('teams')
-    .populate('members', 'name email profilePicLink');
+    .populate("teams")
+    .populate("members", "name email profilePicLink");
   team.accessToken = obj.accessToken;
   done(null, team);
 });
