@@ -1,5 +1,5 @@
-import Pawn from "../common/Pawn";
-import PawnModel from "../common/PawnModel";
+import Pawn from '../common/Pawn';
+import PawnModel from '../common/PawnModel';
 
 const Player = ({ board, index, initPositionOffset }) => {
   return (
@@ -14,7 +14,7 @@ const Player = ({ board, index, initPositionOffset }) => {
       board={board}
       index={index}
       initPositionOffset={initPositionOffset}
-      color="red"
+      color='red'
       player={true}
     />
   );
