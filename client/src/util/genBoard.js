@@ -1,4 +1,4 @@
-import { TILE, TILE_TYPES } from "../config/CONSTANTS";
+import { TILE, TILE_TYPES } from '../config/CONSTANTS';
 
 function genBoard() {
   const { width: tw } = TILE;
@@ -8,13 +8,21 @@ function genBoard() {
   let y = 0;
 
   const genTileObj = (type, id, position, rotation) => {
+    let tileImage = tileImageUrl(id);
     return {
       type,
       id,
       position,
       rotation,
-      // texture: texture1,
+      tileImage,
     };
+  };
+  const tileImageUrl = (id) => {
+    if (id > 19) id--;
+    const tileImage = require(`../components/gameScene/properties/${
+      id + 1
+    }.jpg`);
+    return tileImage;
   };
   y = -0.5;
   const tiles = [];
