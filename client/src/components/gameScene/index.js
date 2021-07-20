@@ -33,7 +33,7 @@ const GameScene = ({ socket }) => {
   const [index, setIndex] = useState(team.game.posIndex);
   const [dice, setDice] = useState(0);
   const [canMove, setCanMove] = useState(true);
-
+  const [camRot, setCamRot] = useState([0, 0, 0]);
   // const rotationOffset = [0.75, 0.5, 0];
   // const initPlanePositionOffset = [0, 0, 0];
   //   const initPlanePositionOffset = [0, 0, 0];
@@ -65,6 +65,11 @@ const GameScene = ({ socket }) => {
     i += d;
     i = i % board.length;
     setIndex(i);
+    // const { spring } = useSpring({
+    //   spring: active,
+    //   config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 },
+    // });
+    // setCamRot([0, 0, camRot[2] + 0.1 * d]);
     setDice(d);
     setCanMove(false);
     console.log("moving");
@@ -72,7 +77,9 @@ const GameScene = ({ socket }) => {
       pos: i,
     });
   };
-
+  // const scale = spring.to([0, 1], [1, 5]);
+  // const rotation = spring.to([0, 1], [0, Math.PI]);
+  // const color = spring.to([0, 1], ["#6246ea", "#e45858"]);
   return (
     <>
       <div>
@@ -88,7 +95,12 @@ const GameScene = ({ socket }) => {
             <group position={[-2, -2, -1]}>
               <ambientLight brightness={2.6} color={"#bdefff"} />
 
-              <Plane board={board} initPositionOffset={[-5.5, -5.5, 0]}>
+              <Plane
+                // rotation={camRot}
+                index={index}
+                board={board}
+                dice={dice}
+                initPositionOffset={[-5.5, -5.5, 0]}>
                 {/* <captainA /> */}
                 {/* <Suspense fallback={<Box />}>
                   <Duck />
