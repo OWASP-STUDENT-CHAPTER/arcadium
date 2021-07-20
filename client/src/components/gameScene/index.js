@@ -1,19 +1,19 @@
-import { useState, useEffect, Suspense, useMemo, useContext } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { Box, PerspectiveCamera, OrbitControls } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import Player from "../Player";
-import Opponent from "../Opponent";
-import CaptainAmeraShield from "../cap10.gltf";
-import { PLANE, camPosOffset } from "../../config/CONSTANTS";
+import { useState, useEffect, Suspense, useMemo, useContext } from 'react';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { Box, PerspectiveCamera, OrbitControls } from '@react-three/drei';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import Player from '../Player';
+import Opponent from '../Opponent';
+import CaptainAmeraShield from '../cap10.gltf';
+import { PLANE, camPosOffset } from '../../config/CONSTANTS';
 
-import { AuthContext } from "../../context/authContext.js";
-import { GameContext } from "../../context/gameContext";
+import { AuthContext } from '../../context/authContext.js';
+import { GameContext } from '../../context/gameContext';
 // import CameraControls from "../camera/orbit";
-import Plane from "./plane.js";
+import Plane from './plane.js';
 
 function Duck() {
-  console.log("a");
+  console.log('a');
   const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
   return (
     <primitive
@@ -46,14 +46,14 @@ const GameScene = ({ socket }) => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.removeAllListeners("player_move"); //!
-    socket.removeAllListeners("allow_moving"); //!
-    socket.on("player_move", (data) => {
-      console.log("oponnent move", data);
+    socket.removeAllListeners('player_move'); //!
+    socket.removeAllListeners('allow_moving'); //!
+    socket.on('player_move', (data) => {
+      console.log('oponnent move', data);
       updatePos(data.teamId, data.pos);
     });
 
-    socket.on("allow_moving", () => {
+    socket.on('allow_moving', () => {
       setCanMove(true); //! change
     });
   }, [socket, teams]);
@@ -68,25 +68,25 @@ const GameScene = ({ socket }) => {
     setDice(d);
     setCanMove(false);
 
-    socket.emit("move", {
+    socket.emit('move', {
       pos: i,
     });
   };
 
   return (
     <>
-      <div>
+      {/* <div>
         <button disabled={!canMove} onClick={movePlayer}>
           MOVEEEEEEEEE
         </button>
         <h4>dice: {dice}</h4>
         <h4>pos: {index}</h4>
-      </div>
-      <div id="canvas-container" style={{ width: "1200px", height: "1200px" }}>
+      </div> */}
+      <div id='canvas-container' style={{ width: '500px', height: '500px' }}>
         <Canvas>
           <Suspense fallback={null}>
             <group position={[-2, -2, -1]}>
-              <ambientLight brightness={2.6} color={"#bdefff"} />
+              <ambientLight brightness={2.6} color={'#bdefff'} />
 
               <Plane board={board} initPositionOffset={[-5.5, -5.5, 0]}>
                 {/* <captainA /> */}

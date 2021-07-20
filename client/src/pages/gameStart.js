@@ -1,10 +1,11 @@
-import { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import io from "socket.io-client";
+import { useContext, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import io from 'socket.io-client';
 
-import { AuthContext } from "../context/authContext";
-import { GameContext } from "../context/gameContext";
-import GameScene from "../components/gameScene";
+import { AuthContext } from '../context/authContext';
+import { GameContext } from '../context/gameContext';
+import GameScene from '../components/gameScene';
+import MainPage from './MainPage';
 
 const GameStart = () => {
   const { team } = useContext(AuthContext);
@@ -22,31 +23,32 @@ const GameStart = () => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.on("connected_teams_update", (data) => {
+    socket.on('connected_teams_update', (data) => {
       console.log(data);
       setTeams(data.teams);
     });
 
-    socket.on("retry", (data) => {
+    socket.on('retry', (data) => {
       console.log(data);
       //! reset connection
     });
 
-    socket.on("team_left", (data) => {
+    socket.on('team_left', (data) => {
       setTeams(data.teams);
     });
   }, [socket]);
 
   return (
     <>
-      <h1>START GAME </h1>
+      <MainPage team={team} socket={socket} teams={teams} />
+      {/* <h1>START GAME </h1>
       <h1>MY TEAM : {team.teamName} </h1>
       <ul>
         {teams.map((t) => (
           <li key={t._id}>{t.teamName}</li>
         ))}
-      </ul>
-      <GameScene socket={socket} />
+      </ul> */}
+      {/* <GameScene socket={socket} /> */}
     </>
   );
 };

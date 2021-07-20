@@ -1,6 +1,6 @@
-import { useState, createContext, useMemo } from "react";
+import { useState, createContext, useMemo } from 'react';
 
-import genBoard from "../util/genBoard";
+import genBoard from '../util/genBoard';
 
 const GameContext = createContext();
 
@@ -22,7 +22,8 @@ const GameProvider = ({ children }) => {
         setTeams,
         updatePos,
         board,
-      }}>
+      }}
+    >
       {children}
     </GameContext.Provider>
   );
