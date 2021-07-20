@@ -2,9 +2,9 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
 import { GameContext } from "../../context/gameContext";
 import axios from "../../util/axios";
-import classes from "./questionModel.module.css";
+import classes from "./propertyModel.module.css";
 
-const QuestionModel = ({ socket }) => {
+const PropertyModel = ({ socket }) => {
   const { propertyModel, properties, index, ownershipMap } =
     useContext(GameContext);
 
@@ -38,4 +38,4 @@ const QuestionModel = ({ socket }) => {
   );
 };
 
-export default QuestionModel;
+export default PropertyModel;

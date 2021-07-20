@@ -8,7 +8,7 @@ import "../assets/css/MainPage.css";
 import GameScene from "../components/gameScene";
 import AllTeamDetails from "../components/TopDashboard/AllTeamDetails";
 import HeaderButtons from "../components/TopDashboard/HeaderButtons";
-import QuestionModel from "../components/Questions/questionModel";
+import PropertyModel from "../components/Property/propertyModel";
 import { GameContext } from "../context/gameContext";
 
 const MainPage = ({ team, socket, teams }) => {
@@ -18,7 +18,7 @@ const MainPage = ({ team, socket, teams }) => {
   if (properties.length == 0) return <>LOADIN</>;
   return (
     <div className="main-container">
-      <QuestionModel socket={socket} />
+      <PropertyModel socket={socket} />
       <div className="main-header">
         <div className="logo">
           <img src={arcadiumLogo} alt="Logo" className="arcadium-logo" />
