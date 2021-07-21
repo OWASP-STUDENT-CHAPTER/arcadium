@@ -1,41 +1,47 @@
-import React from 'react';
+import React from "react";
 
-import '../../assets/css/TopDashboard.css';
+import "../../assets/css/TopDashboard.css";
 
 const AllTeamDetails = ({ teams }) => {
   console.log(teams);
   return (
     <>
-      <div className='teams-list'>
-        <div className='teams-title'>
+      <div className="teams-list">
+        <div className="teams-title">
           <h1>Teams</h1>
         </div>
-        <div className='teams'>
+        <div className="teams">
           {teams.map((team) => {
             return (
-              <div className='team'>
-                <i class='fas fa-chess-pawn fa-3x' style={{ color: 'blue' }} />
-                <span className='team-name' key={team._id}>
+              <div key={team._id} className="team">
+                <i
+                  className="fas fa-chess-pawn fa-3x"
+                  style={{ color: "blue" }}
+                />
+                <span className="team-name" key={team._id}>
                   {team.teamName}
                 </span>
               </div>
             );
           })}
-          <div className='team'>
-            <i class='fas fa-chess-pawn fa-3x' style={{ color: 'red' }} />
-            <span className='team-name'>Team 2</span>
+          <div className="team">
+            <i className="fas fa-chess-pawn fa-3x" style={{ color: "red" }} />
+            <span className="team-name">Team 2</span>
           </div>
-          <div className='team'>
-            <i class='fas fa-chess-pawn fa-3x' style={{ color: 'green' }} />
-            <span className='team-name'>Team 3</span>
+          <div className="team">
+            <i className="fas fa-chess-pawn fa-3x" style={{ color: "green" }} />
+            <span className="team-name">Team 3</span>
           </div>
-          <div className='team'>
-            <i class='fas fa-chess-pawn fa-3x' style={{ color: 'yellow' }} />
-            <span className='team-name'>Team 4</span>
+          <div className="team">
+            <i
+              className="fas fa-chess-pawn fa-3x"
+              style={{ color: "yellow" }}
+            />
+            <span className="team-name">Team 4</span>
           </div>
-          <div className='team'>
-            <i class='fas fa-chess-pawn fa-3x' style={{ color: 'black' }} />
-            <span className='team-name'>Team 5</span>
+          <div className="team">
+            <i className="fas fa-chess-pawn fa-3x" style={{ color: "black" }} />
+            <span className="team-name">Team 5</span>
           </div>
         </div>
       </div>

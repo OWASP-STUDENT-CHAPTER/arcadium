@@ -1,4 +1,4 @@
-import React, { Suspense, useRef } from "react";
+import React, { Suspense, useContext, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import { camPosOffset } from "../../config/CONSTANTS";
@@ -6,6 +6,7 @@ import { camPosOffset } from "../../config/CONSTANTS";
 // import Model from "../Col1";
 // import Shoe from "../Shoe-draco";
 // import Dr from "../Col-dr";
+
 import Shield from "../Models/shield";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { Box } from "@react-three/drei";
@@ -15,11 +16,12 @@ const Pawn = ({
   color,
   player,
   index,
-  showPropertyPopUp,
-  setShowPropertyPopUp,
+  isAnimating,
+  setIsAnimating,
 }) => {
   const boxMesh = useRef();
   const { camera } = useThree();
+  // const { showPropertyPopUp, setShowPropertyPopUp } = useContext(GameContext);
 
   useFrame(() => {
     // if( )
@@ -78,8 +80,8 @@ const Pawn = ({
     boxMesh.current.position.y = dy;
     boxMesh.current.position.x = dx;
     if (dy == y && x == dx) {
-      if (showPropertyPopUp == false) setShowPropertyPopUp(true);
-    } else setShowPropertyPopUp(false);
+      if (isAnimating == true) setIsAnimating(false);
+    } else setIsAnimating(true);
     if (!player) return;
     // * update camera
     const [camX_Offset, camY_Offset] = camPosOffset;

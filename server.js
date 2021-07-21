@@ -60,6 +60,7 @@ app.use(passport.session());
 app.use("/api/auth", require("./auth/routes"));
 app.use("/api/team", require("./team/routes"));
 app.use("/api/question", require("./routes/question"));
+app.use("/api/property", require("./properties/routes"));
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, console.log(`Server started on port ${port}`));
@@ -71,22 +72,7 @@ const session_handler = require("io-session-handler").from(io, {
   timeout: 5000,
 });
 app.set("session_handler", session_handler);
-// const io = require("socket.io")(server, {
-// cors: {
-//   origin: process.env.CLIENT_URL,
-//   methods: ["GET", "POST"],
-// },
-// allowRequest: (req, callback) => {
-//   console.log("allow req", req.headers);
-//   // const isOriginValid = check(req);
-//   callback(null, true);
-// },
-// });
-// io.use(function (socket, next) {
-//   console.log("s");
-//   // next(null, false);
-// });
-// io.on("connection", () => console.log("a"));
+
 io.use(async function (socket, next) {
   // console.log("a", socket.handshake.query.teamId);
 
@@ -98,9 +84,8 @@ io.use(async function (socket, next) {
   return next();
   // call next() with an Error if you need to reject the connection.
 });
-// io.set("origins", process.env.CLIENT_URL);
 
-require("./init/initSocket")(io);
+require("./init/initSocket")(io, app);
 
 // * Production setup
 if (process.env.NODE_ENV === "production") {
