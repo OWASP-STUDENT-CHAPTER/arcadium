@@ -1,4 +1,5 @@
 .teams-list {
+  font-family: 'STIX Two Math', serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -20,6 +21,9 @@
   padding: 10px 20px;
   border-radius: 10px;
 }
+.team-name {
+  margin-top: 5px;
+}
 
 .header-buttons {
   display: flex;
@@ -29,6 +33,9 @@
 }
 
 .header-buttons button {
+  font-family: 'STIX Two Math', serif;
+  font-weight: 600;
+  text-transform: uppercase;
   cursor: pointer;
   padding: 10px 20px;
   margin: 6px 0;

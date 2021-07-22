@@ -29,8 +29,13 @@ const TeamDetails = ({ teamName, teamMembers, game }) => {
         <div className='details-title'>
           <h1>Team Details</h1>
         </div>
+        <div className='team-detail-name'>
+          <h2 className='details-heading'>
+            Team Name <br /> <span>{teamName}</span>
+          </h2>
+        </div>
         <div className='team-members'>
-          <h2 className='details-heading'>Team Name: {teamName}</h2>
+          <h2 className='details-heading'>Team Members</h2>
           {teamMembers.map((member) => {
             return (
               <p className='member' key={member._id}>

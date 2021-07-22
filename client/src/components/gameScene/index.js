@@ -11,6 +11,7 @@ import { AuthContext } from '../../context/authContext.js';
 import { GameContext } from '../../context/gameContext';
 // import CameraControls from "../camera/orbit";
 import Plane from './plane.js';
+import centerImage from '../../assets/img/board center.png';
 
 // function Duck() {
 //   console.log("a");
