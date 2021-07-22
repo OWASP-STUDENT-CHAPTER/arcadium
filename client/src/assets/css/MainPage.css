@@ -1,12 +1,12 @@
 .main-container {
+  font-family: 'STIX Two Math', serif;
   display: grid;
   grid-template-areas:
     'header header header header header header header header header'
     'left board board board board board board board  right';
   grid-gap: 1rem;
   height: 100vh;
-  background: url('../img/hi-tech-futuristic-hud-display-circle-elements.jpg')
-    no-repeat center center/cover;
+  background: url('../img/4127298.jpg') no-repeat center center/cover;
   color: #fff;
 }
 .main-header {
@@ -22,8 +22,7 @@
   width: 340px;
 }
 .all-teams {
-  background-color: #0d1634;
-  background: rgba(225, 225, 225, 0.4);
+  /* background: rgba(225, 225, 225, 0.4); */
   overflow: hidden;
   backdrop-filter: blur(5px);
   border-radius: 10px;
@@ -31,22 +30,21 @@
 }
 
 .left-dashboard {
+  position: relative;
+  top: -30px;
+  left: 20px;
   grid-area: left;
   text-align: center;
-  /* border: 2px dashed #111; */
-  background-color: #0d1634;
-  background: rgba(225, 225, 225, 0.4);
+  /* background: rgba(225, 225, 225, 0.4); */
   overflow: hidden;
-  backdrop-filter: blur(5px);
   border-radius: 10px;
-  width: 250px;
-  height: 500px;
+  width: 220px;
+  height: 600px;
   margin-left: 20px;
 }
 .main-board {
   grid-area: board;
   text-align: center;
-  /* border: 2px dashed #111; */
 }
 .nav-toggle {
   margin: 0 auto;
@@ -56,5 +54,4 @@
 .right-dashboard {
   grid-area: right;
   text-align: center;
-  /* border: 2px dashed #111; */
 }

@@ -1,16 +1,17 @@
-import { useState, useEffect, Suspense, useMemo, useContext } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { Box, PerspectiveCamera, OrbitControls } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import Player from "../Player";
-import Opponent from "../Opponent";
+import { useState, useEffect, Suspense, useMemo, useContext } from 'react';
+import { Canvas, useLoader } from '@react-three/fiber';
+import { Box, PerspectiveCamera, OrbitControls } from '@react-three/drei';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import Player from '../Player';
+import Opponent from '../Opponent';
 // import CaptainAmeraShield from "../cap10.gltf";
-import { PLANE, camPosOffset } from "../../config/CONSTANTS";
+import { PLANE, camPosOffset } from '../../config/CONSTANTS';
 
-import { AuthContext } from "../../context/authContext.js";
-import { GameContext } from "../../context/gameContext";
+import { AuthContext } from '../../context/authContext.js';
+import { GameContext } from '../../context/gameContext';
 // import CameraControls from "../camera/orbit";
-import Plane from "./plane.js";
+import Plane from './plane.js';
+import centerImage from '../../assets/img/board center.png';
 
 // function Duck() {
 //   console.log("a");
@@ -65,27 +66,27 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.removeAllListeners("player_move"); //!
-    socket.removeAllListeners("allow_moving"); //!
-    socket.removeAllListeners("update_ownershipMap"); //!
-    socket.on("player_move", (data) => {
-      console.log("oponnent move", data);
+    socket.removeAllListeners('player_move'); //!
+    socket.removeAllListeners('allow_moving'); //!
+    socket.removeAllListeners('update_ownershipMap'); //!
+    socket.on('player_move', (data) => {
+      console.log('oponnent move', data);
       updatePos(data.teamId, data.pos);
     });
-    socket.on("update_ownershipMap", ({ ownershipMap }) => {
-      console.log("update_ownershipMap ", { ownershipMap });
+    socket.on('update_ownershipMap', ({ ownershipMap }) => {
+      console.log('update_ownershipMap ', { ownershipMap });
       setOwnershipMap(ownershipMap);
     });
 
     //
-    socket.on("allow_moving", () => {
+    socket.on('allow_moving', () => {
       setCanMove(true); //! change
     });
   }, [socket, teams]);
   const movePlayer = () => {
     if (!socket) return;
     if (dice == 0) return;
-    console.log("dice in effect", dice);
+    console.log('dice in effect', dice);
     let i = index;
     // const d = Math.floor(Math.random() * 6) + 1;
 
@@ -99,8 +100,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     // setCamRot([0, 0, camRot[2] + 0.1 * d]);
     // setDice(d);
     setCanMove(false);
-    console.log("moving");
-    socket.emit("move", {
+    console.log('moving');
+    socket.emit('move', {
       pos: i,
     });
   };
@@ -119,24 +120,27 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
         <h4>pos: {index}</h4>
       </div> */}
       <div
-        id="canvas-container"
+        id='canvas-container'
         style={{
-          margin: "auto",
-
-          width: "900px",
-          height: "900px",
-        }}>
+          margin: 'auto',
+          position: 'relative',
+          top: '-130px',
+          width: '880px',
+          height: '880px',
+        }}
+      >
         <Canvas>
           <Suspense fallback={null}>
             <group position={[-2, -2, -1]}>
-              <ambientLight brightness={2.6} color={"#bdefff"} />
+              <ambientLight brightness={2.6} color={'#bdefff'} />
 
               <Plane
                 // rotation={camRot}
                 index={index}
                 board={board}
                 dice={dice}
-                initPositionOffset={[-5.5, -5.5, 0]}>
+                initPositionOffset={[-5.5, -5.5, 0]}
+              >
                 {/* <captainA /> */}
                 {/* <Suspense fallback={<Box />}>
                   <Duck />
