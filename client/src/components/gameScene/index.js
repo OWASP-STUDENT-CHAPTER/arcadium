@@ -124,7 +124,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
         style={{
           margin: 'auto',
           position: 'relative',
-          top: '-130px',
+          top: '-200px',
+          left: '70px',
           width: '880px',
           height: '880px',
         }}

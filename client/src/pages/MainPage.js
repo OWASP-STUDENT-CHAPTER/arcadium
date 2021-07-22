@@ -6,8 +6,8 @@ import arcadiumLogo from '../assets/img/arcadium logo.png';
 
 import '../assets/css/MainPage.css';
 import GameScene from '../components/gameScene';
-import AllTeamDetails from '../components/TopDashboard/AllTeamDetails';
-import HeaderButtons from '../components/TopDashboard/HeaderButtons';
+import AllTeamDetails from '../components/RightDashboard/AllTeamDetails';
+import HeaderButtons from '../components/RightDashboard/HeaderButtons';
 import PropertyModel from '../components/Property/propertyModel';
 import { GameContext } from '../context/gameContext';
 
@@ -23,7 +23,7 @@ const MainPage = ({ team, socket, teams }) => {
         <div className='logo'>
           <img src={arcadiumLogo} alt='Logo' className='arcadium-logo' />
         </div>
-
+        <div className='timer'>2:00:00</div>
       </div>
       <div className='left-dashboard'>
         <TeamDetails
@@ -43,9 +43,7 @@ const MainPage = ({ team, socket, teams }) => {
       </div>
       <div className='right-dashboard'>
         {/* <Cards /> */}
-        <div className='nav-toggle'>
-          <HeaderButtons />
-        </div>
+        <HeaderButtons />
         <div className='all-teams'>
           <AllTeamDetails teams={teams} />
         </div>

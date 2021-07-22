@@ -1,33 +1,39 @@
 .main-container {
-  font-family: 'STIX Two Math', serif;
+  font-family: 'Roboto', sans-serif;
   display: grid;
   grid-template-areas:
     'header header header header header header header header right'
     'left board board board board board board board  right';
   grid-gap: 1rem;
   height: 100vh;
-  background: url('../img/4127298.jpg') no-repeat center center/cover;
+  background: url('../img/4127298.jpg') no-repeat bottom center/cover;
   color: #fff;
 }
 .main-header {
   display: flex;
   align-items: center;
-  justify-content: space-around;
   grid-area: header;
   text-align: center;
-  /* border: 2px dashed #111; */
   height: 200px;
   margin-bottom: 0px;
   margin-top: 0;
 }
+.timer {
+  position: relative;
+  right: -60%;
+  top: -47px;
+  font-size: 1.4rem;
+  padding: 8px 20px;
+  box-shadow: -4px -4px 4px #6f70ac, 4px 4px 6px #090917;
+  border-radius: 11px;
+  background-color: #21219d52;
+}
 .arcadium-logo {
   width: 340px;
-  position: relative;
-  left: -480px;
-  top: -20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 .all-teams {
-  /* background: rgba(225, 225, 225, 0.4); */
   overflow: hidden;
   backdrop-filter: blur(5px);
   border-radius: 10px;
@@ -35,20 +41,20 @@
   margin-left: 90px;
   padding: 5px;
 }
-.all-teams h1{
+.all-teams h1 {
   margin: 5px auto 15px;
 }
 
 .left-dashboard {
   position: relative;
-  top: -30px;
+  top: -70px;
   left: 30px;
   grid-area: left;
   text-align: center;
   overflow: hidden;
   border-radius: 10px;
   width: 220px;
-  height: 560px;
+  height: 540px;
   margin-left: 20px;
   padding: 0 10px;
   background-color: #21219d52;
@@ -57,12 +63,8 @@
   grid-area: board;
   text-align: center;
 }
-.nav-toggle {
-  margin: 0 auto;
-  margin-top: 20px;
-  right: 0px;
-}
 .right-dashboard {
   grid-area: right;
   text-align: center;
+  margin-right: 10px;
 }
