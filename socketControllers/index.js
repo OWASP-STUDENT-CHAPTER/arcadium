@@ -30,15 +30,27 @@ module.exports = (io, socket, teamId, roomId) => {
     await team.save(); //!
 
     //! wait for save?
-
+    // check for not allowed
     setTimeout(() => {
       console.log("allow");
       socket.emit("allow_moving");
     }, 1500); //! change
   };
+  const trigger_update_ownershipMap = async () => {
+    const room = await Room.findById(roomId);
+    console.log("trgiger");
+    console.log("room", room);
 
+    socket.emit("update_ownershipMap", {
+      ownershipMap: room.ownershipMap,
+    });
+    socket.to(roomId).emit("update_ownershipMap", {
+      ownershipMap: room.ownershipMap,
+    });
+  };
   return {
     disconnect,
     move,
+    trigger_update_ownershipMap,
   };
 };

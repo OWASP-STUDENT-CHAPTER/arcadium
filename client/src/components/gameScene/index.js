@@ -11,6 +11,7 @@ import { AuthContext } from '../../context/authContext.js';
 import { GameContext } from '../../context/gameContext';
 // import CameraControls from "../camera/orbit";
 import Plane from './plane.js';
+import centerImage from '../../assets/img/board center.png';
 
 // function Duck() {
 //   console.log("a");
@@ -27,10 +28,28 @@ import Plane from './plane.js';
 // }
 
 const GameScene = ({ socket, dice, setDice, setCanMove }) => {
-  const { teams, updatePos, board } = useContext(GameContext);
+  const {
+    teams,
+    updatePos,
+    board,
+    properties,
+    isAnimating,
+    setIsAnimating,
+    propertyModel,
+    index,
+    setIndex,
+    setOwnershipMap,
+  } = useContext(GameContext);
   const { team } = useContext(AuthContext);
 
-  const [index, setIndex] = useState(team.game.posIndex);
+  useEffect(() => {
+    setIndex(team.game.posIndex);
+  }, [team]);
+
+  useEffect(() => {
+    if (isAnimating == false && index != 0) propertyModel.setShow(true);
+    // alert(`${properties[index].name}`); //!open popup
+  }, [isAnimating]);
 
   const [camRot, setCamRot] = useState([0, 0, 0]);
   // const rotationOffset = [0.75, 0.5, 0];
@@ -49,18 +68,25 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     if (!socket) return;
     socket.removeAllListeners('player_move'); //!
     socket.removeAllListeners('allow_moving'); //!
+    socket.removeAllListeners('update_ownershipMap'); //!
     socket.on('player_move', (data) => {
       console.log('oponnent move', data);
       updatePos(data.teamId, data.pos);
     });
+    socket.on('update_ownershipMap', ({ ownershipMap }) => {
+      console.log('update_ownershipMap ', { ownershipMap });
+      setOwnershipMap(ownershipMap);
+    });
 
+    //
     socket.on('allow_moving', () => {
       setCanMove(true); //! change
     });
   }, [socket, teams]);
   const movePlayer = () => {
     if (!socket) return;
-
+    if (dice == 0) return;
+    console.log('dice in effect', dice);
     let i = index;
     // const d = Math.floor(Math.random() * 6) + 1;
 
@@ -81,7 +107,6 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
   };
 
   useEffect(movePlayer, [dice, socket]);
-
   // const scale = spring.to([0, 1], [1, 5]);
   // const rotation = spring.to([0, 1], [0, Math.PI]);
   // const color = spring.to([0, 1], ["#6246ea", "#e45858"]);
@@ -97,10 +122,11 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
       <div
         id='canvas-container'
         style={{
-          //  margin: "auto",
-
-          width: '500px',
-          height: '500px',
+          margin: 'auto',
+          position: 'relative',
+          top: '-130px',
+          width: '880px',
+          height: '880px',
         }}
       >
         <Canvas>
@@ -123,6 +149,9 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
                 <Player
                   board={board}
                   index={index}
+                  isAnimating={isAnimating}
+                  setIsAnimating={setIsAnimating}
+                  properties={properties}
                   initPositionOffset={[0, 0, PLANE.depth]}
                 />
                 {teams

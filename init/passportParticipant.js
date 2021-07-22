@@ -76,6 +76,7 @@ passport.deserializeUser(async (obj, done) => {
   const team = await Team.findById(obj.id)
     .populate("teams")
     .populate("members", "name email profilePicLink");
+
   team.accessToken = obj.accessToken;
   done(null, team);
 });

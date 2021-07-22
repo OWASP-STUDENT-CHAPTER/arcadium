@@ -5,8 +5,11 @@ const Room = require("../model/roomModel");
 
 const getSocketFunction = require("../socketControllers");
 //! assign teams rooms before starting?
-
-const initSocket = (io) => {
+// const mapDefalut = {};
+// for (let i = 1; i <= 40; i++) {
+//   mapDefalut[i] = false;
+// }
+const initSocket = (io, app) => {
   io.on("connection", async (socket) => {
     const team = await Team.findById(socket.handshake.query.teamId);
     if (!team) return; //! send error back?
@@ -60,7 +63,7 @@ const initSocket = (io) => {
         teams: room.connectedTeams,
       }); //! send all teams or send the newly joined one
     }
-    const { disconnect, move } = getSocketFunction(
+    const { disconnect, move, trigger_update_ownershipMap } = getSocketFunction(
       io,
       socket,
       team._id,
@@ -69,6 +72,7 @@ const initSocket = (io) => {
 
     socket.on("disconnect", disconnect);
     socket.on("move", move);
+    socket.on("trigger_update_ownershipMap", trigger_update_ownershipMap);
   });
 };
 

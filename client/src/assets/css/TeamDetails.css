@@ -3,21 +3,26 @@
     
 }
 .team-members,
+.team-detail-name,
 .balance,
 .debt,
 .properties {
   margin: 0 10px;
   margin-top: 10px;
-  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-  color: #111;
-  background: rgba(255, 255, 255, 1);
+  color: #fff;
+  background: #090B32;
   padding: 10px 0;
   border-radius: 10px;
+  box-shadow: inset -4px -4px 3px rgba(255, 255, 255, 0.18), inset 4px 4px 3px #000000;
 }
 
 .details-heading {
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
+}
+
+.details-heading span {
+  font-weight: 400;
 }
 
 h2,

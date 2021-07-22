@@ -1,7 +1,8 @@
-import Pawn from '../common/Pawn';
-import PawnModel from '../common/PawnModel';
+import Pawn from "../common/Pawn";
+import PawnModel from "../common/PawnModel";
+import { useState, useEffect } from "react";
 
-const Player = ({ board, index, initPositionOffset }) => {
+const Player = (props) => {
   return (
     // <Pawn
     //   board={board}
@@ -10,13 +11,7 @@ const Player = ({ board, index, initPositionOffset }) => {
     //   color="red"
     //   player={true}
     // />
-    <PawnModel
-      board={board}
-      index={index}
-      initPositionOffset={initPositionOffset}
-      color='red'
-      player={true}
-    />
+    <PawnModel {...props} color="red" player={true} />
   );
 };
 

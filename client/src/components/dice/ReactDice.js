@@ -1,10 +1,13 @@
-import React from "react";
-import { PropTypes } from "prop-types";
-import DiceContainer from "./DiceContainer";
+import React from 'react';
+import { PropTypes } from 'prop-types';
+import DiceContainer from './DiceContainer';
 
 const ReactDice = React.forwardRef((props, ref) => {
   const totalCb = (total, diceValues) => {
-    console.log("total", total);
+    console.log('total', total);
+    if (props.disabled) {
+      return alert('cant');
+    }
     props.rollDone(total, diceValues);
   };
 
@@ -30,12 +33,12 @@ ReactDice.defaultProps = {
   defaultRoll: 4,
   dieSize: 60,
   disableIndividual: false,
-  dotColor: "#111",
-  faceColor: "#fff",
+  dotColor: '#111',
+  faceColor: '#fff',
   margin: 15,
   numDice: 1,
   outline: false,
-  outlineColor: "#000000",
+  outlineColor: '#000000',
   rollDone: () => null,
   rollTime: 1,
   sides: 6,

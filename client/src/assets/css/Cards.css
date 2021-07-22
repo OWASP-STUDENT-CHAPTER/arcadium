@@ -5,10 +5,10 @@
   margin-top: 10px;
 }
 .card {
-  width: 180px;
+  width: 140px;
   /* height: 320px; */
-  height: 300px;
-  background: rgba(225, 225, 225, 0.4);
+  height: 240px;
+  /* background: rgba(225, 225, 225, 0.4); */
   overflow: hidden;
   backdrop-filter: blur(5px);
   border-radius: 2px;
@@ -25,11 +25,9 @@
 }
 
 .dice-container {
-  background: rgba(225, 225, 225, 0.4);
-  backdrop-filter: blur(5px);
-  border-radius: 6px;
-  margin: 0 auto;
-  margin-top: 60px;
+  /* background: rgba(225, 225, 225, 0.4); */
   width: 100px;
-  padding: 20px;
+  background-color: #21219d52;
+  border-radius: 10px;
+  margin-left: 130px;
 }
