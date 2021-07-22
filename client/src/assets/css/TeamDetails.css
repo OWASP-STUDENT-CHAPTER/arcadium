@@ -1,3 +1,7 @@
+.team-details
+{
+    
+}
 .team-members,
 .team-detail-name,
 .balance,
@@ -5,10 +9,11 @@
 .properties {
   margin: 0 10px;
   margin-top: 10px;
-  color: #111;
-  background: rgba(255, 255, 255, 1);
+  color: #fff;
+  background: #090B32;
   padding: 10px 0;
   border-radius: 10px;
+  box-shadow: inset -4px -4px 3px rgba(255, 255, 255, 0.18), inset 4px 4px 3px #000000;
 }
 
 .details-heading {

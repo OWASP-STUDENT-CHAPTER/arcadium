@@ -23,12 +23,7 @@ const MainPage = ({ team, socket, teams }) => {
         <div className='logo'>
           <img src={arcadiumLogo} alt='Logo' className='arcadium-logo' />
         </div>
-        <div className='all-teams'>
-          <AllTeamDetails teams={teams} />
-        </div>
-        <div className='nav-toggle'>
-          <HeaderButtons />
-        </div>
+
       </div>
       <div className='left-dashboard'>
         <TeamDetails
@@ -47,7 +42,13 @@ const MainPage = ({ team, socket, teams }) => {
         {/* <SimpleModal /> */}
       </div>
       <div className='right-dashboard'>
-        <Cards />
+        {/* <Cards /> */}
+        <div className='nav-toggle'>
+          <HeaderButtons />
+        </div>
+        <div className='all-teams'>
+          <AllTeamDetails teams={teams} />
+        </div>
         <RollDice
           socket={socket}
           dice={dice}
