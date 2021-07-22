@@ -1,0 +1,63 @@
+.header-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.header-buttons button {
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 14px 20px;
+  border: transparent;
+  font-size: 0.9rem;
+  background: #101042;
+  box-shadow: -4px -4px 4px #6f70ac, 4px 4px 6px #090917;
+  border-radius: 11px;
+  color: #fff;
+  margin-right: 20px;
+}
+
+.teams-list {
+  font-family: 'Roboto', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 14px;
+  background-color: #21219d52;
+  margin: 10px 0;
+  margin-right: 30px;
+}
+.teams {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 14px;
+}
+.team {
+  display: flex;
+  flex-direction: row;
+  width: 120px;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #090b32;
+  border-radius: 10px;
+  box-shadow: inset -4px -4px 3px rgba(255, 255, 255, 0.18),
+    inset 4px 4px 3px #000000;
+  margin-bottom: 15px;
+  align-items: center;
+}
+.team-name {
+  margin-left: 12px;
+}
+
+.dice-container {
+  width: 100px;
+  background-color: #21219d52;
+  border-radius: 10px;
+  margin-left: 150px;
+}
