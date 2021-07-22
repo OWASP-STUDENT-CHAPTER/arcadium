@@ -47,7 +47,7 @@ const MainPage = ({ team, socket, teams }) => {
         {/* <SimpleModal /> */}
       </div>
       <div className='right-dashboard'>
-        <Cards />
+        {/* <Cards /> */}
         <RollDice
           socket={socket}
           dice={dice}

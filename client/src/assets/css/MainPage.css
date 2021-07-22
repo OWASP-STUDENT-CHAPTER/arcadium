@@ -31,16 +31,15 @@
 
 .left-dashboard {
   position: relative;
-  top: -30px;
+  top: -40px;
   left: 20px;
   grid-area: left;
   text-align: center;
-  /* background: rgba(225, 225, 225, 0.4); */
+  background: rgba(33, 33, 157, 0.26);
   overflow: hidden;
-  border-radius: 10px;
-  width: 220px;
-  height: 600px;
+  height: 540px;
   margin-left: 20px;
+  border-radius: 16px;
 }
 .main-board {
   grid-area: board;
