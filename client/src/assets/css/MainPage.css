@@ -5,8 +5,10 @@
     'left board board board board board board board  right';
   grid-gap: 1rem;
   height: 100vh;
-  background: url('../img/hi-tech-futuristic-hud-display-circle-elements.jpg')
-    no-repeat center center/cover;
+  background-color: black;
+  background: url('../img/bgbg2.jpg')
+     no-repeat center center/cover;
+    background-blend-mode: darken;
   color: #fff;
 }
 .main-header {
@@ -17,31 +19,38 @@
   text-align: center;
   /* border: 2px dashed #111; */
   height: 200px;
+  margin-bottom: 0px;
+  margin-top: 0;
 }
 .arcadium-logo {
   width: 340px;
+  margin: 0px 0px 20px 10px;
 }
 .all-teams {
-  background-color: #0d1634;
+ 
   background: rgba(225, 225, 225, 0.4);
   overflow: hidden;
   backdrop-filter: blur(5px);
   border-radius: 10px;
-  margin: auto;
+  margin: 10px 0px;
+  margin-left: 90px;
+  padding: 5px;
+}
+.all-teams h1{
+  margin: 5px auto 15px;
 }
 
 .left-dashboard {
   grid-area: left;
   text-align: center;
   /* border: 2px dashed #111; */
-  background-color: #0d1634;
   background: rgba(225, 225, 225, 0.4);
   overflow: hidden;
   backdrop-filter: blur(5px);
   border-radius: 10px;
   width: 250px;
   height: 500px;
-  margin-left: 20px;
+  margin: 0 0 50px 30px;
 }
 .main-board {
   grid-area: board;
@@ -56,5 +65,6 @@
 .right-dashboard {
   grid-area: right;
   text-align: center;
+  margin-right: 20px;
   /* border: 2px dashed #111; */
 }
