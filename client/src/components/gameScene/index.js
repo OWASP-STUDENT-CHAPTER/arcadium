@@ -93,6 +93,7 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     i += dice;
     i = i % board.length;
     setIndex(i);
+    if (i % 10 === 0) cornerTile(i);
     // const { spring } = useSpring({
     //   spring: active,
     //   config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 },
@@ -103,6 +104,14 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     console.log('moving');
     socket.emit('move', {
       pos: i,
+    });
+  };
+  const cornerTile = async (i) => {
+    console.log('corner', i);
+    socket.emit('corner_tile_actions', {
+      data: {
+        pos: i,
+      },
     });
   };
 

@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import TeamDetails from '../components/TeamDetails/TeamDetails';
-import Cards from '../components/RightDashboard/Cards';
 import RollDice from '../components/RightDashboard/RollDice';
 import arcadiumLogo from '../assets/img/arcadium logo.png';
 
@@ -15,7 +14,7 @@ const MainPage = ({ team, socket, teams }) => {
   const [canMove, setCanMove] = useState(true);
   const [dice, setDice] = useState(0);
   const { properties } = useContext(GameContext);
-  if (properties.length == 0) return <>LOADIN</>;
+  if (properties.length === 0) return <>Loading...</>;
   return (
     <div className='main-container'>
       <PropertyModel socket={socket} />
@@ -30,6 +29,7 @@ const MainPage = ({ team, socket, teams }) => {
           teamName={team.teamName}
           teamMembers={team.members}
           game={team.game}
+          socket={socket}
         />
       </div>
       <div className='main-board'>
