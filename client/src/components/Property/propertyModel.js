@@ -1,11 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { GameContext } from '../../context/gameContext';
 import axios from '../../util/axios';
 import classes from './propertyModel.module.css';
 
 const PropertyModel = ({ socket }) => {
-  const { propertyModel, properties, index, ownershipMap } =
+  const { propertyModel, properties, index, ownershipMap, teams } =
     useContext(GameContext);
 
   const { team } = useContext(AuthContext);
@@ -20,6 +20,7 @@ const PropertyModel = ({ socket }) => {
     socket.emit('trigger_update_ownershipMap');
     console.log('after buy', data);
   };
+
   console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
 
@@ -45,17 +46,23 @@ const PropertyModel = ({ socket }) => {
           {index % 10 !== 0 ? (
             ownershipMap[properties[index]._id] ? (
               ownershipMap[properties[index]._id] === team._id ? (
-                <h1>already bought by you</h1>
+                <h2>Already bought by you</h2>
               ) : (
-                <h1>pay rent</h1>
+                <h2>Pay rent</h2>
               )
             ) : (
               <button onClick={() => buyProperty(properties[index]._id)}>
                 BUY
               </button>
             )
+          ) : index === 10 ? (
+            <h2>You can win this!</h2>
+          ) : index === 20 ? (
+            <h2>You have paid 100 points to each team!</h2>
+          ) : index === 30 ? (
+            <h2>500 points has been deducted from your account</h2>
           ) : (
-            <h1>Kal aana</h1>
+            <h2>Here's to new beginings</h2>
           )}
         </div>
       </div>
