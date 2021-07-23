@@ -1,7 +1,6 @@
 import { useState, useEffect, Suspense, useMemo, useContext } from "react";
-import { Canvas, useLoader } from "@react-three/fiber";
-import { Box, PerspectiveCamera, OrbitControls } from "@react-three/drei";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { Canvas } from "@react-three/fiber";
+import { PerspectiveCamera } from "@react-three/drei";
 import Player from "../Player";
 import Opponent from "../Opponent";
 // import CaptainAmeraShield from "../cap10.gltf";
@@ -12,6 +11,8 @@ import { GameContext } from "../../context/gameContext";
 // import CameraControls from "../camera/orbit";
 import Plane from "./plane.js";
 
+//
+///
 // function Duck() {
 //   console.log("a");
 //   const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
@@ -25,6 +26,8 @@ import Plane from "./plane.js";
 //     />
 //   );
 // }
+///
+//
 
 const GameScene = ({ socket, dice, setDice, setCanMove }) => {
   const {
@@ -50,7 +53,7 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     // alert(`${properties[index].name}`); //!open popup
   }, [isAnimating]);
 
-  const [camRot, setCamRot] = useState([0, 0, 0]);
+  // const [camRot, setCamRot] = useState([0, 0, 0]);
   // const rotationOffset = [0.75, 0.5, 0];
   // const initPlanePositionOffset = [0, 0, 0];
   //   const initPlanePositionOffset = [0, 0, 0];
@@ -77,7 +80,6 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
       setOwnershipMap(ownershipMap);
     });
 
-    //
     socket.on("allow_moving", () => {
       setCanMove(true); //! change
     });
@@ -159,32 +161,14 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
               <group position={[0, 0, 4]}>
                 {/* <CameraControls /> */}
                 {/* <OrbitControls /> */}
-                {/* <directionalLight
-                  intensity={2}
-                  // decay={2}
-                  rotation={[-Math.PI / 2, 0, 0]}
-                  position={[3, 4, 4]}
-                />
-                <directionalLight
-                  intensity={2}
-                  // decay={2}
-                  rotation={[-Math.PI / 2, 0, 0]}
-                  position={[-3, -5, 4]}
-                />
-              */}
+
                 {/* <directionalLight
                   intensity={2}
                   // decay={2}
                   rotation={[-Math.PI / 2, 0, 0]}
                   position={[0, 0, 0]}
                 /> */}
-                {/* <pointLight
-                  intensity={3}
-                  // decay={2}
-                  // rotation={[-Math.PI / 2, 0, 0]}
-                  // position={[-2, 0, -2]}
-                  position={[1, 0, 0]}
-                /> */}
+
                 <pointLight
                   intensity={3}
                   // decay={2}
