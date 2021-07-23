@@ -5,6 +5,7 @@ import RollDice from '../components/RightDashboard/RollDice';
 import arcadiumLogo from '../assets/img/arcadium logo.png';
 
 import '../assets/css/MainPage.css';
+import Timer from '../components/Timer/Timer';
 import GameScene from '../components/gameScene';
 import AllTeamDetails from '../components/RightDashboard/AllTeamDetails';
 import HeaderButtons from '../components/RightDashboard/HeaderButtons';
@@ -16,6 +17,9 @@ const MainPage = ({ team, socket, teams }) => {
   const [dice, setDice] = useState(0);
   const { properties } = useContext(GameContext);
   if (properties.length == 0) return <>LOADIN</>;
+
+  const timeStart = {hours:2, mins: 0, secs:0}
+
   return (
     <div className='main-container'>
       <PropertyModel socket={socket} />
@@ -23,7 +27,9 @@ const MainPage = ({ team, socket, teams }) => {
         <div className='logo'>
           <img src={arcadiumLogo} alt='Logo' className='arcadium-logo' />
         </div>
-        <div className='timer'>2:00:00</div>
+        <div >
+          <Timer time={timeStart} />
+        </div>
       </div>
       <div className='left-dashboard'>
         <TeamDetails
