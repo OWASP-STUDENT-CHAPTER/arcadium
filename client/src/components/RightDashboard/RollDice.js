@@ -18,6 +18,7 @@ const RollDice = ({ socket, dice, setDice, canMove }) => {
           rollDone={(diceVal) => {
             // const d = Math.floor(Math.random() * 6) + 1;
             // setDice(3);
+
             setDice(diceVal);
           }}
         />
