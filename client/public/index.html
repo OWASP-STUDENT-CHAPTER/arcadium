@@ -28,10 +28,62 @@
       href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 
     <title>Arcadium</title>
   </head>
   <body>
     <div id="root"></div>
   </body>
+  <script>
+    $('.switch-top, .light, .switch-bottom, .switch-overlay').click(
+      function () {
+        // Lights on!
+        if ($('.button').is(':checked')) {
+          $('.switch-top').addClass('activated');
+          $('.switch-bottom').addClass('activated');
+          $('.light').addClass('activated');
+          $('.switch-overlay').addClass('deactivated');
+          $('.light-off').addClass('deactivated');
+          $('.switch-top').removeClass('deactivated');
+          $('.switch-bottom').removeClass('deactivated');
+          $('.light').removeClass('deactivated');
+          $('.switch-overlay').removeClass('activated');
+          $('.light-off').addClass('activated');
+          $('.off').addClass('switch-on');
+          $('.on').removeClass('switch-on');
+          $('.button').prop('checked', false);
+          $('.light').removeClass('on');
+          $('.light').addClass('off');
+          $('.light-off').removeClass('off');
+          $('.light-off').addClass('on');
+        }
+
+        // Lights off!
+        else {
+          $('.switch-top').addClass('deactivated');
+          $('.switch-bottom').addClass('deactivated');
+          $('.light').addClass('deactivated');
+          $('.light-off').addClass('activated');
+          $('.switch-overlay').addClass('activated');
+          $('.switch-top').removeClass('activated');
+          $('.switch-bottom').removeClass('activated');
+          $('.light').removeClass('activated');
+          $('.switch-overlay').removeClass('deactivated');
+          $('.light-off').removeClass('deactivated');
+          $('.on').addClass('switch-on');
+          $('.off').removeClass('switch-on');
+          $('.button').prop('checked', true);
+          $('.light').removeClass('off');
+          $('.light').addClass('on');
+          $('.light-off').removeClass('on');
+          $('.light-off').addClass('off');
+        }
+      }
+    );
+  </script>
 </html>
