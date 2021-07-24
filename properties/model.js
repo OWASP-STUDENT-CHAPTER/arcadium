@@ -21,6 +21,9 @@ const propertySchema = new mongoose.Schema({
     required: true,
     enum: PROPERTY_COLORS,
   },
+  type:{
+    type : String,
+  },
   imgUrl: {
     type: String,
     required: true,

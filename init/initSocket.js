@@ -47,7 +47,7 @@ const initSocket = (io, app) => {
         await session.commitTransaction();
       } catch (err) {
         await session.abortTransaction();
-        console.error(err);
+        console.error(err); 
         //! disconnect socket connection
         socket.emit("retry", { retry: "abc" });
         socket.disconnect();
@@ -63,7 +63,7 @@ const initSocket = (io, app) => {
         teams: room.connectedTeams,
       }); //! send all teams or send the newly joined one
     }
-    const { disconnect, move, trigger_update_ownershipMap } = getSocketFunction(
+    const { disconnect, move, trigger_update_ownershipMap , freeze } = getSocketFunction(
       io,
       socket,
       team._id,

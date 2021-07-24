@@ -48,9 +48,20 @@ module.exports = (io, socket, teamId, roomId) => {
       ownershipMap: room.ownershipMap,
     });
   };
+
+  const freeze=async () => {
+    setTimeout(() => {
+      console.log("allow");
+      socket.emit("allow_moving");
+    }, 300000);
+  }
+
+  // const move
+
   return {
     disconnect,
     move,
     trigger_update_ownershipMap,
+    freeze
   };
 };
