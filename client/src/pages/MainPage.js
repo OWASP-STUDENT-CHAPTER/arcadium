@@ -9,12 +9,24 @@ import AllTeamDetails from '../components/RightDashboard/AllTeamDetails';
 import HeaderButtons from '../components/RightDashboard/HeaderButtons';
 import PropertyModel from '../components/Property/propertyModel';
 import { GameContext } from '../context/gameContext';
+import Leaderboard from '../components/Leaderboard/Leaderboard';
 
 const MainPage = ({ team, socket, teams }) => {
+  
   const [canMove, setCanMove] = useState(true);
+  const[leaderboard, setLeaderboard]=useState(false);
   const [dice, setDice] = useState(0);
   const { properties } = useContext(GameContext);
   if (properties.length === 0) return <>Loading...</>;
+  
+  
+  
+  const leaderboardHandler=()=>{
+    if(leaderboard)
+    setLeaderboard(false);
+    else
+    setLeaderboard(true);
+  }
   return (
     <div className='main-container'>
       <PropertyModel socket={socket} />
@@ -43,7 +55,7 @@ const MainPage = ({ team, socket, teams }) => {
       </div>
       <div className='right-dashboard'>
         {/* <Cards /> */}
-        <HeaderButtons />
+        <HeaderButtons leaderboardHandler={leaderboardHandler} />
         <div className='all-teams'>
           <AllTeamDetails teams={teams} />
         </div>
@@ -54,6 +66,11 @@ const MainPage = ({ team, socket, teams }) => {
           canMove={canMove}
         />
       </div>
+      {
+          leaderboard?
+          <Leaderboard onClose={leaderboardHandler}/>
+          :null
+       }
     </div>
   );
 };
