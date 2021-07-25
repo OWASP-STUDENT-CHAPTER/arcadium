@@ -6,6 +6,8 @@
     'left board board board board board board board  right';
   grid-gap: 1rem;
   height: 100vh;
+  width: 100vw;
+  overflow: hidden;
   background: url('../img/4127298.jpg') no-repeat bottom center/cover;
   color: #fff;
 }
@@ -20,7 +22,7 @@
 }
 .timer {
   position: relative;
-  right: -60%;
+  left: 800px;
   top: -47px;
   font-size: 1.4rem;
   padding: 8px 20px;
@@ -35,7 +37,6 @@
 }
 .all-teams {
   overflow: hidden;
-  backdrop-filter: blur(5px);
   border-radius: 10px;
   margin: 10px 0px;
   margin-left: 90px;

@@ -60,6 +60,9 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
           <p className='property'>Property 2</p>
           <p className='property'>Property 3</p>
           <p className='property'>Property 4</p>
+          <p className='property'>Property 5</p>
+          <p className='property'>Property 6</p>
+          <p className='property'>Property 7</p>
         </div>
       </div>
     </>
