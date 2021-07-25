@@ -41,7 +41,7 @@ const PropertyModel = ({ socket }) => {
           />
         </div>
 
-        <div className={classes.modalContent}>
+        <div className={(index % 10 === 0 ? classes.cornerContent : classes.tilesContent) + " " + classes.modalContent}>
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 ? (
             ownershipMap[properties[index]._id] ? (
@@ -51,7 +51,7 @@ const PropertyModel = ({ socket }) => {
                 <h2>Pay rent</h2>
               )
             ) : (
-              <button onClick={() => buyProperty(properties[index]._id)} className="buybtn">
+              <button onClick={() => buyProperty(properties[index]._id)} className={classes.buybtn}>
                 BUY
               </button>
             )
