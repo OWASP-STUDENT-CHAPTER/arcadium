@@ -57,16 +57,16 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
           <h2 className='details-heading'>Debt</h2>
           <p>{debt}</p>
         </div>
-        <div className='properties'>
+        <ul className='properties'>
           <h2 className='details-heading'>Properties</h2>
           {ownedProps.map((owned) => {
             return (
-              <p className='property' key={owned - 1}>
+              <li className='property' key={owned - 1}>
                 {properties[owned - 1].name}
-              </p>
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </>
   );

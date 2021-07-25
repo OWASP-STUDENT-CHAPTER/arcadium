@@ -26,9 +26,16 @@ p {
   height: 120px;
   overflow-y: scroll;
   padding: 12px 0;
+  line-height: 1.5rem;
+  list-style: decimal;
 }
-.properties p {
+.properties .details-heading {
+  margin-bottom: 6px;
+}
+.properties li {
   font-size: 0.96rem;
+  text-align: left;
+  margin-left: 40px;
 }
 .properties::-webkit-scrollbar {
   width: 5px;
