@@ -22,20 +22,8 @@ module.exports = (io, socket, teamId, roomId) => {
     //! save move
     const team = await Team.findById(teamId);
 
-    if (
-      team.game.posIndex <= 39 &&
-      team.game.posIndex >= 30 &&
-      (data.pos >= 0 || data.pos === 40) &&
-      data.pos < 10
-    ) {
-      console.log(team.game.posIndex, data.pos);
-      update_balance({
-        amt: 2000,
-        action: 'increment',
-      });
-    }
-
     team.game.posIndex = data.pos;
+    console.log(data.pos);
 
     socket.to(roomId).emit('player_move', {
       pos: data.pos,
@@ -53,12 +41,28 @@ module.exports = (io, socket, teamId, roomId) => {
 
   const corner_tile_actions = async ({ data }) => {
     console.log('corner tile', data);
-    const room = await Room.findById(roomId);
-    const { teams } = room;
-    const index = data.pos;
+    const { teams } = await Room.findById(roomId);
+    const index = data.currentPos;
     let amt;
     let action;
 
+    // Paying Tax to Hela/Ultron
+    if (index === 4 || index === 38) {
+      update_balance({
+        amt: 1000,
+        action: 'deduct',
+      });
+    }
+
+    // Adding 2000 points on crossing starting point
+    if (data.prevPos <= 39 && data.prevPos >= 32 && index >= 0 && index < 8) {
+      update_balance({
+        amt: 2000,
+        action: 'increment',
+      });
+    }
+
+    //Jail & Rest House
     if (index === 30) {
       amt = 500;
       action = 'deduct';
@@ -89,7 +93,7 @@ module.exports = (io, socket, teamId, roomId) => {
 
   const trigger_update_ownershipMap = async () => {
     const room = await Room.findById(roomId);
-    console.log('trgiger');
+    console.log('trigger');
     console.log('room', room);
 
     socket.emit('update_ownershipMap', {
