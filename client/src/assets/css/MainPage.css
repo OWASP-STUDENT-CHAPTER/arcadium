@@ -22,7 +22,7 @@
 }
 .timer {
   position: relative;
-  right: -60%;
+  left: 800px;
   top: -47px;
   font-size: 1.4rem;
   padding: 8px 20px;
