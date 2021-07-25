@@ -88,7 +88,7 @@ module.exports = (io, socket, teamId, roomId) => {
 
   const trigger_update_ownershipMap = async () => {
     const room = await Room.findById(roomId);
-    console.log('trgiger');
+    console.log('trigger');
     console.log('room', room);
 
     socket.emit('update_ownershipMap', {
