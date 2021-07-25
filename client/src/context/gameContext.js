@@ -1,7 +1,7 @@
-import { useState, createContext, useMemo, useEffect } from "react";
-import axios from "../util/axios";
+import { useState, createContext, useMemo, useEffect } from 'react';
+import axios from '../util/axios';
 
-import genBoard from "../util/genBoard";
+import genBoard from '../util/genBoard';
 
 const GameContext = createContext();
 
@@ -14,7 +14,7 @@ const GameProvider = ({ children }) => {
   const [showPropertyModel, setShowPropertyModel] = useState(false);
   const [index, setIndex] = useState(0);
   useEffect(() => {
-    axios.get("/property/room").then(({ data }) => {
+    axios.get('/property/room').then(({ data }) => {
       setOwnershipMap(data.data.ownershipMap); //! update with socket events
       setProperties(data.data.properties);
     });
@@ -45,7 +45,8 @@ const GameProvider = ({ children }) => {
           setShow: setShowPropertyModel,
           show: showPropertyModel,
         },
-      }}>
+      }}
+    >
       {children}
     </GameContext.Provider>
   );

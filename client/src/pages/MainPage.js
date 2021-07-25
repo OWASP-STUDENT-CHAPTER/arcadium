@@ -1,6 +1,5 @@
 import { useContext, useState } from 'react';
 import TeamDetails from '../components/TeamDetails/TeamDetails';
-import Cards from '../components/RightDashboard/Cards';
 import RollDice from '../components/RightDashboard/RollDice';
 import arcadiumLogo from '../assets/img/arcadium logo.png';
 
@@ -11,15 +10,24 @@ import AllTeamDetails from '../components/RightDashboard/AllTeamDetails';
 import HeaderButtons from '../components/RightDashboard/HeaderButtons';
 import PropertyModel from '../components/Property/propertyModel';
 import { GameContext } from '../context/gameContext';
+import Leaderboard from '../components/Leaderboard/Leaderboard';
 
 const MainPage = ({ team, socket, teams }) => {
+  
   const [canMove, setCanMove] = useState(true);
+  const[leaderboard, setLeaderboard]=useState(false);
   const [dice, setDice] = useState(0);
   const { properties } = useContext(GameContext);
-  if (properties.length == 0) return <>LOADIN</>;
-
-  const timeStart = {hours:2, mins: 0, secs:0}
-
+  if (properties.length === 0) return <>Loading...</>;
+  
+  
+  
+  const leaderboardHandler=()=>{
+    if(leaderboard)
+    setLeaderboard(false);
+    else
+    setLeaderboard(true);
+  }
   return (
     <div className='main-container'>
       <PropertyModel socket={socket} />
@@ -36,6 +44,7 @@ const MainPage = ({ team, socket, teams }) => {
           teamName={team.teamName}
           teamMembers={team.members}
           game={team.game}
+          socket={socket}
         />
       </div>
       <div className='main-board'>
@@ -49,7 +58,7 @@ const MainPage = ({ team, socket, teams }) => {
       </div>
       <div className='right-dashboard'>
         {/* <Cards /> */}
-        <HeaderButtons />
+        <HeaderButtons leaderboardHandler={leaderboardHandler} />
         <div className='all-teams'>
           <AllTeamDetails teams={teams} />
         </div>
@@ -60,6 +69,11 @@ const MainPage = ({ team, socket, teams }) => {
           canMove={canMove}
         />
       </div>
+      {
+          leaderboard?
+          <Leaderboard onClose={leaderboardHandler}/>
+          :null
+       }
     </div>
   );
 };

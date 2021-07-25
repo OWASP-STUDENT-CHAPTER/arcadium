@@ -1,16 +1,16 @@
-const { eventDB } = require("../init/db");
+const { eventDB } = require('../init/db');
 
-const Team = require("../team/model");
-const Room = require("../model/roomModel");
+const Team = require('../team/model');
+const Room = require('../model/roomModel');
 
-const getSocketFunction = require("../socketControllers");
+const getSocketFunction = require('../socketControllers');
 //! assign teams rooms before starting?
 // const mapDefalut = {};
 // for (let i = 1; i <= 40; i++) {
 //   mapDefalut[i] = false;
 // }
 const initSocket = (io, app) => {
-  io.on("connection", async (socket) => {
+  io.on('connection', async (socket) => {
     const team = await Team.findById(socket.handshake.query.teamId);
     if (!team) return; //! send error back?
 
@@ -21,7 +21,7 @@ const initSocket = (io, app) => {
       try {
         if (!team.room) {
           currentRoom = await Room.findOne({}, {}, { sort: { createdAt: -1 } });
-          console.log("currentRoom", currentRoom);
+          console.log('currentRoom', currentRoom);
           if (!currentRoom) {
             // console.log("creating first room ");
             currentRoom = new Room({
@@ -49,30 +49,33 @@ const initSocket = (io, app) => {
         await session.abortTransaction();
         console.error(err);
         //! disconnect socket connection
-        socket.emit("retry", { retry: "abc" });
+        socket.emit('retry', { retry: 'abc' });
         socket.disconnect();
       } finally {
         session.endSession();
       }
 
-      const room = await Room.populate(currentRoom, { path: "connectedTeams" });
+      const room = await Room.populate(currentRoom, { path: 'connectedTeams' });
       socket.join(team.room);
-      socket.emit("start", { pos: team.game.posIndex });
+      socket.emit('start', { pos: team.game.posIndex });
 
-      io.in(team.room).emit("connected_teams_update", {
+      io.in(team.room).emit('connected_teams_update', {
         teams: room.connectedTeams,
       }); //! send all teams or send the newly joined one
     }
-    const { disconnect, move, trigger_update_ownershipMap } = getSocketFunction(
-      io,
-      socket,
-      team._id,
-      team.room
-    );
+    const {
+      disconnect,
+      move,
+      trigger_update_ownershipMap,
+      corner_tile_actions,
+      update_balance,
+    } = getSocketFunction(io, socket, team._id, team.room);
 
-    socket.on("disconnect", disconnect);
-    socket.on("move", move);
-    socket.on("trigger_update_ownershipMap", trigger_update_ownershipMap);
+    socket.on('disconnect', disconnect);
+    socket.on('move', move);
+    socket.on('trigger_update_ownershipMap', trigger_update_ownershipMap);
+    socket.on('corner_tile_actions', corner_tile_actions);
+    socket.on('update_balance', update_balance);
   });
 };
 

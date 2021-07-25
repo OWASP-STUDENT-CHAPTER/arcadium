@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import TeamMembers from './TeamMembers';
 
 import '../../assets/css/TeamDetails.css';
 
-const TeamDetails = ({ teamName, teamMembers, game }) => {
-  const [balance, setBalance] = useState(0);
+const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
+  const [balance, setBalance] = useState(game.money);
   const [debt, setDebt] = useState(0);
 
-  const { points } = game;
+  const { money } = game;
 
   useEffect(() => {
-    updateBalance();
-    updateDebt();
-  }, [points]);
+    socket.on('update_balance', (data) => {
+      console.log('updated', data);
+      updateBalance(data.teamMoney);
+      updateDebt(data.teamMoney);
+    });
+  }, []);
 
-  const updateBalance = () => {
-    if (points <= 0) setBalance(0);
-    else setBalance(points);
+  const updateBalance = (data) => {
+    if (data <= 0) setBalance(0);
+    else setBalance(data);
   };
-  const updateDebt = () => {
-    if (points >= 0) setDebt(0);
-    else setDebt(points - 2 * points);
+  const updateDebt = (data) => {
+    if (data >= 0) setDebt(0);
+    else setDebt(data - 2 * data);
   };
 
   return (
@@ -58,6 +60,9 @@ const TeamDetails = ({ teamName, teamMembers, game }) => {
           <p className='property'>Property 2</p>
           <p className='property'>Property 3</p>
           <p className='property'>Property 4</p>
+          <p className='property'>Property 5</p>
+          <p className='property'>Property 6</p>
+          <p className='property'>Property 7</p>
         </div>
       </div>
     </>
