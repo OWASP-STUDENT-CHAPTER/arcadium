@@ -1,11 +1,12 @@
 .popUp {
   position: absolute;
   top: 160px;
-  left: 300px;
+  left: 350px;
   width: 860px;
   height: 540px;
   box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  background-color: rgba(180, 177, 177, 0.397);
   /* border: 10px solid rebeccapurple; */
   /* backdrop-filter: ; */
   z-index: 100;
@@ -43,7 +44,7 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  background-color: rgb(17, 17, 17);
+  background-color: rgb(44, 44, 44);
   text-align: center;
   border-radius: 10px;
   padding: 20px;
@@ -54,4 +55,17 @@
 }
 .propName {
   margin-top: 0;
+}
+
+button.buybtn 
+{
+  font-size: 1.1rem;
+    background-color: rgb(149, 102, 219);
+    border-radius: 8px;
+    padding: 10px 10px;
+    color: rgb(255, 253, 253);
+    border: none;
+    /* transform: scaleY(1.3); */
+    font-family: 'Barcade No Bar', sans-serif;
+    cursor: pointer;
 }
