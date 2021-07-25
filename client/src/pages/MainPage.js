@@ -20,7 +20,7 @@ const MainPage = ({ team, socket, teams }) => {
   const { properties } = useContext(GameContext);
   if (properties.length === 0) return <>Loading...</>;
   
-  
+  const timeStart= {hours: 2, mins: 0, secs: 0};
   
   const leaderboardHandler=()=>{
     if(leaderboard)
