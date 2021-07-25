@@ -3,7 +3,6 @@ import React from 'react';
 import '../../assets/css/RightDashboard.css';
 
 const AllTeamDetails = ({ teams }) => {
-  console.log(teams);
   return (
     <>
       <div className='teams-list'>
