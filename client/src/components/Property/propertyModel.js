@@ -51,7 +51,10 @@ const PropertyModel = ({ socket }) => {
                 <h2>Pay rent</h2>
               )
             ) : (
-              <button onClick={() => buyProperty(properties[index]._id)} className="buybtn">
+              <button
+                onClick={() => buyProperty(properties[index]._id)}
+                className={classes.buybtn}
+              >
                 BUY
               </button>
             )

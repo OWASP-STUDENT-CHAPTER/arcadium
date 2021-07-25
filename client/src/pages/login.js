@@ -2,9 +2,15 @@ import URL from '../util/URL';
 import '../assets/css/Login.css';
 
 const Login = () => {
+  // const handleChange = () => {
+  //   const link = document.createElement('a');
+  //   link.href = `${URL}/api/auth/login`;
+  //   link.click();
+  // };
+
   return (
     <div className='login-component'>
-      <div className='wrapper'>
+      <div className='wrapper darkBG'>
         <form>
           <label className='off label'>
             Click on the switch to <span>Login!</span>
