@@ -32,8 +32,36 @@ const teamSchema = new mongoose.Schema({
       default: 0,
     },
     questionsAttempted: {
-      type: Array,
+      // type: [
+      //   {
+      //     questions: {
+      //       type: mongoose.Schema.Types.ObjectId,
+      //       // default: null,
+      //       ref: "Question",
+      //     },
+      //     solved: {
+      //       type: Boolean,
+      //       defalut: false,
+      //     },
+      //   },
+      // ],
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Question",
+        },
+      ],
       default: [],
+    },
+    currentQuestion: {
+      type: mongoose.Schema.Types.ObjectId,
+      default: null,
+      ref: "Question",
+    },
+    currentReduction: {
+      type: Number,
+      required: true,
+      default: 0,
     },
   },
 });

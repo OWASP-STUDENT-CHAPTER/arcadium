@@ -18,6 +18,9 @@ const Team = require("./team/model");
 //* reset connected teams in room model
 require("./util/resetConnections")();
 
+// * init GLOBAL object
+require("./init/initGlobal")(app);
+
 // * init DB
 require("./init/db");
 

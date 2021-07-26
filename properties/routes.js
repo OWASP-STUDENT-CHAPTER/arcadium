@@ -56,7 +56,12 @@ router.post("/buy", isAuthenticated, async (req, res) => {
 
   if (req.user.game.money < property.price)
     return res.status(400).send({ error: "insufficient balance" });
-  req.user.game.money -= property.price;
+
+  const price = property.price - req.user.game.currentReduction;
+
+  // const price =
+  //   property.price - (property.price * req.user.game.currentReduction) / 100;
+  req.user.game.money -= price;
   room.ownershipMap[property._id] = req.user._id;
 
   await room.save();
