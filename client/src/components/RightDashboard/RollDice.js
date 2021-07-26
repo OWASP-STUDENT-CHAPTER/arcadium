@@ -1,12 +1,12 @@
-import React from 'react';
-import Dice from '../dice/dice';
+import React from "react";
+import Dice from "../dice/dice";
 
-import ReactDice from '../dice/ReactDice';
+import ReactDice from "../dice/ReactDice";
 
 const RollDice = ({ socket, dice, setDice, canMove }) => {
-  console.log('canMove', canMove);
+  // console.log('canMove', canMove);
   return (
-    <div className='dice-container'>
+    <div className="dice-container">
       {/* <div className='dice'></div> */}
       {/* <button className='roll-dice' disabled={!canMove} onClick={movePlayer}>
         Roll

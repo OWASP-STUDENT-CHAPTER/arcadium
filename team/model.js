@@ -18,6 +18,11 @@ const teamSchema = new mongoose.Schema({
     type: Number,
     ref: "Room",
   },
+
+  modelNumber: {
+    type: Number,
+    default: -1,
+  },
   game: {
     money: {
       type: Number,
@@ -26,6 +31,10 @@ const teamSchema = new mongoose.Schema({
     posIndex: {
       type: Number,
       default: 0,
+    },
+    canMove: {
+      type: Boolean,
+      default: true,
     },
     points: {
       type: Number,

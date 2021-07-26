@@ -1,36 +1,19 @@
-import { useState, useEffect, Suspense, useMemo, useContext } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { PerspectiveCamera } from '@react-three/drei';
-import Player from '../Player';
-import Opponent from '../Opponent';
+import { useState, useEffect, Suspense, useMemo, useContext } from "react";
+import { Canvas } from "@react-three/fiber";
+import { PerspectiveCamera } from "@react-three/drei";
+import Player from "../Player";
+import Opponent from "../Opponent";
 // import CaptainAmeraShield from "../cap10.gltf";
-import { PLANE, camPosOffset } from '../../config/CONSTANTS';
+import { PLANE, camPosOffset } from "../../config/CONSTANTS";
 
-import { AuthContext } from '../../context/authContext.js';
-import { GameContext } from '../../context/gameContext';
+import { AuthContext } from "../../context/authContext.js";
+import { GameContext } from "../../context/gameContext";
 // import CameraControls from "../camera/orbit";
-import Plane from './plane.js';
-import centerImage from '../../assets/img/board center.png';
+import Plane from "./plane.js";
+import centerImage from "../../assets/img/board center.png";
+import { useQueryClient } from "react-query";
 
-//
-///
-// function Duck() {
-//   console.log("a");
-//   const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
-//   return (
-//     <primitive
-//       object={gltf.scene}
-//       rotation={[1.5, 0, 0]}
-//       position={[0, 0, 0.5]}
-//       // scale={[0.5, 0.5, 0.5]}
-//       scale={[1, 1, 1]}
-//     />
-//   );
-// }
-///
-//
-
-const GameScene = ({ socket, dice, setDice, setCanMove }) => {
+const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const {
     teams,
     updatePos,
@@ -44,6 +27,7 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     setOwnershipMap,
   } = useContext(GameContext);
   const { team } = useContext(AuthContext);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     setIndex(team.game.posIndex);
@@ -69,26 +53,37 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.removeAllListeners('player_move'); //!
-    socket.removeAllListeners('allow_moving'); //!
-    socket.removeAllListeners('update_ownershipMap'); //!
-    socket.on('player_move', (data) => {
-      console.log('oponnent move', data);
-      updatePos(data.teamId, data.pos);
-    });
-    socket.on('update_ownershipMap', ({ ownershipMap }) => {
-      console.log('update_ownershipMap ', { ownershipMap });
-      setOwnershipMap(ownershipMap);
+    socket.removeAllListeners("player_move"); //!
+    socket.removeAllListeners("allow_moving"); //!
+    socket.removeAllListeners("allow_moving_same"); //!
+    socket.removeAllListeners("update_ownershipMap"); //!
+    socket.on("player_move", (data) => {
+      console.log("oponnent move", data);
+      updatePos(data.teamId, data.pos, team._id);
     });
 
-    socket.on('allow_moving', () => {
+    socket.on("update_ownershipMap", ({ ownershipMap }) => {
+      console.log("update_ownershipMap ", { ownershipMap });
+      // setOwnershipMap(ownershipMap);
+      queryClient.setQueryData("roomData", (old) => {
+        return { ...old, ownershipMap };
+      });
+    });
+
+    socket.on("allow_moving", () => {
+      console.log("alow moving ");
       setCanMove(true); //! change
+    });
+    socket.on("allow_moving_same", (data) => {
+      console.log("alow moving team");
+      allowMove(data.teamId);
+      // setCanMove(true); //! change
     });
   }, [socket, teams]);
   const movePlayer = () => {
     if (!socket) return;
     if (dice == 0) return;
-    console.log('dice in effect', dice);
+    console.log("dice in effect", dice);
     let i = index;
     // const d = Math.floor(Math.random() * 6) + 1;
 
@@ -112,21 +107,21 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
     // setCamRot([0, 0, camRot[2] + 0.1 * d]);
     // setDice(d);
     setCanMove(false);
-    console.log('moving');
-    socket.emit('move', {
+    console.log("moving");
+    socket.emit("move", {
       pos: i,
     });
   };
   const cornerTile = async (prevPos, currentPos) => {
-    console.log('corner', prevPos, currentPos);
-    socket.emit('corner_tile_actions', {
+    console.log("corner", prevPos, currentPos);
+    socket.emit("corner_tile_actions", {
       data: {
         prevPos,
         currentPos,
       },
     });
   };
-
+  // console.log("team.modelNumber", team.modelNumber);
   useEffect(movePlayer, [dice, socket]);
   // const scale = spring.to([0, 1], [1, 5]);
   // const rotation = spring.to([0, 1], [0, Math.PI]);
@@ -134,35 +129,28 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
   return (
     <>
       <div
-        id='canvas-container'
+        id="canvas-container"
         style={{
-          margin: 'auto',
-          position: 'relative',
-          top: '-200px',
-          left: '70px',
-          width: '880px',
-          height: '880px',
-        }}
-      >
+          margin: "auto",
+          position: "relative",
+          top: "-200px",
+          left: "70px",
+          width: "880px",
+          height: "880px",
+        }}>
         <Canvas>
           <Suspense fallback={null}>
             <group position={[-2, -2, -1]}>
-              <ambientLight brightness={2.6} color={'#bdefff'} />
+              <ambientLight brightness={2.6} color={"#bdefff"} />
 
               <Plane
-                // rotation={camRot}
                 index={index}
                 board={board}
                 dice={dice}
-                initPositionOffset={[-5.5, -5.5, 0]}
-              >
-                {/* <captainA /> */}
-                {/* <Suspense fallback={<Box />}>
-                  <Duck />
-                </Suspense> */}
-
+                initPositionOffset={[-5.5, -5.5, 0]}>
                 <Player
                   board={board}
+                  modelNumber={team.modelNumber}
                   index={index}
                   isAnimating={isAnimating}
                   setIsAnimating={setIsAnimating}
@@ -172,27 +160,16 @@ const GameScene = ({ socket, dice, setDice, setCanMove }) => {
                 {teams
                   .filter((t) => t._id !== team._id)
                   .map((t) => (
-                    <Opponent board={board} key={t._id} pos={t.game.posIndex} />
+                    <Opponent
+                      board={board}
+                      key={t._id}
+                      index={t.game.posIndex}
+                      modelNumber={t.modelNumber}
+                    />
                   ))}
               </Plane>
               <group position={[0, 0, 4]}>
-                {/* <CameraControls /> */}
-                {/* <OrbitControls /> */}
-
-                {/* <directionalLight
-                  intensity={2}
-                  // decay={2}
-                  rotation={[-Math.PI / 2, 0, 0]}
-                  position={[0, 0, 0]}
-                /> */}
-
-                <pointLight
-                  intensity={3}
-                  // decay={2}
-                  // rotation={[-Math.PI / 2, 0, 0]}
-                  // position={[-2, 0, -2]}
-                  position={[-5, -5, 0]}
-                />
+                <pointLight intensity={3} position={[-5, -5, 0]} />
                 <PerspectiveCamera makeDefault {...camProps} />
               </group>
             </group>

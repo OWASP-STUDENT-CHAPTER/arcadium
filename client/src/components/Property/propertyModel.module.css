@@ -61,93 +61,91 @@
   margin-top: 0;
 }
 
-button.buybtn 
-{
+button.buybtn {
   font-size: 1.1rem;
-    background-color: rgb(193, 132, 233);
-    border-radius: 8px;
-    padding: 10px 20px;
-    color: rgb(255, 253, 253);
-    border: none;
-    /* transform: scaleY(1.3); */
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    min-width: 100px;
-    transition: 0.3s;
-    margin: 0px 10px;
+  background-color: rgb(193, 132, 233);
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: rgb(255, 253, 253);
+  border: none;
+  /* transform: scaleY(1.3); */
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+  transition: 0.3s;
+  margin: 0px 10px;
 }
-button.buybtn:hover
-{
+button.buybtn:hover {
   background-color: rgb(176, 86, 236);
   transition: 0.3s;
 }
 
-button.rentbtn, .linkbtn
-{
+button.rentbtn,
+.linkbtn {
   font-size: 1.1rem;
-    background-color: rgb(238, 159, 106);
-    border-radius: 8px;
-    padding: 10px 20px;
-    color: rgb(255, 253, 253);
-    border: none;
-    /* transform: scaleY(1.3); */
-    font-family: 'Roboto', sans-serif;
-    font-weight: 600;
-    cursor: pointer;
-    min-width: 100px;
-    transition: 0.3s;
+  background-color: rgb(238, 159, 106);
+  border-radius: 8px;
+  padding: 10px 20px;
+  color: rgb(255, 253, 253);
+  border: none;
+  /* transform: scaleY(1.3); */
+  font-family: "Roboto", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 100px;
+  transition: 0.3s;
 }
-button.rentbtn:hover , .linkbtn:hover
-{
+button.rentbtn:hover,
+.linkbtn:hover {
   background-color: rgb(238, 145, 83);
   transition: 0.3s;
 }
 
-.linkbtn{
+.linkbtn {
   margin: 0px 10px;
 }
 
-.cornerContent
-{
+.cornerContent {
   right: 0px;
 }
 
-.prices 
-{
+.prices {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 10px auto 30px ;
+  margin: 10px auto 30px;
   justify-content: space-evenly;
   width: 80%;
   color: black;
 }
 
-.buttons
-{
+.buttons {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 20px auto 10px ;
+  margin: 20px auto 10px;
   justify-content: space-evenly;
   width: 80%;
 }
 
-.buyprice, .rentprice
-{
+.buyprice:hover,
+.rentprice:hover {
+  cursor: pointer;
+}
+.buyprice,
+.rentprice {
   padding: 8px 10px;
   border: 2px solid rgb(167, 238, 95);
   color: rgb(167, 238, 95);
   background-color: rgba(148, 147, 147, 0.335);
   font-weight: 500;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 1.1rem;
   border-radius: 5px;
 }
 
-.rentprice
-{
+.rentprice {
   border: 2px solid rgb(250, 250, 74);
   color: rgb(250, 250, 74);
 }

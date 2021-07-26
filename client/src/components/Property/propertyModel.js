@@ -70,15 +70,16 @@ const PropertyModel = ({ socket }) => {
             classes.modalContent
           }>
           <h1 className={classes.propName}>{properties[index].name}</h1>
-          {index % 10 !== 0 && !specialIndex.includes(index) ? (
+          {/* {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
-              <div className={classes.buyprice}>
-                {" "}
-                Buy: ${properties[index].price}
-              </div>
+              <button
+                className={classes.buyprice}
+                onClick={() => buyProperty(properties[index]._id)}>
+                Buy: ${properties[index].price - discount}
+              </button>
               <div className={classes.rentprice}> Rent: $20</div>
             </div>
-          ) : null}
+          ) : null} */}
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             ownershipMap[properties[index]._id] ? (
               ownershipMap[properties[index]._id] === team._id ? (
@@ -91,18 +92,31 @@ const PropertyModel = ({ socket }) => {
               )
             ) : (
               <div>
-                <button onClick={getQuestion}>Get question</button>
-                <button onClick={() => buyProperty(properties[index]._id)}>
-                  BUY
-                </button>
-                {question && (
+                {!question && (
                   <>
-                    <h1>{question.questionLink}</h1>
-                    <button onClick={checkAns}>check ans</button>
+                    <button className={classes.buyprice} onClick={getQuestion}>
+                      Get question
+                    </button>
+                    <br />
+                    or
+                    <br />
                   </>
                 )}
 
+                {question && (
+                  <>
+                    <h1>{question.questionLink}</h1>
+                    <button className={classes.rentbtn} onClick={checkAns}>
+                      check ans
+                    </button>
+                  </>
+                )}
                 <h4>{properties[index].price - discount}</h4>
+                <button
+                  className={classes.buyprice}
+                  onClick={() => buyProperty(properties[index]._id)}>
+                  BUY
+                </button>
               </div>
             )
           ) : specialIndex.includes(index) ? (

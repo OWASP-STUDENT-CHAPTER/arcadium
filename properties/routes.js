@@ -32,8 +32,12 @@ router.get("/room", isAuthenticated, async (req, res) => {
 
     const room = await Room.findById(req.user.room);
     console.log("room", room);
+    const ownershipMap = room.ownershipMap;
+    if (!room) {
+      ownershipMap = {};
+    }
 
-    res.send({ data: { properties, ownershipMap: room.ownershipMap } });
+    res.send({ data: { properties, ownershipMap } });
   } catch (err) {
     console.error(err.message);
     res.status(500).send({

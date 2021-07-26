@@ -1,30 +1,24 @@
-import React, { Suspense, useContext, useRef } from "react";
-import { useFrame, useThree } from "@react-three/fiber";
-import * as THREE from "three";
-import { camPosOffset } from "../../config/CONSTANTS";
-// import CaptainAmeraShield from "../col1.glb";
-// import Model from "../Col1";
-// import Shoe from "../Shoe-draco";
-// import Dr from "../Col-dr";
+import React, { Suspense, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 
+import { camPosOffset } from "../../config/CONSTANTS";
+
+import MODELS from "../../config/MODELS";
 import Shield from "../Models/shield";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+
 import { Box } from "@react-three/drei";
+
 const Pawn = ({
-  initPositionOffset,
+  modelNumber,
   board,
-  color,
   player,
   index,
   isAnimating,
   setIsAnimating,
 }) => {
   const boxMesh = useRef();
-  const { camera } = useThree();
-  // const { showPropertyPopUp, setShowPropertyPopUp } = useContext(GameContext);
-
   useFrame(() => {
-    // if( )
+    if (!boxMesh.current) return;
     let {
       position: [x, y],
     } = board[index];
@@ -79,40 +73,29 @@ const Pawn = ({
 
     boxMesh.current.position.y = dy;
     boxMesh.current.position.x = dx;
+    if (!player) return;
     if (dy == y && x == dx) {
       if (isAnimating == true) setIsAnimating(false);
     } else setIsAnimating(true);
-    if (!player) return;
     // * update camera
     const [camX_Offset, camY_Offset] = camPosOffset;
-    // camera.position.x = dx + camX_Offset;
-    // camera.position.y = dy + camY_Offset;
   });
-  // const gltf = useLoader(GLTFLoader, CaptainAmeraShield);
+
+  if (!modelNumber || modelNumber == -1) modelNumber = 1;
+  const Model = MODELS[modelNumber] ? MODELS[modelNumber].comp : Shield;
+  // alert(modelNumber);
+  // console.log("model num", MODELS[modelNumber]);
   return (
     <Suspense fallback={<Box />}>
-      {/* <primitive
-        object={gltf.scene}
-        rotation={[1.5, 0, 0]}
-        position={[0, 0, 0.5]}
-        // scale={[0.5, 0.5, 0.5]}
-        scale={[1, 1, 1]}
-      /> */}
-      {/* <Model /> */}
-      {/* <Shoe rotation={[1, 1, 1]} position={[0, 0, 0.5]} /> */}
-      <Shield
+      <Model
         meshRef={boxMesh}
-        rotation={[1.5, 0, 0]}
-        position={[0, 0, 0.5]}
-        scale={[0.15, 0.15, 0.15]}
+        // rotation={MODELS[modelNumber].rotation}
+        // position={[0, 0, 0.5]}
+        // scale={[0.15, 0.15, 0.15]}
+        {...MODELS[modelNumber].props} //! fix
       />
-      {/* <mesh ref={boxMesh} position={initPositionOffset}>
-      <boxGeometry args={[0.5, 0.5, 0.5]} />
-      <meshBasicMaterial metalness={0.1} attach="material" color={color} />
-    </mesh> */}
     </Suspense>
   );
-  // return <></>;
 };
 
 export default Pawn;

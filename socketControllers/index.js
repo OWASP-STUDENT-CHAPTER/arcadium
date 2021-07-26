@@ -37,6 +37,7 @@ module.exports = (io, socket, teamId, roomId) => {
     team.game.posIndex = data.pos;
     team.game.currentQuestion = null;
     team.game.currentReduction = 0;
+    team.game.canMove = false;
 
     socket.to(roomId).emit("player_move", {
       pos: data.pos,
@@ -46,10 +47,16 @@ module.exports = (io, socket, teamId, roomId) => {
 
     //! wait for save?
     // check for not allowed
-    setTimeout(() => {
+    setTimeout(async () => {
+      team.game.canMove = true;
+      await team.save();
       console.log("allow");
       socket.emit("allow_moving");
-    }, 1500); //! change
+      // io.sockets.to(team._id).emit("allow_moving");
+      // socket.emit("allow_moving");
+      // socket.emit("allow_moving");
+      socket.to(roomId).emit("allow_moving_same", { teamId: team._id });
+    }, 3000); //! change
   };
 
   const corner_tile_actions = async ({ data }) => {
