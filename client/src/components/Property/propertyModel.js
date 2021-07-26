@@ -15,16 +15,13 @@ const PropertyModel = ({ socket }) => {
   const [question, setQuestion] = useState(null);
   const [solved, setSolved] = useState(true);
 
-<<<<<<< HEAD
   // console.log("propertyModel.show", propertyModel.show);
   if (!propertyModel.show) return <></>;
   // setTimeout(() => propertyModel.setShow(false));
   // console.log(properties[index].price);
   // console.log(price);
-=======
   const specialIndex = [2, 4, 7, 17, 22, 32, 36, 38];
 
->>>>>>> 65cf80475cf7b100c63cf6aac4124617163d3c8d
   const buyProperty = async (id) => {
     console.log("buys", id);
     const { data } = await axios.post("/property/buy");
@@ -32,11 +29,7 @@ const PropertyModel = ({ socket }) => {
     socket.emit("trigger_update_ownershipMap");
     console.log("after buy", data);
   };
-<<<<<<< HEAD
   // console.log(index);
-=======
-  console.log(index);
->>>>>>> 65cf80475cf7b100c63cf6aac4124617163d3c8d
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
   const payRent = () => {};
 
@@ -73,15 +66,14 @@ const PropertyModel = ({ socket }) => {
         <div
           className={
             (index % 10 === 0 ? classes.cornerContent : classes.tilesContent) +
-            ' ' +
+            " " +
             classes.modalContent
-          }
-        >
+          }>
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
               <div className={classes.buyprice}>
-                {' '}
+                {" "}
                 Buy: ${properties[index].price}
               </div>
               <div className={classes.rentprice}> Rent: $20</div>
@@ -92,11 +84,10 @@ const PropertyModel = ({ socket }) => {
               ownershipMap[properties[index]._id] === team._id ? (
                 <h2>Already bought by you</h2>
               ) : (
-<<<<<<< HEAD
-                <div>
-                  <button onClick={payRent}>Pay rent</button>
-                  <button onClick={getQuestion}>Get question</button>
-                </div>
+                <>
+                  <h2>Pay rent</h2>
+                  <button className={classes.rentbtn}>Pay Rent</button>
+                </>
               )
             ) : (
               <div>
@@ -113,31 +104,12 @@ const PropertyModel = ({ socket }) => {
 
                 <h4>{properties[index].price - discount}</h4>
               </div>
-=======
-                <>
-                  <h2>Pay rent</h2>
-                  <button className={classes.rentbtn}>Pay Rent</button>
-                </>
-              )
-            ) : (
-              <>
-                <div className={classes.buttons}>
-                  <button
-                    onClick={() => buyProperty(properties[index]._id)}
-                    className={classes.buybtn}
-                  >
-                    BUY
-                  </button>
-                  <button className={classes.linkbtn}>QUESTION LINK</button>
-                </div>
-              </>
             )
           ) : specialIndex.includes(index) ? (
             index === 4 || index === 38 ? (
               <h2>You have paid a tax of 1000 points!</h2>
             ) : (
               <h2>This is a Special Card!</h2>
->>>>>>> 65cf80475cf7b100c63cf6aac4124617163d3c8d
             )
           ) : index === 10 ? (
             <h2>You can win this!</h2>
