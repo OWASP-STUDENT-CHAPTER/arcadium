@@ -47,7 +47,7 @@ const initSocket = (io, app) => {
         await session.commitTransaction();
       } catch (err) {
         await session.abortTransaction();
-        console.error(err);
+        console.error(err); 
         //! disconnect socket connection
         socket.emit('retry', { retry: 'abc' });
         socket.disconnect();

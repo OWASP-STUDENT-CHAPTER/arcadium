@@ -1,5 +1,6 @@
 const Room = require("../model/roomModel");
 const Team = require("../team/model");
+const Community = require("../community/model");
 
 module.exports = (io, socket, teamId, roomId) => {
   const disconnect = async (reason) => {
@@ -53,12 +54,28 @@ module.exports = (io, socket, teamId, roomId) => {
 
   const corner_tile_actions = async ({ data }) => {
     console.log("corner tile", data);
-    const room = await Room.findById(roomId);
-    const { teams } = room;
-    const index = data.pos;
+    const { teams } = await Room.findById(roomId);
+    const index = data.currentPos;
     let amt;
     let action;
 
+    // Paying Tax to Hela/Ultron
+    if (index === 4 || index === 38) {
+      update_balance({
+        amt: 1000,
+        action: "deduct",
+      });
+    }
+
+    // Adding 2000 points on crossing starting point
+    if (data.prevPos <= 39 && data.prevPos >= 32 && index >= 0 && index < 8) {
+      update_balance({
+        amt: 2000,
+        action: "increment",
+      });
+    }
+
+    //Jail & Rest House
     if (index === 30) {
       amt = 500;
       action = "deduct";
@@ -89,7 +106,7 @@ module.exports = (io, socket, teamId, roomId) => {
 
   const trigger_update_ownershipMap = async () => {
     const room = await Room.findById(roomId);
-    console.log("trgiger");
+    console.log("trigger");
     console.log("room", room);
 
     socket.emit("update_ownershipMap", {
@@ -99,6 +116,64 @@ module.exports = (io, socket, teamId, roomId) => {
       ownershipMap: room.ownershipMap,
     });
   };
+
+  // const move
+
+  const community = async (data) => {
+    console.log("Community : --->>>> ", data);
+    const ques = await Community.find({ cat: data.category });
+    const i = Math.floor(Math.random() * ques.length);
+    const communityQues = ques[i];
+    const room = await Room.findById(req.user.room).populate("teams");
+    // const teams = await room.populate("teams");
+    console.log(room);
+    if (communityQues.type === "move") {
+      if (communityQues.place) {
+        // jail , resort ,party house
+        if (place === "jail") {
+          req.user.game.posIndex = 31;
+          req.user.save();
+          socket.emit("move_frontend", {
+            pos: req.user.game.posIndex,
+          });
+        }
+      } else if (communityQues.step) {
+        // move backard or forward
+        req.user.game.posIndex += communityQues.step;
+        req.user.save();
+        socket.emit("move_frontend", {
+          pos: req.user.game.posIndex,
+        });
+      }
+    } else if (communityQues.type === "balance") {
+      if (communityQues.fromPeers) {
+        // cut money from everyone
+        // give everyone
+        let cnt = 0;
+        for (let i in room.teams) {
+          const team = room.teams[i];
+          if (req.user._id === team._id) {
+            break;
+          }
+          team.game.money += communityQues.balance;
+          team.save();
+          cnt++;
+        }
+        req.user.game.money += cnt * communityQues.balance;
+      } else {
+        req.user.game.money += balance;
+        req.user.save();
+        // from bank ezzzzzzzzzzzzzz
+      }
+    } else if (communityQues.type === "freeze") {
+      // freeze for time
+      setTimeout(() => {
+        console.log("allow");
+        socket.emit("allow_moving");
+      }, 300000);
+    }
+  };
+
   return {
     disconnect,
     move,

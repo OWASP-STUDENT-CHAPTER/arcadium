@@ -22,3 +22,28 @@ h2,
 p {
   margin: 0;
 }
+.properties {
+  height: 120px;
+  overflow-y: scroll;
+  padding: 12px 0;
+  line-height: 1.5rem;
+  list-style: decimal;
+}
+.properties .details-heading {
+  margin-bottom: 6px;
+}
+.properties li {
+  font-size: 0.96rem;
+  text-align: left;
+  margin-left: 40px;
+}
+.properties::-webkit-scrollbar {
+  width: 5px;
+}
+.properties::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 2px;
+}
+.properties::-webkit-scrollbar-thumb {
+  background: hsl(198, 60%, 50%);
+}

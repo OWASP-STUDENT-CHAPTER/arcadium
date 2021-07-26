@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { GameContext } from '../../context/gameContext';
 
 import '../../assets/css/TeamDetails.css';
 
@@ -6,7 +7,9 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
   const [balance, setBalance] = useState(game.money);
   const [debt, setDebt] = useState(0);
 
-  const { money } = game;
+  const { properties, ownershipMap } = useContext(GameContext);
+  const toNumbers = (arr) => arr.map(Number);
+  const ownedProps = toNumbers(Object.keys(ownershipMap));
 
   useEffect(() => {
     socket.on('update_balance', (data) => {
@@ -54,13 +57,16 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
           <h2 className='details-heading'>Debt</h2>
           <p>{debt}</p>
         </div>
-        <div className='properties'>
+        <ul className='properties'>
           <h2 className='details-heading'>Properties</h2>
-          <p className='property'>Property 1</p>
-          <p className='property'>Property 2</p>
-          <p className='property'>Property 3</p>
-          <p className='property'>Property 4</p>
-        </div>
+          {ownedProps.map((owned) => {
+            return (
+              <li className='property' key={owned - 1}>
+                {properties[owned - 1].name}
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </>
   );

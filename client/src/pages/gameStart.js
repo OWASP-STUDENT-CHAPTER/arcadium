@@ -46,14 +46,6 @@ const GameStart = () => {
   return (
     <>
       <MainPage team={team} socket={socket} teams={teams} />
-      {/* <h1>START GAME </h1>
-      <h1>MY TEAM : {team.teamName} </h1>
-      <ul>
-        {teams.map((t) => (
-          <li key={t._id}>{t.teamName}</li>
-        ))}
-      </ul> */}
-      {/* <GameScene socket={socket} /> */}
     </>
   );
 };

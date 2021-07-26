@@ -2,10 +2,10 @@ import React from 'react';
 
 import '../../assets/css/RightDashboard.css';
 
-const HeaderButtons = () => {
+const HeaderButtons = (props) => {
   return (
     <div className='header-buttons'>
-      <button className='leaderboard-btn'>Leaderboard</button>
+      <button className='leaderboard-btn' onClick={props.leaderboardHandler}>Leaderboard</button>
       <button className='sign-out-btn'>Sign Out</button>
     </div>
   );
