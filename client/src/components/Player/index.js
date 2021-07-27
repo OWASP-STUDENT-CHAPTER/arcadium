@@ -3,6 +3,7 @@ import PawnModel from "../common/PawnModel";
 import { useState, useEffect } from "react";
 
 const Player = (props) => {
+  // console.log("modelNumber  2", props.modelNumber);
   return (
     // <Pawn
     //   board={board}

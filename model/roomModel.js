@@ -2,12 +2,21 @@ const mongoose = require("mongoose");
 const { eventDB } = require("../init/db");
 
 const mapDefalut = {};
+// const modelMap = {};
 
 for (let i = 1; i <= 40; i++) {
   mapDefalut[i] = {
     type: mongoose.Types.ObjectId,
   };
 }
+
+// const  models =  [] ;
+
+// for (let i = 1; i <= 5; i++) {
+//   modelMap[i] = {
+//     type: mongoose.Types.ObjectId,
+//   };
+// }
 
 const roomSchema = new mongoose.Schema(
   {
@@ -24,7 +33,13 @@ const roomSchema = new mongoose.Schema(
     ],
     ownershipMap: {
       ...mapDefalut,
+      default: {},
     },
+
+    //     modelMap: {
+    //       type:
+    //     }
+    // ,
     connectedTeams: [
       {
         type: mongoose.Types.ObjectId,

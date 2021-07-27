@@ -3,19 +3,26 @@ import { AuthContext } from '../../context/authContext';
 import { GameContext } from '../../context/gameContext';
 import axios from '../../util/axios';
 import Timer from '../Timer/Timer';
+import { useState } from 'react/cjs/react.development';
 import classes from './propertyModel.module.css';
 
 const PropertyModel = ({ socket }) => {
   const { propertyModel, properties, index, ownershipMap, teams } =
     useContext(GameContext);
-
   const { team } = useContext(AuthContext);
-  console.log('propertyModel.show', propertyModel.show);
-  if (!propertyModel.show) return <>no popup</>;
-  // setTimeout(() => propertyModel.setShow(false));
+  // const [price, setPrice] = useState(properties[index].price);
+  const [discount, setDiscount] = useState(0);
 
   const timeStart = { hours: 0, mins: 20, secs: 0 };
 
+  const [question, setQuestion] = useState(null);
+  const [solved, setSolved] = useState(true);
+
+  // console.log("propertyModel.show", propertyModel.show);
+  if (!propertyModel.show) return <></>;
+  // setTimeout(() => propertyModel.setShow(false));
+  // console.log(properties[index].price);
+  // console.log(price);
   const specialIndex = [2, 4, 7, 17, 22, 32, 36, 38];
 
   const buyProperty = async (id) => {
@@ -25,8 +32,23 @@ const PropertyModel = ({ socket }) => {
     socket.emit('trigger_update_ownershipMap');
     console.log('after buy', data);
   };
-  console.log(index);
+  // console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
+  const payRent = () => {};
+
+  const getQuestion = async () => {
+    const { data } = await axios.get('/question/').then(({ data }) => data);
+
+    console.log(data);
+
+    setQuestion(data);
+  };
+  const checkAns = async () => {
+    const { data } = await axios.get('/question/checkAnswer');
+    console.log(data);
+    setDiscount(question.rentReduction);
+    // setPrice(properties[index].price - question.rentReduction);
+  };
 
   return (
     <div className={classes.popUp}>
@@ -67,10 +89,12 @@ const PropertyModel = ({ socket }) => {
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
-              <div className={classes.buyprice}>
-                {' '}
-                Buy: ${properties[index].price}
-              </div>
+              <button
+                className={classes.buyprice}
+                onClick={() => buyProperty(properties[index]._id)}
+              >
+                Buy: ${properties[index].price - discount}
+              </button>
               <div className={classes.rentprice}> Rent: $20</div>
             </div>
           ) : null}
@@ -87,17 +111,43 @@ const PropertyModel = ({ socket }) => {
                 </>
               )
             ) : (
-              <>
-                <div className={classes.buttons}>
-                  <button
-                    onClick={() => buyProperty(properties[index]._id)}
-                    className={classes.buybtn}
-                  >
-                    Buy
-                  </button>
-                  <button className={classes.linkbtn}>Question Link</button>
-                </div>
-              </>
+              // <>
+              //   <div className={classes.buttons}>
+              //     <button
+              //       onClick={() => buyProperty(properties[index]._id)}
+              //       className={classes.buybtn}
+              //     >
+              //       Buy
+              //     </button>
+              //     <button className={classes.linkbtn}>Question Link</button>
+              //   </div>
+              // </>
+              <div>
+                {!question && (
+                  <>
+                    <button className={classes.linkbtn} onClick={getQuestion}>
+                      Get question
+                    </button>
+                    <h4>OR</h4>
+                  </>
+                )}
+
+                {question && (
+                  <>
+                    <h4>{question.questionLink}</h4>
+                    <button className={classes.rentbtn} onClick={checkAns}>
+                      Check Answer
+                    </button>
+                  </>
+                )}
+                {/* <h4>{properties[index].price - discount}</h4> */}
+                <button
+                  className={classes.buybtn}
+                  onClick={() => buyProperty(properties[index]._id)}
+                >
+                  Buy
+                </button>
+              </div>
             )
           ) : specialIndex.includes(index) ? (
             index === 4 || index === 38 ? (

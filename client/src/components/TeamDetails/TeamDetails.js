@@ -9,6 +9,7 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
 
   const { properties, ownershipMap, setNetWorth, netWorth } =
     useContext(GameContext);
+  console.log(ownershipMap);
   const toNumbers = (arr) => arr.map(Number);
   const ownedProps = toNumbers(Object.keys(ownershipMap));
   let worthProp = 0;
@@ -17,6 +18,10 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
 
   setNetWorth(0.3 * balance + 0.7 * worthProp);
   console.log(balance, worthProp, netWorth);
+  // useEffect(()=>{
+  //   // updateBalance(game.mon)
+  // },[ownershipMap])
+
   useEffect(() => {
     socket.on('update_balance', (data) => {
       console.log('updated', data);

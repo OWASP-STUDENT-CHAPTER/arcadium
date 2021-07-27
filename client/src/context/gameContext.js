@@ -1,4 +1,5 @@
 import { useState, createContext, useMemo, useEffect } from 'react';
+import { useQuery } from 'react-query';
 import axios from '../util/axios';
 
 import genBoard from '../util/genBoard';
@@ -7,21 +8,32 @@ const GameContext = createContext();
 
 const GameProvider = ({ children }) => {
   const [teams, setTeams] = useState([]);
-  const [properties, setProperties] = useState([]);
   const [ownershipMap, setOwnershipMap] = useState({});
   const [netWorth, setNetWorth] = useState(0);
   const board = useMemo(() => genBoard(), []);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showPropertyModel, setShowPropertyModel] = useState(false);
   const [index, setIndex] = useState(0);
-  useEffect(() => {
-    axios.get('/property/room').then(({ data }) => {
-      setOwnershipMap(data.data.ownershipMap); //! update with socket events
-      setProperties(data.data.properties);
-    });
-  }, []);
+  const [canMove, setCanMove] = useState(true);
+  // const init/
+  const { data: roomData } = useQuery(
+    'roomData',
+    () => axios.get('/property/room').then((res) => res.data.data),
+    {
+      initialData: { ownershipMap: {}, properties: [] },
+    }
+  );
 
-  const updatePos = (teamId, pos) => {
+  useEffect(() => {
+    setCanMove(!isAnimating);
+  }, [isAnimating]);
+
+  const updatePos = (teamId, pos, myTeam) => {
+    if (myTeam === teamId) {
+      // console.log("SAMEE");
+      setCanMove(false);
+      return setIndex(pos);
+    }
     const t = [...teams];
     const i = t.findIndex((team) => team._id === teamId);
     t[i].game.posIndex = pos;
@@ -35,14 +47,16 @@ const GameProvider = ({ children }) => {
         setTeams,
         index,
         setIndex,
+        canMove,
+        setCanMove,
         updatePos,
         board,
-        properties,
+        properties: roomData.properties || [],
+        ownershipMap: roomData.ownershipMap || {},
         isAnimating,
         setIsAnimating,
         netWorth,
         setNetWorth,
-        ownershipMap,
         setOwnershipMap,
         propertyModel: {
           setShow: setShowPropertyModel,

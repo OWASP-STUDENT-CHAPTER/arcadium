@@ -14,10 +14,10 @@
 }
 .popUp .timerModal {
   position: absolute;
-  top: 20px;
-  left: 30%;
-  font-size: 1.2rem;
-  padding: 8px 20px;
+  top: 10px;
+  left: 10px;
+  font-size: 1.1rem;
+  padding: 8px 10px;
   box-shadow: 2px 2px 4px #090917;
   border-radius: 11px;
   background-color: #21219d52;
@@ -150,6 +150,10 @@ button.rentbtn:hover {
   width: 80%;
 }
 
+.buyprice:hover,
+.rentprice:hover {
+  cursor: pointer;
+}
 .buyprice,
 .rentprice {
   padding: 8px 10px;

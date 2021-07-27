@@ -32,8 +32,12 @@ router.get("/room", isAuthenticated, async (req, res) => {
 
     const room = await Room.findById(req.user.room);
     console.log("room", room);
+    const ownershipMap = room.ownershipMap;
+    if (!room) {
+      ownershipMap = {};
+    }
 
-    res.send({ data: { properties, ownershipMap: room.ownershipMap } });
+    res.send({ data: { properties, ownershipMap } });
   } catch (err) {
     console.error(err.message);
     res.status(500).send({
@@ -56,7 +60,12 @@ router.post("/buy", isAuthenticated, async (req, res) => {
 
   if (req.user.game.money < property.price)
     return res.status(400).send({ error: "insufficient balance" });
-  req.user.game.money -= property.price;
+
+  const price = property.price - req.user.game.currentReduction;
+
+  // const price =
+  //   property.price - (property.price * req.user.game.currentReduction) / 100;
+  req.user.game.money -= price;
   room.ownershipMap[property._id] = req.user._id;
 
   await room.save();

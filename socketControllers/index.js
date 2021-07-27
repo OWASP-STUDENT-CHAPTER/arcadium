@@ -1,5 +1,6 @@
 const Room = require('../model/roomModel');
 const Team = require('../team/model');
+const Community = require('../community/model');
 
 module.exports = (io, socket, teamId, roomId) => {
   const disconnect = async (reason) => {
@@ -22,7 +23,9 @@ module.exports = (io, socket, teamId, roomId) => {
     const team = await Team.findById(teamId);
 
     team.game.posIndex = data.pos;
-    console.log(data.pos);
+    team.game.currentQuestion = null;
+    team.game.currentReduction = 0;
+    team.game.canMove = false;
 
     socket.to(roomId).emit('player_move', {
       pos: data.pos,
@@ -32,10 +35,16 @@ module.exports = (io, socket, teamId, roomId) => {
 
     //! wait for save?
     // check for not allowed
-    setTimeout(() => {
+    setTimeout(async () => {
+      team.game.canMove = true;
+      await team.save();
       console.log('allow');
       socket.emit('allow_moving');
-    }, 1500); //! change
+      // io.sockets.to(team._id).emit("allow_moving");
+      // socket.emit("allow_moving");
+      // socket.emit("allow_moving");
+      socket.to(roomId).emit('allow_moving_same', { teamId: team._id });
+    }, 3000); //! change
   };
 
   const corner_tile_actions = async ({ data }) => {
@@ -101,6 +110,64 @@ module.exports = (io, socket, teamId, roomId) => {
       ownershipMap: room.ownershipMap,
     });
   };
+
+  // const move
+
+  const community = async (data) => {
+    console.log('Community : --->>>> ', data);
+    const ques = await Community.find({ cat: data.category });
+    const i = Math.floor(Math.random() * ques.length);
+    const communityQues = ques[i];
+    const room = await Room.findById(req.user.room).populate('teams');
+    // const teams = await room.populate("teams");
+    console.log(room);
+    if (communityQues.type === 'move') {
+      if (communityQues.place) {
+        // jail , resort ,party house
+        if (place === 'jail') {
+          req.user.game.posIndex = 31;
+          req.user.save();
+          socket.emit('move_frontend', {
+            pos: req.user.game.posIndex,
+          });
+        }
+      } else if (communityQues.step) {
+        // move backard or forward
+        req.user.game.posIndex += communityQues.step;
+        req.user.save();
+        socket.emit('move_frontend', {
+          pos: req.user.game.posIndex,
+        });
+      }
+    } else if (communityQues.type === 'balance') {
+      if (communityQues.fromPeers) {
+        // cut money from everyone
+        // give everyone
+        let cnt = 0;
+        for (let i in room.teams) {
+          const team = room.teams[i];
+          if (req.user._id === team._id) {
+            break;
+          }
+          team.game.money += communityQues.balance;
+          team.save();
+          cnt++;
+        }
+        req.user.game.money += cnt * communityQues.balance;
+      } else {
+        req.user.game.money += balance;
+        req.user.save();
+        // from bank ezzzzzzzzzzzzzz
+      }
+    } else if (communityQues.type === 'freeze') {
+      // freeze for time
+      setTimeout(() => {
+        console.log('allow');
+        socket.emit('allow_moving');
+      }, 300000);
+    }
+  };
+
   return {
     disconnect,
     move,

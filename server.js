@@ -18,6 +18,9 @@ const Team = require("./team/model");
 //* reset connected teams in room model
 require("./util/resetConnections")();
 
+// * init GLOBAL object
+require("./init/initGlobal")(app);
+
 // * init DB
 require("./init/db");
 
@@ -61,6 +64,7 @@ app.use("/api/auth", require("./auth/routes"));
 app.use("/api/team", require("./team/routes"));
 app.use("/api/question", require("./routes/question"));
 app.use("/api/property", require("./properties/routes"));
+app.use("/api/community",require('./community/routes'));
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, console.log(`Server started on port ${port}`));
