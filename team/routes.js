@@ -1,25 +1,27 @@
-const app = require("express");
+const app = require('express');
 const router = app.Router();
-const Team = require("./model");
-const BaseTeam = require("../baseTeam/model");
-const mongoose = require("mongoose");
+const Team = require('./model');
+const Room = require('../model/roomModel');
+const Property = require('../properties/model');
+const BaseTeam = require('../baseTeam/model');
+const mongoose = require('mongoose');
 
-const isAuthenticated = require("../middleware/isAuthenticated");
+const isAuthenticated = require('../middleware/isAuthenticated');
 
 // * get all event teams
-router.get("/", async (req, res) => {
-  const teams = await Team.find().populate("members");
+router.get('/', async (req, res) => {
+  const teams = await Team.find().populate('members');
   console.log(teams);
   res.send(teams);
 });
 
 // * get team profile
-router.get("/profile", isAuthenticated, (req, res) => {
+router.get('/profile', isAuthenticated, (req, res) => {
   res.send(req.user);
 });
 
 // * import all baseTeams and create event teams
-router.get("/import", async (req, res) => {
+router.get('/import', async (req, res) => {
   //! filter event specific teams (process.evn.EVENT_ID)
   console.log(process.env.EVENT_ID);
   const baseTeams = await BaseTeam.find({
@@ -47,7 +49,7 @@ router.get("/import", async (req, res) => {
   // console.log("final ", t);
   //! add metrics about how many failed and why ?
 
-  res.send("Done importing teams");
+  res.send('Done importing teams');
   // res.send(t);
   // res.send(baseTeams);
 });

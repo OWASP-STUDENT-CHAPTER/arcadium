@@ -23,7 +23,7 @@ const AllTeamDetails = ({ teams }) => {
               </div>
             );
           })}
-          <div className='team'>
+          {/* <div className='team'>
             <i className='fas fa-chess-pawn fa-3x' style={{ color: 'red' }} />
             <span className='team-name'>Team 2</span>
           </div>
@@ -41,7 +41,7 @@ const AllTeamDetails = ({ teams }) => {
           <div className='team'>
             <i className='fas fa-chess-pawn fa-3x' style={{ color: 'black' }} />
             <span className='team-name'>Team 5</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
