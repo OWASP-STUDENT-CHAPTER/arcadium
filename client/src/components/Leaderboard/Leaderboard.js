@@ -1,77 +1,32 @@
 import '../../assets/css/leaderboard.css';
 import { GrClose } from 'react-icons/gr';
 import Row from './Row';
-import { AuthContext } from '../../context/authContext';
-import { GameContext } from '../../context/gameContext';
-import { useContext } from 'react';
+import axios from '../../util/axios';
+import { useEffect, useState } from 'react';
 
 const Leaderboard = (props) => {
-  const { team } = useContext(AuthContext);
-  const { teams, netWorth } = useContext(GameContext);
-  console.log(team, teams, netWorth);
+  const [teams, setTeams] = useState([]);
 
-  const teamsSample = [
-    {
-      teamName: 'team1',
-      points: 100,
-    },
-    {
-      teamName: 'team2',
-      points: 200,
-    },
-    {
-      teamName: 'team3',
-      points: 150,
-    },
-    {
-      teamName: 'team4',
-      points: 250,
-    },
-    {
-      teamName: 'team5',
-      points: 80,
-    },
-    {
-      teamName: 'team1',
-      points: 100,
-    },
-    {
-      teamName: 'team2',
-      points: 200,
-    },
-    {
-      teamName: 'team3',
-      points: 150,
-    },
-    {
-      teamName: 'team4',
-      points: 250,
-    },
-    {
-      teamName: 'team5',
-      points: 80,
-    },
-    {
-      teamName: 'team1',
-      points: 100,
-    },
-    {
-      teamName: 'team2',
-      points: 200,
-    },
-    {
-      teamName: 'team3',
-      points: 150,
-    },
-    {
-      teamName: 'team4',
-      points: 250,
-    },
-    {
-      teamName: 'team5',
-      points: 80,
-    },
-  ];
+  const getAllTeams = async () => {
+    try {
+      const res = await axios.get('/team');
+      setTeams(res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllTeams();
+  }, []);
+
+  const teamsSample = teams.map((team) => {
+    const data = {
+      teamName: team.teamName,
+      points: Math.floor(team.game.points),
+    };
+    return data;
+  });
 
   // sorting teams based on descending order of points
   let sortedTeams = teamsSample.sort((a, b) => {

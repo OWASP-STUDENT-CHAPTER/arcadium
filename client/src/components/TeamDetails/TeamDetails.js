@@ -7,17 +7,10 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
   const [balance, setBalance] = useState(game.money);
   const [debt, setDebt] = useState(0);
 
-  const { properties, ownershipMap, setNetWorth, netWorth } =
-    useContext(GameContext);
-  console.log(ownershipMap);
+  const { properties, ownershipMap } = useContext(GameContext);
   const toNumbers = (arr) => arr.map(Number);
   const ownedProps = toNumbers(Object.keys(ownershipMap));
-  let worthProp = 0;
-  for (var i = 0; i < ownedProps.length; i++)
-    worthProp += properties[ownedProps[i] - 1].price;
 
-  setNetWorth(0.3 * balance + 0.7 * worthProp);
-  console.log(balance, worthProp, netWorth);
   // useEffect(()=>{
   //   // updateBalance(game.mon)
   // },[ownershipMap])
@@ -27,7 +20,6 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
       console.log('updated', data);
       updateBalance(data.teamMoney);
       updateDebt(data.teamMoney);
-      setNetWorth(0.3 * data.teamMoney + 0.7 * worthProp);
     });
   }, []);
 

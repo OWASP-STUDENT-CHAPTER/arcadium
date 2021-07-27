@@ -9,7 +9,6 @@ const GameContext = createContext();
 const GameProvider = ({ children }) => {
   const [teams, setTeams] = useState([]);
   const [ownershipMap, setOwnershipMap] = useState({});
-  const [netWorth, setNetWorth] = useState(0);
   const board = useMemo(() => genBoard(), []);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showPropertyModel, setShowPropertyModel] = useState(false);
@@ -55,8 +54,6 @@ const GameProvider = ({ children }) => {
         ownershipMap: roomData.ownershipMap || {},
         isAnimating,
         setIsAnimating,
-        netWorth,
-        setNetWorth,
         setOwnershipMap,
         propertyModel: {
           setShow: setShowPropertyModel,

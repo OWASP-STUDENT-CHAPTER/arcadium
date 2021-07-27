@@ -89,9 +89,13 @@ module.exports = (io, socket, teamId, roomId) => {
     const team = await Team.findById(teamId);
 
     console.log(team.game.money);
-    if (action === 'deduct') team.game.money -= amt;
-    else team.game.money += amt;
-    console.log(team.game.money);
+    if (action === 'deduct') {
+      team.game.money -= amt;
+      team.game.points = 0.3 * team.game.money + 0.7 * team.game.property;
+    } else {
+      team.game.money += amt;
+      team.game.points = 0.3 * team.game.money + 0.7 * team.game.property;
+    }
     await team.save();
     socket.emit('update_balance', {
       teamMoney: team.game.money,
