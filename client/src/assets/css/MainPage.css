@@ -20,12 +20,12 @@
   margin-bottom: 0px;
   margin-top: 0;
 }
-.timer {
+.main-header .timer {
   position: relative;
-  left: 800px;
+  left: 675px;
   top: -47px;
-  font-size: 1.4rem;
-  padding: 8px 20px;
+  font-size: 1.3rem;
+  padding: 10px 20px;
   box-shadow: -4px -4px 4px #6f70ac, 4px 4px 6px #090917;
   border-radius: 11px;
   background-color: #21219d52;

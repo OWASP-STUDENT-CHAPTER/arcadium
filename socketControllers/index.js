@@ -1,45 +1,33 @@
-const Room = require("../model/roomModel");
-const Team = require("../team/model");
-const Community = require("../community/model");
+const Room = require('../model/roomModel');
+const Team = require('../team/model');
+const Community = require('../community/model');
 
 module.exports = (io, socket, teamId, roomId) => {
   const disconnect = async (reason) => {
-    console.log("disconnect reason", reason);
-    const room = await Room.findById(roomId).populate("connectedTeams");
+    console.log('disconnect reason', reason);
+    const room = await Room.findById(roomId).populate('connectedTeams');
 
     room.connectedTeams = room.connectedTeams.filter(
       (t) => String(t._id) !== String(teamId)
     );
 
-    socket.to(roomId).emit("team_left", {
+    socket.to(roomId).emit('team_left', {
       teams: room.connectedTeams,
     });
     await room.save();
   };
 
   const move = async (data) => {
-    console.log("a move", data);
+    console.log('a move', data);
     //! save move
     const team = await Team.findById(teamId);
-
-    if (
-      team.game.posIndex <= 39 &&
-      team.game.posIndex >= 30 &&
-      ((data.pos >= 0 && data.pos < 10) || data.pos === 40)
-    ) {
-      console.log(team.game.posIndex, data.pos);
-      update_balance({
-        amt: 2000,
-        action: "increment",
-      });
-    }
 
     team.game.posIndex = data.pos;
     team.game.currentQuestion = null;
     team.game.currentReduction = 0;
     team.game.canMove = false;
 
-    socket.to(roomId).emit("player_move", {
+    socket.to(roomId).emit('player_move', {
       pos: data.pos,
       teamId: teamId,
     });
@@ -50,76 +38,75 @@ module.exports = (io, socket, teamId, roomId) => {
     setTimeout(async () => {
       team.game.canMove = true;
       await team.save();
-      console.log("allow");
-      socket.emit("allow_moving");
+      console.log('allow');
+      socket.emit('allow_moving');
       // io.sockets.to(team._id).emit("allow_moving");
       // socket.emit("allow_moving");
       // socket.emit("allow_moving");
-      socket.to(roomId).emit("allow_moving_same", { teamId: team._id });
+      socket.to(roomId).emit('allow_moving_same', { teamId: team._id });
     }, 3000); //! change
   };
 
   const corner_tile_actions = async ({ data }) => {
-    console.log("corner tile", data);
+    console.log('corner tile', data);
     const { teams } = await Room.findById(roomId);
     const index = data.currentPos;
     let amt;
     let action;
 
-    // Paying Tax to Hela/Ultron
-    if (index === 4 || index === 38) {
-      update_balance({
-        amt: 1000,
-        action: "deduct",
-      });
-    }
-
     // Adding 2000 points on crossing starting point
     if (data.prevPos <= 39 && data.prevPos >= 32 && index >= 0 && index < 8) {
       update_balance({
         amt: 2000,
-        action: "increment",
+        action: 'increment',
+      });
+    }
+    // Paying Tax to Hela/Ultron
+    if (index === 4 || index === 38) {
+      update_balance({
+        amt: 1000,
+        action: 'deduct',
       });
     }
 
     //Jail & Rest House
     if (index === 30) {
       amt = 500;
-      action = "deduct";
+      action = 'deduct';
     } else if (index === 20) {
       amt = 100 * (teams.length - 1);
-      action = "deduct";
+      action = 'deduct';
     }
     update_balance({
       amt,
       action,
     });
-    socket.to(roomId).emit("corner_actions");
+    socket.to(roomId).emit('corner_actions');
   };
 
   const update_balance = async ({ amt, action }) => {
-    console.log("update balance", amt, action);
+    console.log('update balance', amt, action);
     const team = await Team.findById(teamId);
 
     console.log(team.game.money);
-    if (action === "deduct") team.game.money -= amt;
+    if (action === 'deduct') team.game.money -= amt;
     else team.game.money += amt;
     console.log(team.game.money);
     await team.save();
-    socket.emit("update_balance", {
+    socket.emit('update_balance', {
       teamMoney: team.game.money,
     });
   };
 
   const trigger_update_ownershipMap = async () => {
     const room = await Room.findById(roomId);
-    console.log("trigger");
-    console.log("room", room);
+    console.log('trigger');
+    console.log('room', room);
 
-    socket.emit("update_ownershipMap", {
+    socket.emit('update_ownershipMap', {
       ownershipMap: room.ownershipMap,
     });
-    socket.to(roomId).emit("update_ownershipMap", {
+    socket.to(roomId).emit('update_ownershipMap', {
       ownershipMap: room.ownershipMap,
     });
   };
@@ -127,20 +114,20 @@ module.exports = (io, socket, teamId, roomId) => {
   // const move
 
   const community = async (data) => {
-    console.log("Community : --->>>> ", data);
+    console.log('Community : --->>>> ', data);
     const ques = await Community.find({ cat: data.category });
     const i = Math.floor(Math.random() * ques.length);
     const communityQues = ques[i];
-    const room = await Room.findById(req.user.room).populate("teams");
+    const room = await Room.findById(req.user.room).populate('teams');
     // const teams = await room.populate("teams");
     console.log(room);
-    if (communityQues.type === "move") {
+    if (communityQues.type === 'move') {
       if (communityQues.place) {
         // jail , resort ,party house
-        if (place === "jail") {
+        if (place === 'jail') {
           req.user.game.posIndex = 31;
           req.user.save();
-          socket.emit("move_frontend", {
+          socket.emit('move_frontend', {
             pos: req.user.game.posIndex,
           });
         }
@@ -148,11 +135,11 @@ module.exports = (io, socket, teamId, roomId) => {
         // move backard or forward
         req.user.game.posIndex += communityQues.step;
         req.user.save();
-        socket.emit("move_frontend", {
+        socket.emit('move_frontend', {
           pos: req.user.game.posIndex,
         });
       }
-    } else if (communityQues.type === "balance") {
+    } else if (communityQues.type === 'balance') {
       if (communityQues.fromPeers) {
         // cut money from everyone
         // give everyone
@@ -172,11 +159,11 @@ module.exports = (io, socket, teamId, roomId) => {
         req.user.save();
         // from bank ezzzzzzzzzzzzzz
       }
-    } else if (communityQues.type === "freeze") {
+    } else if (communityQues.type === 'freeze') {
       // freeze for time
       setTimeout(() => {
-        console.log("allow");
-        socket.emit("allow_moving");
+        console.log('allow');
+        socket.emit('allow_moving');
       }, 300000);
     }
   };

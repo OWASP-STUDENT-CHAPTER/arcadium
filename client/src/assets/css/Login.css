@@ -310,10 +310,10 @@ body {
   justify-content: center;
 }
 .wrapper.darkBG {
-  background: url('../img/darkBG.jpg') no-repeat center center/cover;
+  background: url('../img/darkBG(1).png') no-repeat center center/cover;
 }
 .wrapper.lightBG {
-  background: url('../img/lightBG.jpg') no-repeat center center/cover;
+  background: url('../img/lightBG.png') no-repeat center center/cover;
 }
 
 .label {

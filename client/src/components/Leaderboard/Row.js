@@ -1,13 +1,13 @@
-import "../../assets/css/leaderboard.css";
+import '../../assets/css/leaderboard.css';
 
-const Row=(props)=>{
-    return(
-        <tr>
-            <td>{props.rank}</td>
-            <td>{props.team.teamName}</td>
-            <td>{props.team.points}</td>
-        </tr>
-    );
-}
+const Row = ({ rank, teamName, points }) => {
+  return (
+    <tr>
+      <td>{rank}</td>
+      <td>{teamName}</td>
+      <td>{points}</td>
+    </tr>
+  );
+};
 
 export default Row;
