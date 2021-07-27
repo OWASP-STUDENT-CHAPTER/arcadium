@@ -2,6 +2,7 @@ import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { GameContext } from '../../context/gameContext';
 import axios from '../../util/axios';
+import Timer from '../Timer/Timer';
 import classes from './propertyModel.module.css';
 
 const PropertyModel = ({ socket }) => {
@@ -12,6 +13,8 @@ const PropertyModel = ({ socket }) => {
   console.log('propertyModel.show', propertyModel.show);
   if (!propertyModel.show) return <>no popup</>;
   // setTimeout(() => propertyModel.setShow(false));
+
+  const timeStart = { hours: 0, mins: 20, secs: 0 };
 
   const specialIndex = [2, 4, 7, 17, 22, 32, 36, 38];
 
@@ -33,8 +36,17 @@ const PropertyModel = ({ socket }) => {
       >
         <i className='fas fa-times fa-2x'></i>
       </button>
+
       <div className={classes.modalContainer}>
-        <div className={classes.imgProperty}>
+        <div
+          className={
+            classes.imgProperty +
+            ' ' +
+            ((index >= 1 && index <= 9) || (index >= 31 && index <= 39)
+              ? classes.rotImg
+              : classes.doneImg)
+          }
+        >
           <img
             src={propertyImage.default}
             alt='Image'
@@ -49,6 +61,9 @@ const PropertyModel = ({ socket }) => {
             classes.modalContent
           }
         >
+          <div className={classes.timerModal}>
+            <Timer time={timeStart} />
+          </div>
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
@@ -65,8 +80,10 @@ const PropertyModel = ({ socket }) => {
                 <h2>Already bought by you</h2>
               ) : (
                 <>
-                  <h2>Pay rent</h2>
-                  <button className={classes.rentbtn}>Pay Rent</button>
+                  <div className={classes.buttons}>
+                    <button className={classes.rentbtn}>Pay Rent</button>
+                    <button className={classes.linkbtn}>Question Link</button>
+                  </div>
                 </>
               )
             ) : (
@@ -76,9 +93,9 @@ const PropertyModel = ({ socket }) => {
                     onClick={() => buyProperty(properties[index]._id)}
                     className={classes.buybtn}
                   >
-                    BUY
+                    Buy
                   </button>
-                  <button className={classes.linkbtn}>QUESTION LINK</button>
+                  <button className={classes.linkbtn}>Question Link</button>
                 </div>
               </>
             )

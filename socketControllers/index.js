@@ -45,19 +45,18 @@ module.exports = (io, socket, teamId, roomId) => {
     let amt;
     let action;
 
-    // Paying Tax to Hela/Ultron
-    if (index === 4 || index === 38) {
-      update_balance({
-        amt: 1000,
-        action: 'deduct',
-      });
-    }
-
     // Adding 2000 points on crossing starting point
     if (data.prevPos <= 39 && data.prevPos >= 32 && index >= 0 && index < 8) {
       update_balance({
         amt: 2000,
         action: 'increment',
+      });
+    }
+    // Paying Tax to Hela/Ultron
+    if (index === 4 || index === 38) {
+      update_balance({
+        amt: 1000,
+        action: 'deduct',
       });
     }
 

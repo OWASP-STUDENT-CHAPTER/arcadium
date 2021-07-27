@@ -13,21 +13,18 @@ import { GameContext } from '../context/gameContext';
 import Leaderboard from '../components/Leaderboard/Leaderboard';
 
 const MainPage = ({ team, socket, teams }) => {
-  
   const [canMove, setCanMove] = useState(true);
-  const[leaderboard, setLeaderboard]=useState(false);
+  const [leaderboard, setLeaderboard] = useState(false);
   const [dice, setDice] = useState(0);
   const { properties } = useContext(GameContext);
   if (properties.length === 0) return <>Loading...</>;
-  
-  const timeStart= {hours: 2, mins: 0, secs: 0};
-  
-  const leaderboardHandler=()=>{
-    if(leaderboard)
-    setLeaderboard(false);
-    else
-    setLeaderboard(true);
-  }
+
+  const timeStart = { hours: 2, mins: 0, secs: 0 };
+
+  const leaderboardHandler = () => {
+    if (leaderboard) setLeaderboard(false);
+    else setLeaderboard(true);
+  };
   return (
     <div className='main-container'>
       <PropertyModel socket={socket} />
@@ -35,7 +32,7 @@ const MainPage = ({ team, socket, teams }) => {
         <div className='logo'>
           <img src={arcadiumLogo} alt='Logo' className='arcadium-logo' />
         </div>
-        <div >
+        <div>
           <Timer time={timeStart} />
         </div>
       </div>
@@ -69,11 +66,7 @@ const MainPage = ({ team, socket, teams }) => {
           canMove={canMove}
         />
       </div>
-      {
-          leaderboard?
-          <Leaderboard onClose={leaderboardHandler}/>
-          :null
-       }
+      {leaderboard ? <Leaderboard onClose={leaderboardHandler} /> : null}
     </div>
   );
 };

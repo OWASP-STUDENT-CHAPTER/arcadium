@@ -9,6 +9,7 @@ const GameProvider = ({ children }) => {
   const [teams, setTeams] = useState([]);
   const [properties, setProperties] = useState([]);
   const [ownershipMap, setOwnershipMap] = useState({});
+  const [netWorth, setNetWorth] = useState(0);
   const board = useMemo(() => genBoard(), []);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showPropertyModel, setShowPropertyModel] = useState(false);
@@ -39,6 +40,8 @@ const GameProvider = ({ children }) => {
         properties,
         isAnimating,
         setIsAnimating,
+        netWorth,
+        setNetWorth,
         ownershipMap,
         setOwnershipMap,
         propertyModel: {
