@@ -3,6 +3,7 @@ import { GrClose } from 'react-icons/gr';
 import Row from './Row';
 import axios from '../../util/axios';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 
 const Leaderboard = (props) => {
   const [teams, setTeams] = useState([]);
@@ -15,6 +16,15 @@ const Leaderboard = (props) => {
       console.error(error);
     }
   };
+  const allTeams = useQuery(
+    'auth',
+    () => axios.get('/team').then((res) => res.data),
+    {
+      retry: false,
+      staleTime: Infinity,
+    }
+  );
+  console.log(allTeams.data);
 
   useEffect(() => {
     getAllTeams();
