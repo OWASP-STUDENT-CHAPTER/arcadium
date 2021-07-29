@@ -45,6 +45,9 @@
 .imgProperty .tiles {
   transform: rotateZ(90deg);
   height: 220px;
+  margin-top: 38px;
+  position: relative;
+  left: -20px;
 }
 .rotImg .tiles {
   transform: rotateZ(-90deg);

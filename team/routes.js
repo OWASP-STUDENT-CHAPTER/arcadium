@@ -1,8 +1,6 @@
 const app = require('express');
 const router = app.Router();
 const Team = require('./model');
-const Room = require('../model/roomModel');
-const Property = require('../properties/model');
 const BaseTeam = require('../baseTeam/model');
 const mongoose = require('mongoose');
 

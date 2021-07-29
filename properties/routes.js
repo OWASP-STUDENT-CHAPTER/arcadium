@@ -1,5 +1,4 @@
 const router = require('express').Router();
-
 const isAuthenticated = require('../middleware/isAuthenticated');
 const Room = require('../model/roomModel');
 const { PROPERTY_COLORS } = require('../util/CONSTANTS');

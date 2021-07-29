@@ -3,7 +3,7 @@ import { GrClose } from 'react-icons/gr';
 import Row from './Row';
 import axios from '../../util/axios';
 import { useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+// import { useQuery } from 'react-query';
 
 const Leaderboard = (props) => {
   const [teams, setTeams] = useState([]);
@@ -16,19 +16,26 @@ const Leaderboard = (props) => {
       console.error(error);
     }
   };
-  const allTeams = useQuery(
-    'auth',
-    () => axios.get('/team').then((res) => res.data),
-    {
-      retry: false,
-      staleTime: Infinity,
-    }
-  );
-  console.log(allTeams.data);
+  // const allTeams = useQuery(
+  //   'auth',
+  //   async () => {
+  //     try {
+  //       const res = await axios.get('/team');
+  //       return res.data;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   },
+  //   {
+  //     retry: false,
+  //     staleTime: Infinity,
+  //   }
+  // );
 
   useEffect(() => {
     getAllTeams();
   }, []);
+  // console.log(allTeams);
 
   const teamsSample = teams.map((team) => {
     const data = {
@@ -51,9 +58,15 @@ const Leaderboard = (props) => {
       <table id='leaderboard-table'>
         <thead>
           <tr>
-            <th scope='col'>Rank</th>
-            <th scope='col'>Team Name</th>
-            <th scope='col'>Points</th>
+            <th style={{ fontSize: '1.2rem' }} scope='col'>
+              Rank
+            </th>
+            <th style={{ fontSize: '1.2rem' }} scope='col'>
+              Team Name
+            </th>
+            <th style={{ fontSize: '1.2rem' }} scope='col'>
+              Points
+            </th>
           </tr>
         </thead>
         <tbody>

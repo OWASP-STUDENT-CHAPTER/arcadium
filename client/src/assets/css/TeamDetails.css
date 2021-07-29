@@ -24,7 +24,7 @@ p {
 }
 .properties {
   height: 120px;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 12px 0;
   line-height: 1.5rem;
   list-style: decimal;
