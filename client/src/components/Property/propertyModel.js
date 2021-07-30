@@ -89,13 +89,12 @@ const PropertyModel = ({ socket }) => {
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
-              <button
-                className={classes.buyprice}
-                onClick={() => buyProperty(properties[index]._id)}
-              >
+              <div className={classes.buyprice}>
                 Buy: ${properties[index].price - discount}
-              </button>
-              <div className={classes.rentprice}> Rent: $20</div>
+              </div>
+              <div className={classes.rentprice}>
+                Rent: ${properties[index].rent}
+              </div>
             </div>
           ) : null}
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
@@ -109,6 +108,32 @@ const PropertyModel = ({ socket }) => {
                     <button className={classes.linkbtn}>Question Link</button>
                   </div>
                 </>
+                //   <div>
+                //   {!question && (
+                //     <>
+                //       <button className={classes.linkbtn} onClick={getQuestion}>
+                //         Get Question
+                //       </button>
+                //       <h4>OR</h4>
+                //     </>
+                //   )}
+
+                //   {question && (
+                //     <>
+                //       <h4>{question.questionLink}</h4>
+                //       <button className={classes.rentbtn} onClick={checkAns}>
+                //         Check Answer
+                //       </button>
+                //     </>
+                //   )}
+                //   {/* <h4>{properties[index].price - discount}</h4> */}
+                //   <button
+                //     className={classes.rentbtn}
+                //     onClick={() => buyProperty(properties[index]._id)}
+                //   >
+                //     Pay Rent
+                //   </button>
+                // </div>
               )
             ) : (
               // <>
@@ -126,7 +151,7 @@ const PropertyModel = ({ socket }) => {
                 {!question && (
                   <>
                     <button className={classes.linkbtn} onClick={getQuestion}>
-                      Get question
+                      Get Question
                     </button>
                     <h4>OR</h4>
                   </>
