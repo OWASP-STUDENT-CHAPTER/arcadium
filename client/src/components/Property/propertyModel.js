@@ -7,7 +7,7 @@ import { useState } from 'react/cjs/react.development';
 import classes from './propertyModel.module.css';
 
 const PropertyModel = ({ socket }) => {
-  const { propertyModel, properties, index, ownershipMap, teams } =
+  const { propertyModel, properties, index, ownershipMap, setBalance } =
     useContext(GameContext);
   const { team } = useContext(AuthContext);
   // const [price, setPrice] = useState(properties[index].price);
@@ -30,11 +30,19 @@ const PropertyModel = ({ socket }) => {
     const { data } = await axios.post('/property/buy');
     console.log('emit');
     socket.emit('trigger_update_ownershipMap');
-    console.log('after buy', data);
+    console.log('after buy', data.money);
+    setBalance(data.money);
+
+    socket.emit('g');
   };
   // console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
-  const payRent = () => {};
+  const payRent = () => {
+    socket.emit('pay_rent', {
+      pos: index,
+    });
+    console.log('paying rent ');
+  };
 
   const getQuestion = async () => {
     const { data } = await axios.get('/question/').then(({ data }) => data);
@@ -104,7 +112,9 @@ const PropertyModel = ({ socket }) => {
               ) : (
                 <>
                   <div className={classes.buttons}>
-                    <button className={classes.rentbtn}>Pay Rent</button>
+                    <button onClick={payRent} className={classes.rentbtn}>
+                      Pay Rent
+                    </button>
                     <button className={classes.linkbtn}>Question Link</button>
                   </div>
                 </>

@@ -28,9 +28,9 @@ const Tile = ({ tile }) => {
       <mesh ref={tileMesh} position={position} rotation={rotation}>
         <boxBufferGeometry attach="geometry" args={size} />
         {/* <meshStandardMaterial attachArray="material" /> */}
-        <meshBasicMaterial attachArray="material" />
-        <meshBasicMaterial attachArray="material" />
-        <meshBasicMaterial attachArray="material" />
+        <meshBasicMaterial attachArray="material" color="#fff" />
+        <meshBasicMaterial attachArray="material" color="#fff" />
+        <meshBasicMaterial attachArray="material" color="#fff" />
         <meshBasicMaterial attachArray="material" />
         <meshBasicMaterial map={texture} attachArray="material" />
         <meshStandardMaterial
@@ -81,6 +81,9 @@ const Plane = ({ initPositionOffset, board, children, dice, index }) => {
 
     return v;
   });
+
+  const texture2 = useLoader(THREE.TextureLoader, centerImage);
+
   return (
     <a.group
       rotation-z={rotation}
@@ -102,9 +105,12 @@ const Plane = ({ initPositionOffset, board, children, dice, index }) => {
             {/* <RefPoint position={[0, 0, 1]} /> */}
             <boxGeometry attach="geometry" args={[9, 9, PLANE.depth]} />
             <meshStandardMaterial
-              metalness={0.1}
-              attach="material"
-              emissive="#F4A201"
+              map={texture2}
+              // metalness={1}
+              attachArray="material"
+              // attach="material"
+              // emissive="#000"
+              emissive="#000"
             />
           </mesh>
           {children}

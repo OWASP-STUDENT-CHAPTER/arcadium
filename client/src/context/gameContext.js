@@ -1,8 +1,8 @@
-import { useState, createContext, useMemo, useEffect } from 'react';
-import { useQuery } from 'react-query';
-import axios from '../util/axios';
+import { useState, createContext, useMemo, useEffect } from "react";
+import { useQuery } from "react-query";
+import axios from "../util/axios";
 
-import genBoard from '../util/genBoard';
+import genBoard from "../util/genBoard";
 
 const GameContext = createContext();
 
@@ -14,10 +14,12 @@ const GameProvider = ({ children }) => {
   const [showPropertyModel, setShowPropertyModel] = useState(false);
   const [index, setIndex] = useState(0);
   const [canMove, setCanMove] = useState(true);
+  const [balance, setBalance] = useState(0);
+
   // const init/
   const { data: roomData } = useQuery(
-    'roomData',
-    () => axios.get('/property/room').then((res) => res.data.data),
+    "roomData",
+    () => axios.get("/property/room").then((res) => res.data.data),
     {
       initialData: { ownershipMap: {}, properties: [] },
     }
@@ -59,8 +61,9 @@ const GameProvider = ({ children }) => {
           setShow: setShowPropertyModel,
           show: showPropertyModel,
         },
-      }}
-    >
+        balance,
+        setBalance,
+      }}>
       {children}
     </GameContext.Provider>
   );

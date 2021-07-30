@@ -1,4 +1,5 @@
 const router = require('express').Router();
+
 const isAuthenticated = require('../middleware/isAuthenticated');
 const Room = require('../model/roomModel');
 const { PROPERTY_COLORS } = require('../util/CONSTANTS');
@@ -77,7 +78,7 @@ router.post('/buy', isAuthenticated, async (req, res) => {
   await room.save();
   await req.user.save();
 
-  res.send({ msg: 'bought' });
+  res.send({ msg: 'bought', money: req.user.game.money });
 });
 
 //Create property

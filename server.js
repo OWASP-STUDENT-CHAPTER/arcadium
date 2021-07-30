@@ -64,7 +64,7 @@ app.use("/api/auth", require("./auth/routes"));
 app.use("/api/team", require("./team/routes"));
 app.use("/api/question", require("./routes/question"));
 app.use("/api/property", require("./properties/routes"));
-app.use("/api/community",require('./community/routes'));
+app.use("/api/community", require("./community/routes"));
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, console.log(`Server started on port ${port}`));
@@ -94,11 +94,11 @@ require("./init/initSocket")(io, app);
 // * Production setup
 if (process.env.NODE_ENV === "production") {
   console.log("prod");
-  app.use(express.static(path.resolve(__dirname, "client", "build")));
+  app.use(express.static(path.resolve(__dirname, "../client", "build")));
   app.get("/*", function (req, res) {
     // this -->
     // res.cookie("XSRF-TOKEN", req.csrfToken());
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "../client", "build", "index.html"));
   });
 
   // Handle unhandled promise rejections

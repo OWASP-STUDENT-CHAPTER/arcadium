@@ -32,6 +32,11 @@ const propertySchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rent: {
+    type: Number,
+    required: true,
+    defalut: 100,
+  },
 });
 
 module.exports = eventDB.model('Property', propertySchema);

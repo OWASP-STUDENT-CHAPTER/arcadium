@@ -4,13 +4,17 @@ import { GameContext } from '../../context/gameContext';
 import '../../assets/css/TeamDetails.css';
 
 const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
-  const [balance, setBalance] = useState(game.money);
+  // const [balance, setBalance] = useState(game.money);
   // const [debt, setDebt] = useState(0);
 
-  const { properties, ownershipMap } = useContext(GameContext);
+  const { properties, ownershipMap, balance, setBalance } =
+    useContext(GameContext);
   const toNumbers = (arr) => arr.map(Number);
   const ownedProps = toNumbers(Object.keys(ownershipMap));
 
+  useEffect(() => {
+    setBalance(game.money);
+  }, [game]);
   // useEffect(()=>{
   //   // updateBalance(game.mon)
   // },[ownershipMap])
@@ -18,14 +22,14 @@ const TeamDetails = ({ teamName, teamMembers, game, socket }) => {
   useEffect(() => {
     socket.on('update_balance', (data) => {
       console.log('updated', data);
-      updateBalance(data.teamMoney);
+      setBalance(data.teamMoney);
       // updateDebt(data.teamMoney);
     });
   }, []);
 
-  const updateBalance = (data) => {
-    setBalance(data);
-  };
+  // const updateBalance = (data) => {
+  //   setBalance(data);
+  // };
   // const updateDebt = (data) => {
   //   if (data >= 0) setDebt(0);
   //   else setDebt(data - 2 * data);
