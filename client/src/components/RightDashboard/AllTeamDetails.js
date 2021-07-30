@@ -13,10 +13,6 @@ const AllTeamDetails = ({ teams }) => {
           {teams.map((team) => {
             return (
               <div key={team._id} className='team'>
-                <i
-                  className='fas fa-chess-pawn fa-3x'
-                  style={{ color: 'blue' }}
-                />
                 <span className='team-name' key={team._id}>
                   {team.teamName}
                 </span>

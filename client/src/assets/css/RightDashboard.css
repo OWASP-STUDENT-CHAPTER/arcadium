@@ -40,7 +40,7 @@
 .team {
   display: flex;
   flex-direction: row;
-  width: 120px;
+  width: auto;
   color: white;
   padding: 12px 20px;
   border-radius: 8px;
@@ -51,10 +51,6 @@
   margin-bottom: 15px;
   align-items: center;
 }
-.team-name {
-  margin-left: 12px;
-}
-
 .dice-container {
   width: 100px;
   background-color: #21219d52;
