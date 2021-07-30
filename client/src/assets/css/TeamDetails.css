@@ -8,6 +8,7 @@
   color: #fff;
   background: #090b32;
   padding: 10px 0;
+  padding-bottom: 20px;
   border-radius: 10px;
   box-shadow: inset -4px -4px 3px rgba(255, 255, 255, 0.18),
     inset 4px 4px 3px #000000;
@@ -16,6 +17,7 @@
 .details-heading {
   font-size: 1.2rem;
   font-weight: 400;
+  margin-bottom: 10px;
 }
 
 h2,
@@ -23,14 +25,11 @@ p {
   margin: 0;
 }
 .properties {
-  height: 120px;
-  overflow-y: scroll;
+  height: 137px;
+  overflow-y: auto;
   padding: 12px 0;
   line-height: 1.5rem;
   list-style: decimal;
-}
-.properties .details-heading {
-  margin-bottom: 6px;
 }
 .properties li {
   font-size: 0.96rem;

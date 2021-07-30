@@ -4,9 +4,13 @@
   left: 350px;
   width: 860px;
   height: 540px;
-  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(8px);
-  background-color: rgba(180, 177, 177, 0.397);
+  background: linear-gradient(
+    78.99deg,
+    rgba(0, 78, 150, 0.68) 5.23%,
+    rgba(18, 251, 181, 0.3) 46.78%,
+    rgba(144, 0, 168, 0.44) 93.84%
+  );
+  backdrop-filter: blur(4px);
   /* border: 10px solid rebeccapurple; */
   /* backdrop-filter: ; */
   z-index: 100;
@@ -45,6 +49,9 @@
 .imgProperty .tiles {
   transform: rotateZ(90deg);
   height: 220px;
+  margin-top: 38px;
+  position: relative;
+  left: -20px;
 }
 .rotImg .tiles {
   transform: rotateZ(-90deg);

@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
-const { eventDB } = require("../init/db");
-const { PROPERTY_COLORS } = require("../util/CONSTANTS");
+const mongoose = require('mongoose');
+const { eventDB } = require('../init/db');
+const { PROPERTY_COLORS } = require('../util/CONSTANTS');
 
 const propertySchema = new mongoose.Schema({
   _id: {
@@ -13,6 +13,10 @@ const propertySchema = new mongoose.Schema({
     unique: true,
   },
   price: {
+    type: Number,
+    required: true,
+  },
+  rent: {
     type: Number,
     required: true,
   },
@@ -35,4 +39,4 @@ const propertySchema = new mongoose.Schema({
   },
 });
 
-module.exports = eventDB.model("Property", propertySchema);
+module.exports = eventDB.model('Property', propertySchema);
