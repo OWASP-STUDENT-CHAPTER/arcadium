@@ -2,6 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import TeamDetails from '../components/TeamDetails/TeamDetails';
 import RollDice from '../components/RightDashboard/RollDice';
 import arcadiumLogo from '../assets/img/arcadium logo.png';
+import Loader from '../assets/img/hero-preloaders.svg';
 
 import '../assets/css/MainPage.css';
 import Timer from '../components/Timer/Timer';
@@ -34,7 +35,12 @@ const MainPage = ({ team, socket, teams }) => {
     if (leaderboard) setLeaderboard(false);
     else setLeaderboard(true);
   };
-  if (properties.length === 0) return <>Loading...</>;
+  if (properties.length === 0)
+    return (
+      <div className='loading'>
+        <img src={Loader} alt='' />
+      </div>
+    );
 
   return (
     <div className='main-container'>
@@ -43,9 +49,9 @@ const MainPage = ({ team, socket, teams }) => {
         <div className='logo'>
           <img src={arcadiumLogo} alt='Logo' className='arcadium-logo' />
         </div>
-        <div>
+        {/* <div>
           <Timer time={timeStart} />
-        </div>
+        </div> */}
       </div>
       <div className='left-dashboard'>
         <TeamDetails

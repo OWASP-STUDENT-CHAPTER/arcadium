@@ -1,6 +1,6 @@
 .popUp {
   position: absolute;
-  top: 160px;
+  top: 130px;
   left: 350px;
   width: 860px;
   height: 540px;
@@ -16,15 +16,18 @@
   z-index: 100;
   border-radius: 10px;
 }
+.popUp h4 {
+  font-size: 1.2rem;
+}
 .popUp .timerModal {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: -10px;
+  margin: 0 auto;
   font-size: 1.1rem;
   padding: 8px 10px;
   box-shadow: 2px 2px 4px #090917;
   border-radius: 11px;
-  background-color: #21219d52;
+  background-color: #21219d;
   width: 110px;
 }
 .closeModal {
@@ -56,9 +59,13 @@
 .rotImg .tiles {
   transform: rotateZ(-90deg);
 }
+/* .rotImg .corner {
+  transform: rotateZ(90deg);
+} */
 .imgProperty .corner {
   height: 300px;
   margin-left: 40px;
+  margin-top: 50px;
 }
 .modalContent {
   display: flex;
@@ -66,8 +73,8 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  background-color: rgba(16, 29, 73, 0.924);
-  backdrop-filter: blur(5px);
+  /* background-color: rgba(16, 29, 73, 0.924);
+  backdrop-filter: blur(5px); */
   text-align: center;
   border-radius: 10px;
   padding: 20px;
@@ -136,6 +143,12 @@ button.rentbtn:hover {
 
 .cornerContent {
   right: 0px;
+}
+.modalMsg {
+  background: #21219d;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
 .prices {
