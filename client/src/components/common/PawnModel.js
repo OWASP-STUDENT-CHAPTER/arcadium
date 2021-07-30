@@ -73,18 +73,22 @@ const Pawn = ({
 
     boxMesh.current.position.y = dy;
     boxMesh.current.position.x = dx;
+
     if (!player) return;
     if (dy == y && x == dx) {
-      if (isAnimating == true) setIsAnimating(false);
+      if (isAnimating == true) setTimeout(() => setIsAnimating(false), 1000);
     } else setIsAnimating(true);
     // * update camera
     const [camX_Offset, camY_Offset] = camPosOffset;
   });
-
   if (!modelNumber || modelNumber == -1) modelNumber = 1;
+
+  const rotation = MODELS[modelNumber].getRotation(index);
+
   const Model = MODELS[modelNumber] ? MODELS[modelNumber].comp : Shield;
   // alert(modelNumber);
   // console.log("model num", MODELS[modelNumber]);
+  // const
   return (
     <Suspense fallback={<Box />}>
       <Model
@@ -92,6 +96,7 @@ const Pawn = ({
         // rotation={MODELS[modelNumber].rotation}
         // position={[0, 0, 0.5]}
         // scale={[0.15, 0.15, 0.15]}
+        rotation={rotation}
         {...MODELS[modelNumber].props} //! fix
       />
     </Suspense>

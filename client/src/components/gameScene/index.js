@@ -1,6 +1,6 @@
 import { useState, useEffect, Suspense, useMemo, useContext } from "react";
 import { Canvas } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
+import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
 import Player from "../Player";
 import Opponent from "../Opponent";
 // import CaptainAmeraShield from "../cap10.gltf";
@@ -12,7 +12,7 @@ import { GameContext } from "../../context/gameContext";
 import Plane from "./plane.js";
 import centerImage from "../../assets/img/board center.png";
 import { useQueryClient } from "react-query";
-
+// import {O} from '@r'
 const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const {
     teams,
@@ -25,6 +25,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
     index,
     setIndex,
     setOwnershipMap,
+    balance,
+    setBalance,
   } = useContext(GameContext);
   const { team } = useContext(AuthContext);
   const queryClient = useQueryClient();
@@ -57,9 +59,22 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
     socket.removeAllListeners("allow_moving"); //!
     socket.removeAllListeners("allow_moving_same"); //!
     socket.removeAllListeners("update_ownershipMap"); //!
+    socket.removeAllListeners("rent"); //!
     socket.on("player_move", (data) => {
       console.log("oponnent move", data);
       updatePos(data.teamId, data.pos, team._id);
+    });
+    socket.on("rent", ({ rentTo, rentFrom, amount }) => {
+      console.log("rent");
+      console.log("rentTO", rentTo);
+      console.log("rentFrom", rentFrom);
+      console.log("amount", amount);
+      if (team._id == rentTo) {
+        setBalance(balance + amount);
+        alert(`rent from ${rentFrom.name}`);
+      } else if (team._id === rentFrom.id) {
+        setBalance(balance - amount);
+      }
     });
 
     socket.on("update_ownershipMap", ({ ownershipMap }) => {
@@ -170,6 +185,7 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
               </Plane>
               <group position={[0, 0, 4]}>
                 <pointLight intensity={3} position={[-5, -5, 0]} />
+                {/* <OrbitControls /> */}
                 <PerspectiveCamera makeDefault {...camProps} />
               </group>
             </group>

@@ -21,12 +21,17 @@ const propertySchema = new mongoose.Schema({
     required: true,
     enum: PROPERTY_COLORS,
   },
-  type:{
-    type : String,
+  type: {
+    type: String,
   },
   imgUrl: {
     type: String,
     required: true,
+  },
+  rent: {
+    type: Number,
+    required: true,
+    defalut: 100,
   },
 });
 

@@ -70,6 +70,7 @@ const initSocket = (io, app) => {
       trigger_update_ownershipMap,
       corner_tile_actions,
       update_balance,
+      payRent,
     } = getSocketFunction(io, socket, team._id, team.room);
 
     socket.on("disconnect", disconnect);
@@ -77,6 +78,7 @@ const initSocket = (io, app) => {
     socket.on("trigger_update_ownershipMap", trigger_update_ownershipMap);
     socket.on("corner_tile_actions", corner_tile_actions);
     socket.on("update_balance", update_balance);
+    socket.on("pay_rent", payRent);
   });
 };
 
