@@ -3,15 +3,18 @@ import { GrClose } from 'react-icons/gr';
 import Row from './Row';
 import axios from '../../util/axios';
 import { useEffect, useState } from 'react';
+import Spinner from '../Spinner/Spinner';
 // import { useQuery } from 'react-query';
 
 const Leaderboard = (props) => {
   const [teams, setTeams] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   const getAllTeams = async () => {
     try {
       const res = await axios.get('/team');
       setTeams(res.data);
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -70,6 +73,19 @@ const Leaderboard = (props) => {
           </tr>
         </thead>
         <tbody>
+          {isLoading && (
+            <tr>
+              <td>
+                <Spinner />
+              </td>
+              <td>
+                <Spinner />
+              </td>
+              <td>
+                <Spinner />
+              </td>
+            </tr>
+          )}
           {sortedTeams.map((team) => {
             return (
               <Row rank={sno++} teamName={team.teamName} points={team.points} />
