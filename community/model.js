@@ -5,7 +5,7 @@ const quesSchema= mongoose.Schema({
     Type :{
         type : String,
         required : true,
-        enum : [ "move" , "jail" , "balance" , "freeze" ]
+        enum : [ "move" , "jail" , "balance" , "freeze","none" ]
     },
     body : {
         type : String,

@@ -168,9 +168,13 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
       (index <= 39 && index >= 32 && i >= 0 && i < 10)
     )
       cornerTile(index, i);
-    if (i == 2 || i == 7 || i == 17 || i == 22 || i == 32 || i == 36) {
+    if (i == 2 || i == 17 || i == 32) {
       console.log('Community GGG');
       socket.emit('community', { i, type: 'uno' });
+    }
+    if (i == 7 || i == 22 || i == 36) {
+      console.log('Community GGG');
+      socket.emit('community', { i, type: 'chance' });
     }
 
     const rent = {};

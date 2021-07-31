@@ -180,6 +180,13 @@ module.exports = (io, socket, teamId, roomId) => {
             pos: 31,
           });
         }
+        else if (communityQues.place === 'rest') {
+          // req.user.game.posIndex = 31;
+          // req.user.save();
+          socket.emit('move_frontend', {
+            pos: 21,
+          });
+        }
       } else if (communityQues.step) {
         // move backard or forward
         console.log(data.ques.step);
@@ -197,16 +204,21 @@ module.exports = (io, socket, teamId, roomId) => {
           if (team._id === teamd._id) {
             break;
           }
-          teamd.game.money += communityQues.balance;
+          teamd.game.money += communityQues.money;
           teamd.save();
           cnt++;
         }
-        team.game.money += cnt * communityQues.balance;
+        team.game.money += cnt * communityQues.money;
+        team.save();
       } else {
-        team.game.money += communityQues.balance;
+        team.game.money += communityQues.money;
+        console.log(team);
         team.save();
         // from bank ezzzzzzzzzzzzzz
       }
+      socket.emit('update_balance', {
+        teamMoney: team.game.money,
+      });
     } else if (communityQues.Type === 'freeze') {
       // freeze for time
       setTimeout(() => {
