@@ -21,30 +21,33 @@ module.exports = (io, socket, teamId, roomId) => {
     console.log("a move", data);
     //! save move
     const team = await Team.findById(teamId);
+    const room = await Room.findById(roomId);
 
     team.game.posIndex = data.pos;
     team.game.currentQuestion = null;
     team.game.currentReduction = 0;
     team.game.canMove = false;
     team.rentPaidFor = 0;
-    socket.to(roomId).emit("player_move", {
-      pos: data.pos,
-      teamId: teamId,
-    });
+    if (room.owener)
+      socket.to(roomId).emit("player_move", {
+        pos: data.pos,
+        teamId: teamId,
+      });
     await team.save(); //!
 
     //! wait for save?
     // check for not allowed
-    setTimeout(async () => {
-      team.game.canMove = true;
-      await team.save();
-      console.log("allow");
-      socket.emit("allow_moving");
-      // io.sockets.to(team._id).emit("allow_moving");
-      // socket.emit("allow_moving");
-      // socket.emit("allow_moving");
-      socket.to(roomId).emit("allow_moving_same", { teamId: team._id });
-    }, 3000); //! change
+    if (room.ownershipMap[pos + 1])
+      setTimeout(async () => {
+        team.game.canMove = true;
+        await team.save();
+        console.log("allow");
+        socket.emit("allow_moving");
+        // io.sockets.to(team._id).emit("allow_moving");
+        // socket.emit("allow_moving");
+        // socket.emit("allow_moving");
+        socket.to(roomId).emit("allow_moving_same", { teamId: team._id });
+      }, 3000); //! change
   };
 
   const corner_tile_actions = async ({ data }) => {
@@ -224,6 +227,11 @@ module.exports = (io, socket, teamId, roomId) => {
       rentFrom: { id: team._id, name: team.teamName },
       amount: amt,
     });
+    // socket.emit("allo", {
+    //   rentTo: ownerTeamId,
+    //   rentFrom: { id: team._id, name: team.teamName },
+    //   amount: amt,
+    // });
   };
   return {
     disconnect,
