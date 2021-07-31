@@ -20,34 +20,61 @@ module.exports = (io, socket, teamId, roomId) => {
   const move = async (data) => {
     console.log("a move", data);
     //! save move
+    const { pos } = data;
     const team = await Team.findById(teamId);
-    const room = await Room.findById(roomId);
+    // const room = await Room.findById(roomId);
 
-    team.game.posIndex = data.pos;
     team.game.currentQuestion = null;
-    team.game.currentReduction = 0;
+
     team.game.canMove = false;
-    team.rentPaidFor = 0;
-    if (room.owener)
-      socket.to(roomId).emit("player_move", {
-        pos: data.pos,
-        teamId: teamId,
+
+    console.log("pos", team.game.posIndex);
+    console.log("team.rentPaidFor", team.game.rentPaidFor);
+
+    if (data.payRent && team.game.rentPaidFor !== team.game.posIndex + 1) {
+      // team.game.rentPaidFor = pos + 1;
+      const amt =
+        data.payRent - (data.payRent * team.game.currentReduction) / 100;
+
+      team.game.money -= amt; //
+      const oppTeam = await Team.findById(data.rentTo);
+      oppTeam.game.money += amt; ////! reduction?
+
+      await oppTeam.save();
+      socket.to(roomId).emit("rent", {
+        rentTo: data.rentTo,
+        rentFrom: { id: team._id, name: team.teamName },
+        amount: data.payRent,
       });
+      socket.emit("rent", {
+        rentTo: data.rentTo,
+        rentFrom: { id: team._id, name: team.teamName },
+        amount: data.payRent,
+      });
+    }
+    team.game.currentReduction = 0;
+    team.game.posIndex = pos;
+    team.game.rentPaidFor = 0;
+    // if (room.owener)
+    //   socket.to(roomId).emit("player_move", {
+    //     pos: pos,
+    //     teamId: teamId,
+    //   });
     await team.save(); //!
 
     //! wait for save?
     // check for not allowed
-    if (room.ownershipMap[pos + 1])
-      setTimeout(async () => {
-        team.game.canMove = true;
-        await team.save();
-        console.log("allow");
-        socket.emit("allow_moving");
-        // io.sockets.to(team._id).emit("allow_moving");
-        // socket.emit("allow_moving");
-        // socket.emit("allow_moving");
-        socket.to(roomId).emit("allow_moving_same", { teamId: team._id });
-      }, 3000); //! change
+    // if (room.ownershipMap[pos + 1])
+    setTimeout(async () => {
+      team.game.canMove = true;
+      await team.save();
+      console.log("allow");
+      socket.emit("allow_moving");
+      // io.sockets.to(team._id).emit("allow_moving");
+      // socket.emit("allow_moving");
+      // socket.emit("allow_moving");
+      socket.to(roomId).emit("allow_moving_same", { teamId: team._id });
+    }, 3000); //! change
   };
 
   const corner_tile_actions = async ({ data }) => {
@@ -192,8 +219,8 @@ module.exports = (io, socket, teamId, roomId) => {
       console.log("returning due to paid");
       return;
     }
-    console.log("asdnasbdkabsd,");
-    console.log("room", room);
+    // console.log("asdnasbdkabsd,");
+    // console.log("room", room);
 
     const ownerTeamId = room.ownershipMap[property._id];
     console.log("ownerTeamId", ownerTeamId);
@@ -204,7 +231,7 @@ module.exports = (io, socket, teamId, roomId) => {
     if (amt === undefined) {
       amt = 100;
     }
-
+    amt = amt - (amt * team.game.currentReduction) / 100;
     const ownerTeam = await Team.findOneAndUpdate(
       { _id: ownerTeamId },
       {
@@ -214,9 +241,10 @@ module.exports = (io, socket, teamId, roomId) => {
       }
     );
 
+    team.game.money -= amt;
     team.game.rentPaidFor = property._id;
     await team.save();
-    console.log(team.rentPaidFor);
+    console.log(team.game.rentPaidFor);
     socket.to(roomId).emit("rent", {
       rentTo: ownerTeamId,
       rentFrom: { id: team._id, name: team.teamName },

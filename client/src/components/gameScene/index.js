@@ -1,18 +1,15 @@
 import { useState, useEffect, Suspense, useMemo, useContext } from "react";
 import { Canvas } from "@react-three/fiber";
-import { PerspectiveCamera, OrbitControls } from "@react-three/drei";
+import { PerspectiveCamera } from "@react-three/drei";
 import Player from "../Player";
 import Opponent from "../Opponent";
-// import CaptainAmeraShield from "../cap10.gltf";
 import { PLANE, camPosOffset } from "../../config/CONSTANTS";
+import swal from "sweetalert";
 
 import { AuthContext } from "../../context/authContext.js";
 import { GameContext } from "../../context/gameContext";
-// import CameraControls from "../camera/orbit";
 import Plane from "./plane.js";
-import centerImage from "../../assets/img/board center.png";
 import { useQueryClient } from "react-query";
-// import {O} from '@r'
 const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const {
     teams,
@@ -24,20 +21,35 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
     propertyModel,
     index,
     setIndex,
-    setOwnershipMap,
     balance,
     setBalance,
+    ownershipMap,
   } = useContext(GameContext);
   const { team } = useContext(AuthContext);
   const queryClient = useQueryClient();
-
+  const [lastMove, setLastMove] = useState(() => {
+    const time = localStorage.getItem("t") || Date.now();
+    console.log("time", time);
+    return time;
+  });
+  const [timeoutId, setTimeoutId] = useState(null);
   useEffect(() => {
     setIndex(team.game.posIndex);
   }, [team]);
+  const total = 10 * 1000;
+
+  useEffect(() => {
+    clearTimeout(timeoutId);
+    const tID = setTimeout(() => {
+      // setDice((Date.now() % 6) + 1);
+      setDice(3);
+    }, 10 * 60 * 1000);
+    setTimeoutId(tID);
+    return clearTimeout(timeoutId);
+  }, [lastMove]);
 
   useEffect(() => {
     if (isAnimating == false && index != 0) propertyModel.setShow(true);
-    // alert(`${properties[index].name}`); //!open popup
   }, [isAnimating]);
 
   // const [camRot, setCamRot] = useState([0, 0, 0]);
@@ -74,6 +86,11 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
         alert(`rent from ${rentFrom.name}`);
       } else if (team._id === rentFrom.id) {
         setBalance(balance - amount);
+        swal({
+          title: "Congratulations!",
+          text: "Rent Paid!",
+          icon: "success",
+        });
       }
     });
 
@@ -114,17 +131,27 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
     )
       cornerTile(index, i);
 
+    const rent = {};
+
+    if (
+      ownershipMap[properties[index]._id] &&
+      ownershipMap[properties[index]._id] !== team._id
+    ) {
+      rent.payRent = properties[index].rent;
+      rent.rentTo = ownershipMap[properties[index]._id];
+    }
+
     setIndex(i);
-    // const { spring } = useSpring({
-    //   spring: active,
-    //   config: { mass: 5, tension: 400, friction: 50, precision: 0.0001 },
-    // });
-    // setCamRot([0, 0, camRot[2] + 0.1 * d]);
-    // setDice(d);
-    setCanMove(false);
+
+    // setCanMove(false);
+
     console.log("moving");
+
+    setLastMove(Date.now());
+    localStorage.setItem("t", Date.now());
     socket.emit("move", {
       pos: i,
+      ...rent,
     });
   };
   const cornerTile = async (prevPos, currentPos) => {
