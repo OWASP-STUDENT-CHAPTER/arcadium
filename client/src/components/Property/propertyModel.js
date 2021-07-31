@@ -9,8 +9,14 @@ import classes from './propertyModel.module.css';
 import Spinner from '../Spinner/Spinner';
 
 const PropertyModel = ({ socket }) => {
-  const { propertyModel, properties, index, ownershipMap, setBalance } =
-    useContext(GameContext);
+  const {
+    propertyModel,
+    properties,
+    index,
+    ownershipMap,
+    setBalance,
+    specialQues,
+  } = useContext(GameContext);
   const { team } = useContext(AuthContext);
   // const [price, setPrice] = useState(properties[index].price);
   const [discount, setDiscount] = useState(0);
@@ -80,6 +86,7 @@ const PropertyModel = ({ socket }) => {
     else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
+  console.log(specialQues);
 
   return (
     <div className={classes.popUp}>
@@ -147,6 +154,7 @@ const PropertyModel = ({ socket }) => {
                     <button onClick={payRent} className={classes.rentbtn}>
                       Pay Rent
                     </button>
+                    <span>OR</span>
                     <button className={classes.linkbtn}>Question Link</button>
                   </div>
                 </>
@@ -201,9 +209,12 @@ const PropertyModel = ({ socket }) => {
 
                 {question && (
                   <>
-                    <a
-                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
-                    >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    <div className={classes.quesLink}>
+                      <a
+                        href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
+                      >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    </div>
+
                     <button
                       className={classes.rentbtn}
                       onClick={() =>
@@ -231,7 +242,9 @@ const PropertyModel = ({ socket }) => {
                 You have paid a tax of 1000 points!
               </h2>
             ) : (
-              <h2 className={classes.modalMsg}>This is a Special Card!</h2>
+              <h2 className={classes.modalMsg}>
+                {specialQues ? specialQues.body : null}
+              </h2>
             )
           ) : index === 10 ? (
             <h2 className={classes.modalMsg}>You can win this!</h2>
