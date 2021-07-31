@@ -154,47 +154,30 @@ const PropertyModel = ({ socket }) => {
                     <button className={classes.linkbtn} onClick={getQuestion}>
                       Get Question
                     </button>
+                    {question && (
+                      <>
+                        <div className={classes.quesLink}>
+                          <a
+                            href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                        </div>
+
+                        <button
+                          className={classes.rentbtn}
+                          onClick={() =>
+                            checkAns(
+                              ownershipMap[properties[index]._id]
+                                ? "rent"
+                                : "buy"
+                            )
+                          }>
+                          Check Answer
+                        </button>
+                      </>
+                    )}
                   </div>
                 </>
-                //   <div>
-                //   {!question && (
-                //     <>
-                //       <button className={classes.linkbtn} onClick={getQuestion}>
-                //         Get Question
-                //       </button>
-                //       <h4>OR</h4>
-                //     </>
-                //   )}
-
-                //   {question && (
-                //     <>
-                //       <h4>{question.questionLink}</h4>
-                //       <button className={classes.rentbtn} onClick={checkAns}>
-                //         Check Answer
-                //       </button>
-                //     </>
-                //   )}
-                //   {/* <h4>{properties[index].price - discount}</h4> */}
-                //   <button
-                //     className={classes.rentbtn}
-                //     onClick={() => buyProperty(properties[index]._id)}
-                //   >
-                //     Pay Rent
-                //   </button>
-                // </div>
               )
             ) : (
-              // <>
-              //   <div className={classes.buttons}>
-              //     <button
-              //       onClick={() => buyProperty(properties[index]._id)}
-              //       className={classes.buybtn}
-              //     >
-              //       Buy
-              //     </button>
-              //     <button className={classes.linkbtn}>Question Link</button>
-              //   </div>
-              // </>
               <div>
                 {!question && (
                   <>
