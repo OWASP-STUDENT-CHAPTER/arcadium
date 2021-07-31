@@ -86,20 +86,30 @@ router.get("/", isAuthenticated, async (req, res) => {
     );
     if (!assignedQuestion) {
       req.user.game.currentQuestion = null;
+      req.user.game.currentQuestionTimestamp = null;
       await req.user.save();
       return res.send({
         error: "Error occured while fetching question",
         message: "retry, prev question cleared",
       });
     }
-    return res.send({ data: assignedQuestion });
+    return res.send({
+      data: {
+        link: assignedQuestion.link,
+        timestamp: req.user.game.currentQuestionTimestamp,
+      },
+    });
   }
 
   let count = req.app.get("questionsCount");
   if (!count) count = 10;
   const number = Math.floor(Math.random() * count);
   try {
-    let nin = req.user.game.questionAttempted.map((q) =>
+    console.log(
+      "req.user.game.questionAttempted",
+      req.user.game.questionAttempted
+    );
+    let nin = req.user.game.questionAttempted?.map((q) =>
       mongoose.Types.ObjectId(q)
     );
     if (!nin) nin = [];
@@ -120,9 +130,15 @@ router.get("/", isAuthenticated, async (req, res) => {
     req.user.game.questionAttempted.push(question.id);
 
     req.user.game.currentQuestion = question.id;
+    req.user.game.currentQuestionTimestamp = Date.now();
     await req.user.save();
 
-    await res.send({ data: question });
+    await res.send({
+      data: {
+        link: question.link,
+        timestamp: req.user.game.currentQuestionTimestamp,
+      },
+    });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -170,10 +186,14 @@ router.delete("/:id", async (req, res) => {
 
 router.post("/newton/callback", async (req, res) => {
   console.log(req.body);
+  if (req.body.key !== "48670240059") {
+    return res.status(403).send("invalid req");
+  }
+
   const newSolve = new Solve({
     email: req.body.email,
-    question: req.body.questionId,
-    //! timestamp
+    question: req.body.assignment_hash,
+    timestamp: Date.now(),
   });
   await newSolve.save();
   // console.log(newSolve);
@@ -198,11 +218,14 @@ router.post("/checkAnswer", isAuthenticated, async (req, res) => {
     m = m.toObject();
     return m.email;
   });
+  console.log("question", question);
+
   console.log("inArr", inArr);
   const solve = await Solve.findOne({
     email: { $in: inArr },
-    question: req.user.game.currentQuestion,
+    question: question.link,
   });
+
   console.log("solve", solve);
   if (!solve) {
     return res.status(400).send({
@@ -215,6 +238,30 @@ router.post("/checkAnswer", isAuthenticated, async (req, res) => {
     return res
       .status(400)
       .send({ error: "no question found", message: "retry" });
+
+  console.log(
+    "req.user.game.currentQuestionTimestamp",
+    req.user.game.currentQuestionTimestamp
+  );
+  console.log("solve.timestamp", solve.timestamp);
+
+  console.log(
+    "diff : ",
+    solve.timestamp - req.user.game.currentQuestionTimestamp
+  );
+  console.log(
+    "off : ",
+    1000 * 60 * 1 - (solve.timestamp - req.user.game.currentQuestionTimestamp)
+  );
+
+  if (
+    solve.timestamp - req.user.game.currentQuestionTimestamp >
+    1000 * 60 * 1 //!
+  ) {
+    return res.status(400).send({ error: "time window expired" });
+  }
+
+  // if(req.user.game.currentQuestionTimestamp - )
 
   req.user.game.currentReduction = type === "buy" ? 50 : 30;
 

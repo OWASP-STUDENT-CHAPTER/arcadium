@@ -18,7 +18,10 @@ const PropertyModel = ({ socket }) => {
 
   const [question, setQuestion] = useState(null);
   const [solved, setSolved] = useState(true);
-
+  useEffect(() => {
+    setQuestion(null);
+    setDiscount(0);
+  }, [index]);
   // console.log("propertyModel.show", propertyModel.show);
   if (!propertyModel.show) return <></>;
   // setTimeout(() => propertyModel.setShow(false));
@@ -69,7 +72,8 @@ const PropertyModel = ({ socket }) => {
       type,
     });
     console.log(data);
-    setDiscount(question.rentReduction);
+    if (type == "rent") setDiscount(30);
+    else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
 
@@ -111,11 +115,15 @@ const PropertyModel = ({ socket }) => {
             <div className={classes.prices}>
               {!ownershipMap[properties[index]._id] ? (
                 <div className={classes.buyprice}>
-                  Buy: ${properties[index].price - discount}
+                  Buy: $
+                  {properties[index].price -
+                    (discount * properties[index].price) / 100}
                 </div>
               ) : (
                 <div className={classes.rentprice}>
-                  Rent: ${properties[index].rent}
+                  Rent: $
+                  {properties[index].rent -
+                    (discount * properties[index].rent) / 100}
                 </div>
               )}
             </div>
@@ -186,7 +194,8 @@ const PropertyModel = ({ socket }) => {
 
                 {question && (
                   <>
-                    <h4>{question.questionLink}</h4>
+                    <a
+                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
                     <button
                       className={classes.rentbtn}
                       onClick={() =>
