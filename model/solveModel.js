@@ -13,6 +13,10 @@ const solveSchema = new mongoose.Schema({
     ref: "Question",
     required: true,
   },
+  timestamp: {
+    type: Date,
+    required: true,
+  },
 });
 
 module.exports = eventDB.model("Solve", solveSchema);
