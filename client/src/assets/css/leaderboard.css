@@ -1,91 +1,99 @@
-.leaderboard
-{
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%,-50%);
-	width: 80%;
-	height: 82%;
-	z-index: 100;
-	padding: 20px 30px 30px;
-	background-color: rgba(35, 47, 104, 0.856);
-	backdrop-filter: blur(10px);
-	box-shadow: 0px 0px 100px 100px rgba(15, 15, 15, 0.747);
-	border-radius: 10px;
-	overflow: scroll;
-	animation: appear 0.5s;
+.leaderboard {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 82%;
+  z-index: 100;
+  padding: 20px 30px 30px;
+  background-color: rgba(35, 47, 104, 0.856);
+  backdrop-filter: blur(10px);
+  box-shadow: 0px 0px 100px 100px rgba(15, 15, 15, 0.747);
+  border-radius: 10px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  animation: appear 0.5s;
+}
+.leaderboard::-webkit-scrollbar {
+  width: 8px;
+}
+.leaderboard::-webkit-scrollbar-track {
+  background-color: #fff;
+  border-radius: 2px;
+}
+.leaderboard::-webkit-scrollbar-thumb {
+  background: hsl(198, 60%, 50%);
 }
 
-@keyframes appear
-{
-	0%{
-		transform: scale(0) translate(-50%,-50%);
-		top:10%;
-		left:0%;
-	}
-	100%
-	{
-		transform: scale(1) translate(-50%,-50%);
-	}
+@keyframes appear {
+  0% {
+    transform: scale(0) translate(-50%, -50%);
+    top: 10%;
+    left: 0%;
+  }
+  100% {
+    transform: scale(1) translate(-50%, -50%);
+  }
 }
 
-.leaderboard-heading
-{
-	font-family: 'Press Start 2P', cursive;
-	text-align: center;
-	margin-top: none;
-	margin-bottom: 16px;
-	font-size: 1.7rem;
+.leaderboard-heading {
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  margin-top: none;
+  margin-bottom: 30px;
+  font-size: 2rem;
 }
 
 #leaderboard-table {
-	font-family: 'Barcade No Bar', sans-serif;
-	border-collapse: collapse;
-	width: 100%;
-	height: 80%;
+  font-family: 'Roboto', sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  height: 80%;
+}
 
+#leaderboard-table td,
+#leaderboard-table th {
+  border: 2px dashed rgb(102, 186, 219);
+  padding: 8px;
+}
 
-  }
-  
-  #leaderboard-table td, #leaderboard-table th {
-	border: 2px dashed rgb(102, 186, 219);
-	padding: 8px;
-  }
-  
-  #leaderboard-table tr:nth-child(even){background-color: rgba(102, 186, 219, 0.322);}
-  
-  #leaderboard-table tr:hover {background-color: rgba(102, 186, 219, 0.322);}
-  
-  #leaderboard-table th {
-	font-family: 'Press Start 2P', cursive;
-	font-size: 0.8rem;
-	padding-top: 12px;
-	padding-bottom: 12px;
-	text-align: left;
-	background-color: rgb(102, 186, 219);
-	border: 3px solid rgb(238, 236, 236);
-	color: white;
-	border-collapse: separate;
-  }
+#leaderboard-table tr:nth-child(even) {
+  background-color: rgba(102, 186, 219, 0.322);
+}
 
-  .close-icon
-  {
-	position: relative;  
-	margin: 2px 5px 2px;
-	padding: 5px 5px;
-	font-size: 2rem;
-	left:calc(100% - 40px);
-	cursor: pointer;
-	transition: 0.3s;
-  }
+#leaderboard-table tr:hover {
+  background-color: rgba(102, 186, 219, 0.322);
+}
 
-  .close-icon path
-  {
-	  stroke: white;
-  }
+#leaderboard-table th {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8rem;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: rgb(102, 186, 219);
+  border: 3px solid rgb(238, 236, 236);
+  color: white;
+  border-collapse: separate;
+}
 
-  .close-icon:hover
-  {
-	  transform: scale(1.2);
-	  transition: 0.3s;
-  }
+.close-icon {
+  position: relative;
+  margin: 2px 5px 2px;
+  padding: 5px 5px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  left: calc(100% - 40px);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-icon path {
+  stroke: white;
+}
+
+.close-icon:hover {
+  transform: scale(1.2);
+  transition: 0.3s;
+}

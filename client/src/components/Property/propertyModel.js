@@ -1,6 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/authContext';
 import { GameContext } from '../../context/gameContext';
+import swal from 'sweetalert';
 import axios from '../../util/axios';
 import Timer from '../Timer/Timer';
 import { useState } from 'react/cjs/react.development';
@@ -28,6 +29,18 @@ const PropertyModel = ({ socket }) => {
   const buyProperty = async (id) => {
     console.log('buys', id);
     const { data } = await axios.post('/property/buy');
+    if (data.error)
+      swal({
+        title: 'Oops!',
+        text: 'Insufficient Funds',
+        icon: 'warning',
+      });
+    if (data.msg)
+      swal({
+        title: 'Congratulations!',
+        text: 'Property Bought!',
+        icon: 'success',
+      });
     console.log('emit');
     socket.emit('trigger_update_ownershipMap');
     console.log('after buy', data.money);
@@ -42,6 +55,11 @@ const PropertyModel = ({ socket }) => {
       pos: index,
     });
     console.log('paying rent ');
+    swal({
+      title: 'Congratulations!',
+      text: 'Rent Paid!',
+      icon: 'success',
+    });
   };
 
   const getQuestion = async () => {
@@ -108,7 +126,9 @@ const PropertyModel = ({ socket }) => {
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             ownershipMap[properties[index]._id] ? (
               ownershipMap[properties[index]._id] === team._id ? (
-                <h2>Already bought by you</h2>
+                <h4 className={classes.modalMsg}>
+                  You are the owner of the property!
+                </h4>
               ) : (
                 <>
                   <div className={classes.buttons}>
@@ -163,7 +183,7 @@ const PropertyModel = ({ socket }) => {
                     <button className={classes.linkbtn} onClick={getQuestion}>
                       Get Question
                     </button>
-                    <h4>OR</h4>
+                    <h5>OR</h5>
                   </>
                 )}
 
@@ -186,18 +206,24 @@ const PropertyModel = ({ socket }) => {
             )
           ) : specialIndex.includes(index) ? (
             index === 4 || index === 38 ? (
-              <h2>You have paid a tax of 1000 points!</h2>
+              <h2 className={classes.modalMsg}>
+                You have paid a tax of 1000 points!
+              </h2>
             ) : (
-              <h2>This is a Special Card!</h2>
+              <h2 className={classes.modalMsg}>This is a Special Card!</h2>
             )
           ) : index === 10 ? (
-            <h2>You can win this!</h2>
+            <h2 className={classes.modalMsg}>You can win this!</h2>
           ) : index === 20 ? (
-            <h2>You have paid 100 points to each team!</h2>
+            <h2 className={classes.modalMsg}>
+              You have paid 100 points to each team!
+            </h2>
           ) : index === 30 ? (
-            <h2>You have paid 500 points to get out of Jail!</h2>
+            <h2 className={classes.modalMsg}>
+              You have paid 500 points to get out of Jail!
+            </h2>
           ) : (
-            <h2>Here's to new beginings</h2>
+            <h2 className={classes.modalMsg}>Here's to new beginings</h2>
           )}
         </div>
       </div>

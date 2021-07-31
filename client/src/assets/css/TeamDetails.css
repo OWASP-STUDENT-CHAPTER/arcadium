@@ -7,7 +7,7 @@
   margin-top: 10px;
   color: #fff;
   background: #090b32;
-  padding: 10px 0;
+  padding: 10px 14px;
   padding-bottom: 20px;
   border-radius: 10px;
   box-shadow: inset -4px -4px 3px rgba(255, 255, 255, 0.18),
@@ -18,6 +18,9 @@
   font-size: 1.2rem;
   font-weight: 400;
   margin-bottom: 10px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.776);
+  border-radius: 6px;
+  padding-bottom: 5px;
 }
 
 h2,
@@ -25,9 +28,8 @@ p {
   margin: 0;
 }
 .properties {
-  height: 137px;
+  height: 110px;
   overflow-y: auto;
-  padding: 12px 0;
   line-height: 1.5rem;
   list-style: decimal;
 }
