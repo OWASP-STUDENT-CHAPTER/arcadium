@@ -190,7 +190,7 @@ router.delete('/:id', async (req, res) => {
 
 router.post('/newton/callback', async (req, res) => {
   console.log(req.body);
-  if (req.body.key !== '48670240059') {
+  if (req.body.web_hook_token !== '48670240059') {
     return res.status(403).send('invalid req');
   }
 
