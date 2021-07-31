@@ -23,6 +23,7 @@ const teamSchema = new mongoose.Schema({
     type: Number,
     default: -1,
   },
+
   game: {
     money: {
       type: Number,
@@ -74,6 +75,9 @@ const teamSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       default: null,
       ref: "Question",
+    },
+    currentQuestionTimestamp: {
+      type: Date,
     },
     currentReduction: {
       type: Number,

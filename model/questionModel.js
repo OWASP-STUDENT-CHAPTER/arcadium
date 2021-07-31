@@ -1,10 +1,15 @@
-const mongoose = require('mongoose');
-require('mongoose-type-url');
-const { eventDB } = require('../init/db');
+const mongoose = require("mongoose");
+require("mongoose-type-url");
+const { eventDB } = require("../init/db");
 
 const questionSchema = new mongoose.Schema({
-  questionLink: {
-    type: mongoose.SchemaTypes.Url,
+  // questionLink: {
+  //   type: mongoose.SchemaTypes.Url,
+  //   required: true,
+  // },
+  link: {
+    type: String,
+    unique: true,
     required: true,
   },
   rentReduction: {
@@ -14,4 +19,4 @@ const questionSchema = new mongoose.Schema({
   },
 });
 
-module.exports = eventDB.model('Question', questionSchema);
+module.exports = eventDB.model("Question", questionSchema);

@@ -44,13 +44,11 @@
       function () {
         // Lights on!
         if ($('.button').is(':checked')) {
-          $('.wrapper').addClass('lightBG');
           $('.switch-top').addClass('activated');
           $('.switch-bottom').addClass('activated');
           $('.light').addClass('activated');
           $('.switch-overlay').addClass('deactivated');
           $('.light-off').addClass('deactivated');
-          $('.wrapper').removeClass('darkBG');
           $('.switch-top').removeClass('deactivated');
           $('.switch-bottom').removeClass('deactivated');
           $('.light').removeClass('deactivated');
@@ -67,13 +65,11 @@
 
         // Lights off!
         else {
-          $('.wrapper').addClass('darkBG');
           $('.switch-top').addClass('deactivated');
           $('.switch-bottom').addClass('deactivated');
           $('.light').addClass('deactivated');
           $('.light-off').addClass('activated');
           $('.switch-overlay').addClass('activated');
-          $('.wrapper').removeClass('lightBG');
           $('.switch-top').removeClass('activated');
           $('.switch-bottom').removeClass('activated');
           $('.light').removeClass('activated');

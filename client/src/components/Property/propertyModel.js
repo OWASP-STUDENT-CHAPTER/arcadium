@@ -6,6 +6,7 @@ import axios from '../../util/axios';
 import Timer from '../Timer/Timer';
 import { useState } from 'react/cjs/react.development';
 import classes from './propertyModel.module.css';
+import Spinner from '../Spinner/Spinner';
 
 const PropertyModel = ({ socket }) => {
   const { propertyModel, properties, index, ownershipMap, setBalance } =
@@ -17,8 +18,12 @@ const PropertyModel = ({ socket }) => {
   const timeStart = { hours: 0, mins: 20, secs: 0 };
 
   const [question, setQuestion] = useState(null);
+  const [questionLoading, setQuestionLoading] = useState(true);
   const [solved, setSolved] = useState(true);
-
+  useEffect(() => {
+    setQuestion(null);
+    setDiscount(0);
+  }, [index]);
   // console.log("propertyModel.show", propertyModel.show);
   if (!propertyModel.show) return <></>;
   // setTimeout(() => propertyModel.setShow(false));
@@ -28,25 +33,26 @@ const PropertyModel = ({ socket }) => {
 
   const buyProperty = async (id) => {
     console.log('buys', id);
-    const { data } = await axios.post('/property/buy');
-    if (data.error)
-      swal({
-        title: 'Oops!',
-        text: 'Insufficient Funds',
-        icon: 'warning',
-      });
-    if (data.msg)
+    try {
+      const { data } = await axios.post('/property/buy');
+      console.log('emit');
+      socket.emit('trigger_update_ownershipMap');
+      console.log('after buy', data.money);
+      setBalance(data.money);
+
+      socket.emit('g');
       swal({
         title: 'Congratulations!',
         text: 'Property Bought!',
         icon: 'success',
       });
-    console.log('emit');
-    socket.emit('trigger_update_ownershipMap');
-    console.log('after buy', data.money);
-    setBalance(data.money);
-
-    socket.emit('g');
+    } catch (error) {
+      swal({
+        title: 'Oops!',
+        text: 'Insufficient Funds',
+        icon: 'warning',
+      });
+    }
   };
   // console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
@@ -55,11 +61,6 @@ const PropertyModel = ({ socket }) => {
       pos: index,
     });
     console.log('paying rent ');
-    swal({
-      title: 'Congratulations!',
-      text: 'Rent Paid!',
-      icon: 'success',
-    });
   };
 
   const getQuestion = async () => {
@@ -68,11 +69,15 @@ const PropertyModel = ({ socket }) => {
     console.log(data);
 
     setQuestion(data);
+    setQuestionLoading(false);
   };
-  const checkAns = async () => {
-    const { data } = await axios.get('/question/checkAnswer');
+  const checkAns = async (type) => {
+    const { data } = await axios.post('/question/checkAnswer', {
+      type,
+    });
     console.log(data);
-    setDiscount(question.rentReduction);
+    if (type == 'rent') setDiscount(30);
+    else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
 
@@ -115,12 +120,19 @@ const PropertyModel = ({ socket }) => {
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
-              <div className={classes.buyprice}>
-                Buy: ${properties[index].price - discount}
-              </div>
-              <div className={classes.rentprice}>
-                Rent: ${properties[index].rent}
-              </div>
+              {!ownershipMap[properties[index]._id] ? (
+                <div className={classes.buyprice}>
+                  Buy: $
+                  {properties[index].price -
+                    (discount * properties[index].price) / 100}
+                </div>
+              ) : (
+                <div className={classes.rentprice}>
+                  Rent: $
+                  {properties[index].rent -
+                    (discount * properties[index].rent) / 100}
+                </div>
+              )}
             </div>
           ) : null}
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
@@ -183,14 +195,23 @@ const PropertyModel = ({ socket }) => {
                     <button className={classes.linkbtn} onClick={getQuestion}>
                       Get Question
                     </button>
-                    <h5>OR</h5>
+                    <span>OR</span>
                   </>
                 )}
 
                 {question && (
                   <>
-                    <h4>{question.questionLink}</h4>
-                    <button className={classes.rentbtn} onClick={checkAns}>
+                    <a
+                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
+                    >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    <button
+                      className={classes.rentbtn}
+                      onClick={() =>
+                        checkAns(
+                          ownershipMap[properties[index]._id] ? 'rent' : 'buy'
+                        )
+                      }
+                    >
                       Check Answer
                     </button>
                   </>
@@ -223,7 +244,9 @@ const PropertyModel = ({ socket }) => {
               You have paid 500 points to get out of Jail!
             </h2>
           ) : (
-            <h2 className={classes.modalMsg}>Here's to new beginings</h2>
+            <h2 className={classes.modalMsg}>
+              2000 points have been added to your balance amount.
+            </h2>
           )}
         </div>
       </div>
