@@ -76,7 +76,7 @@ const PropertyModel = ({ socket }) => {
       type,
     });
     console.log(data);
-    if (type == "rent") setDiscount(30);
+    if (type == 'rent') setDiscount(30);
     else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
@@ -202,7 +202,8 @@ const PropertyModel = ({ socket }) => {
                 {question && (
                   <>
                     <a
-                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
+                    >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
                     <button
                       className={classes.rentbtn}
                       onClick={() =>
@@ -243,7 +244,9 @@ const PropertyModel = ({ socket }) => {
               You have paid 500 points to get out of Jail!
             </h2>
           ) : (
-            <h2 className={classes.modalMsg}>Here's to new beginings</h2>
+            <h2 className={classes.modalMsg}>
+              2000 points have been added to your balance amount.
+            </h2>
           )}
         </div>
       </div>

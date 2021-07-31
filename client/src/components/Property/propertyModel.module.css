@@ -5,10 +5,10 @@
   width: 860px;
   height: 540px;
   background: linear-gradient(
-    78.99deg,
-    rgba(0, 78, 150, 0.68) 5.23%,
-    rgba(18, 251, 181, 0.3) 46.78%,
-    rgba(144, 0, 168, 0.44) 93.84%
+    89.83deg,
+    rgba(0, 78, 150, 0.68) 0.16%,
+    rgba(18, 251, 181, 0.3) 46.91%,
+    rgba(144, 0, 168, 0.44) 99.87%
   );
   backdrop-filter: blur(4px);
   /* border: 10px solid rebeccapurple; */
@@ -89,7 +89,7 @@
 
 button.buybtn {
   font-size: 1.1rem;
-  background-color: rgb(193, 132, 233);
+  background-color: rgb(176, 86, 236);
   border-radius: 8px;
   padding: 10px 20px;
   color: rgb(255, 253, 253);
@@ -102,7 +102,7 @@ button.buybtn {
   margin: 0px 10px;
 }
 button.buybtn:hover {
-  background-color: rgb(176, 86, 236);
+  background-color: rgb(193, 132, 233);
   transition: 0.3s;
 }
 
@@ -123,7 +123,7 @@ button.rentbtn,
 }
 button.rentbtn:hover,
 .linkbtn:hover {
-  background-color: rgb(238, 145, 83);
+  background-color: #3e93e2;
   transition: 0.3s;
 }
 
@@ -171,8 +171,8 @@ button.rentbtn:hover {
 .buyprice,
 .rentprice {
   padding: 8px 10px;
-  border: 2px solid rgb(167, 238, 95);
-  color: rgb(167, 238, 95);
+  border: 2px solid rgb(126, 238, 14);
+  color: rgb(126, 238, 14);
   background-color: rgba(148, 147, 147, 0.335);
   font-weight: 500;
   font-family: 'Roboto', sans-serif;
