@@ -62,7 +62,7 @@ module.exports = (io, socket, teamId, roomId) => {
       });
     }
     // Paying Tax to Hela/Ultron
-    if (index === 4 || index === 38) {
+      if (index === 4 || index === 38) {
       update_balance({
         amt: 1000,
         action: "deduct",
@@ -117,53 +117,61 @@ module.exports = (io, socket, teamId, roomId) => {
 
   // const move
 
-  const community = async (data) => {
-    console.log("Community : --->>>> ", data);
-    const ques = await Community.find({ cat: data.category });
+  const getQuestion = async (data)=>{
+    const ques = await Community.find({ cat: data.type });
     const i = Math.floor(Math.random() * ques.length);
     const communityQues = ques[i];
-    const room = await Room.findById(req.user.room).populate("teams");
+    console.log("Community Queston :- ",communityQues);
+    socket.emit('community_question',{
+      ques : communityQues
+    })
+  }
+
+  const community = async (data) => {
+    console.log("Community : --->>>> ", data);
+    const communityQues = data.ques;
+    const room = await Room.findById(roomId).populate("teams");
+    const team = await Team.findById(teamId);
     // const teams = await room.populate("teams");
     console.log(room);
-    if (communityQues.type === "move") {
+    if (communityQues.Type === "move") {
       if (communityQues.place) {
         // jail , resort ,party house
-        if (place === "jail") {
-          req.user.game.posIndex = 31;
-          req.user.save();
+        if (communityQues.place === "jail") {
+          // req.user.game.posIndex = 31;
+          // req.user.save();
           socket.emit("move_frontend", {
-            pos: req.user.game.posIndex,
+            pos: 31,
           });
         }
       } else if (communityQues.step) {
         // move backard or forward
-        req.user.game.posIndex += communityQues.step;
-        req.user.save();
+        console.log(data.ques.step)
         socket.emit("move_frontend", {
-          pos: req.user.game.posIndex,
+          pos: team.game.posIndex+communityQues.step,
         });
       }
-    } else if (communityQues.type === "balance") {
+    } else if (communityQues.Type === "balance") {
       if (communityQues.fromPeers) {
         // cut money from everyone
         // give everyone
         let cnt = 0;
         for (let i in room.teams) {
-          const team = room.teams[i];
-          if (req.user._id === team._id) {
+          const teamd = room.teams[i];
+          if (team._id === teamd._id) {
             break;
           }
-          team.game.money += communityQues.balance;
-          team.save();
+          teamd.game.money += communityQues.balance;
+          teamd.save();
           cnt++;
         }
-        req.user.game.money += cnt * communityQues.balance;
+        team.game.money += cnt * communityQues.balance;
       } else {
-        req.user.game.money += balance;
-        req.user.save();
+        team.game.money += balance;
+        team.save();
         // from bank ezzzzzzzzzzzzzz
       }
-    } else if (communityQues.type === "freeze") {
+    } else if (communityQues.Type === "freeze") {
       // freeze for time
       setTimeout(() => {
         console.log("allow");
@@ -229,8 +237,10 @@ module.exports = (io, socket, teamId, roomId) => {
     disconnect,
     move,
     trigger_update_ownershipMap,
+    getQuestion,
     corner_tile_actions,
     update_balance,
     payRent,
+    community
   };
 };
