@@ -76,13 +76,13 @@ const Leaderboard = (props) => {
           {isLoading && (
             <tr>
               <td>
-                <Spinner />
+                <Spinner width='300px' />
               </td>
               <td>
-                <Spinner />
+                <Spinner width='300px' />
               </td>
               <td>
-                <Spinner />
+                <Spinner width='300px' />
               </td>
             </tr>
           )}

@@ -6,6 +6,7 @@ import axios from '../../util/axios';
 import Timer from '../Timer/Timer';
 import { useState } from 'react/cjs/react.development';
 import classes from './propertyModel.module.css';
+import Spinner from '../Spinner/Spinner';
 
 const PropertyModel = ({ socket }) => {
   const { propertyModel, properties, index, ownershipMap, setBalance } =
@@ -17,6 +18,7 @@ const PropertyModel = ({ socket }) => {
   const timeStart = { hours: 0, mins: 20, secs: 0 };
 
   const [question, setQuestion] = useState(null);
+  const [questionLoading, setQuestionLoading] = useState(true);
   const [solved, setSolved] = useState(true);
 
   // console.log("propertyModel.show", propertyModel.show);
@@ -28,25 +30,26 @@ const PropertyModel = ({ socket }) => {
 
   const buyProperty = async (id) => {
     console.log('buys', id);
-    const { data } = await axios.post('/property/buy');
-    if (data.error)
-      swal({
-        title: 'Oops!',
-        text: 'Insufficient Funds',
-        icon: 'warning',
-      });
-    if (data.msg)
+    try {
+      const { data } = await axios.post('/property/buy');
+      console.log('emit');
+      socket.emit('trigger_update_ownershipMap');
+      console.log('after buy', data.money);
+      setBalance(data.money);
+
+      socket.emit('g');
       swal({
         title: 'Congratulations!',
         text: 'Property Bought!',
         icon: 'success',
       });
-    console.log('emit');
-    socket.emit('trigger_update_ownershipMap');
-    console.log('after buy', data.money);
-    setBalance(data.money);
-
-    socket.emit('g');
+    } catch (error) {
+      swal({
+        title: 'Oops!',
+        text: 'Insufficient Funds',
+        icon: 'warning',
+      });
+    }
   };
   // console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
@@ -64,10 +67,10 @@ const PropertyModel = ({ socket }) => {
 
   const getQuestion = async () => {
     const { data } = await axios.get('/question/').then(({ data }) => data);
-
     console.log(data);
 
     setQuestion(data);
+    setQuestionLoading(false);
   };
   const checkAns = async () => {
     const { data } = await axios.get('/question/checkAnswer');
@@ -186,6 +189,7 @@ const PropertyModel = ({ socket }) => {
                     <h5>OR</h5>
                   </>
                 )}
+                {questionLoading && <Spinner width='100px' />}
 
                 {question && (
                   <>

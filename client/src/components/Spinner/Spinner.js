@@ -1,12 +1,12 @@
 import React from 'react';
 import spinner from './spinner.gif';
 
-const Spinner = () => (
+const Spinner = ({ width }) => (
   <>
     <img
       src={spinner}
       alt='Loading...'
-      style={{ width: '300px', margin: 'auto', display: 'block' }}
+      style={{ width: { width }, margin: 'auto', display: 'block' }}
     />
   </>
 );
