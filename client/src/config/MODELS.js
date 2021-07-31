@@ -1,7 +1,11 @@
 import Shield from "../components/Models/shield";
 import SpiderLogo from "../components/Models/SpiderLogo";
+import SpiderLogo2 from "../components/Models/Sp-D";
 import ArcReacter from "../components/Models/ArcReacter";
 import Mjolnir from "../components/Models/Mjolnir";
+import Mjolnir2 from "../components/Models/Mjolnir_2-D";
+import helmet from "../components/Models/IronManHelemt-D";
+import helmet2 from "../components/Models/IronManHelemt";
 
 const MODELS = {
   1: {
@@ -10,10 +14,20 @@ const MODELS = {
       position: [0, 0, 0.5],
       scale: [0.15, 0.15, 0.15],
     },
-    offeset: [1, 1],
+    offset: [1, 1],
     comp: Shield,
-    getRotation: () => [0, 0, 0],
+    getRotation: () => [1.3, 0, 0],
   },
+  // 1: {
+  //   props: {
+  //     // rotation: [0, 0, 0],
+  //     position: [0, 0, 0.5],
+  //     scale: [0.15, 0.15, 0.15],
+  //   },
+  //   offset: [1, 1],
+  //   comp: Mjolnir2,
+  //   getRotation: () => [0, 0, 0],
+  // },
 
   2: {
     props: {
@@ -21,8 +35,11 @@ const MODELS = {
       position: [0, 0, 0.5],
       scale: [0.3, 0.3, 0.3],
     },
-    offeset: [1, 1],
+    offset: [1, 1],
     comp: SpiderLogo,
+    // comp: SpiderLogo2,
+    // comp: helmet2,
+
     getRotation: (index) => {
       let yRot;
       if (index < 10 && index >= 0) {
@@ -45,7 +62,7 @@ const MODELS = {
       position: [0, 0, 0.5],
       scale: [0.2, 0.2, 0.2],
     },
-    offeset: [1, 1],
+    offset: [-1, -1],
     comp: ArcReacter,
     getRotation: () => [5, 0, 0],
     // comp: Shield,
@@ -56,7 +73,7 @@ const MODELS = {
       position: [0, 0, 1.5],
       scale: [0.15, 0.15, 0.15],
     },
-    offeset: [1, 1],
+    offset: [1, 1],
     comp: Mjolnir,
     getRotation: () => [0, 0, 0],
     // comp: Shield,

@@ -11,7 +11,7 @@ import { PLANE, TILE } from "../../config/CONSTANTS";
 
 // import textureFile1 from './textures/tiles/tile-14-14.jpeg';
 import textureFile2 from "./textures/tiles/tile-14-15-15.jpeg";
-import centerImage from "../../assets/img/board center.png";
+import centerImage from "../../assets/img/boardCenter.png";
 
 const Tile = ({ tile }) => {
   let { position, rotation, size, type, tileImage } = tile;
@@ -82,7 +82,8 @@ const Plane = ({ initPositionOffset, board, children, dice, index }) => {
     return v;
   });
 
-  const texture2 = useLoader(THREE.TextureLoader, centerImage);
+  const texture = useLoader(THREE.TextureLoader, centerImage);
+  // const texture = useTexture(centerImage);
 
   return (
     <a.group
@@ -103,12 +104,56 @@ const Plane = ({ initPositionOffset, board, children, dice, index }) => {
             // scale-z={scale}
             position={[5.5, 5, 0]}>
             {/* <RefPoint position={[0, 0, 1]} /> */}
-            <boxGeometry attach="geometry" args={[9, 9, PLANE.depth]} />
+            <boxGeometry
+              // map={texture2}
+              attach="geometry"
+              args={[9, 9, PLANE.depth]}
+            />
             <meshStandardMaterial
-              map={texture2}
-              // metalness={1}
+              // map={texture}
+              metalness={1}
               attachArray="material"
-              // attach="material"
+              attach="material"
+              // emissive="#000"
+              emissive="#000"
+            />
+            <meshStandardMaterial
+              // map={texture}
+              metalness={1}
+              attachArray="material"
+              attach="material"
+              // emissive="#000"
+              emissive="#000"
+            />
+            <meshStandardMaterial
+              // map={texture}
+              metalness={1}
+              attachArray="material"
+              attach="material"
+              // emissive="#000"
+              emissive="#000"
+            />
+            <meshStandardMaterial
+              // map={texture}
+              metalness={1}
+              attachArray="material"
+              attach="material"
+              // emissive="#000"
+              emissive="#000"
+            />
+            <meshStandardMaterial
+              map={texture}
+              metalness={1}
+              attachArray="material"
+              attach="material"
+              // emissive="#000"
+              emissive="#000"
+            />
+            <meshStandardMaterial
+              // map={texture}
+              metalness={1}
+              attachArray="material"
+              attach="material"
               // emissive="#000"
               emissive="#000"
             />

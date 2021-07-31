@@ -10,12 +10,14 @@ export default function Model(props) {
   const { nodes, materials } = useGLTF("/modelFiles/shield.glb");
   return (
     <group ref={props.meshRef} {...props} dispose={null}>
+      <pointLight intensity={2} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       <group position={[-1.41, 4.2, 3.22]}>
         <pointLight intensity={2} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
       <group position={[-1.67, 3.9, 3.91]}>
         <pointLight intensity={2} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
+      <pointLight intensity={2} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       {/* <group position={[-2.32, 5.59, 3.92]}>
         <directionalLight
           intensity={1}
@@ -24,7 +26,6 @@ export default function Model(props) {
         />
       </group>
       <group position={[-2.33, 5.68, 2.37]}>
-        <pointLight intensity={2} decay={2} rotation={[-Math.PI / 2, 0, 0]} />
       </group>
       <group position={[-2.84, 5.49, 4.2]}>
         <pointLight intensity={2} decay={2} rotation={[-Math.PI / 2, 0, 0]} />

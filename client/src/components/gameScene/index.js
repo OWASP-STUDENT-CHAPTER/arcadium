@@ -1,15 +1,15 @@
-import { useState, useEffect, Suspense, useMemo, useContext } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { PerspectiveCamera } from '@react-three/drei';
-import Player from '../Player';
-import Opponent from '../Opponent';
-import { PLANE, camPosOffset } from '../../config/CONSTANTS';
-import swal from 'sweetalert';
+import { useState, useEffect, Suspense, useMemo, useContext } from "react";
+import { Canvas } from "@react-three/fiber";
+import { PerspectiveCamera } from "@react-three/drei";
+import Player from "../Player";
+import Opponent from "../Opponent";
+import { PLANE, camPosOffset } from "../../config/CONSTANTS";
+import swal from "sweetalert";
 
-import { AuthContext } from '../../context/authContext.js';
-import { GameContext } from '../../context/gameContext';
-import Plane from './plane.js';
-import { useQueryClient } from 'react-query';
+import { AuthContext } from "../../context/authContext.js";
+import { GameContext } from "../../context/gameContext";
+import Plane from "./plane.js";
+import { useQueryClient } from "react-query";
 const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const {
     teams,
@@ -30,8 +30,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const { team } = useContext(AuthContext);
   const queryClient = useQueryClient();
   const [lastMove, setLastMove] = useState(() => {
-    const time = localStorage.getItem('t') || Date.now();
-    console.log('time', time);
+    const time = localStorage.getItem("t") || Date.now();
+    console.log("time", time);
     return time;
   });
   const [timeoutId, setTimeoutId] = useState(null);
@@ -69,73 +69,73 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
 
   useEffect(() => {
     if (!socket) return;
-    socket.removeAllListeners('player_move'); //!
-    socket.removeAllListeners('allow_moving'); //!
-    socket.removeAllListeners('allow_moving_same'); //!
-    socket.removeAllListeners('update_ownershipMap'); //!
-    socket.removeAllListeners('community_question'); //!
-    socket.removeAllListeners('move_frontend');
+    socket.removeAllListeners("player_move"); //!
+    socket.removeAllListeners("allow_moving"); //!
+    socket.removeAllListeners("allow_moving_same"); //!
+    socket.removeAllListeners("update_ownershipMap"); //!
+    socket.removeAllListeners("community_question"); //!
+    socket.removeAllListeners("move_frontend");
     // socket.removeAllListeners("rent");
-    socket.on('player_move', (data) => {
-      console.log('oponnent move', data);
+    socket.on("player_move", (data) => {
+      console.log("oponnent move", data);
       updatePos(data.teamId, data.pos, team._id);
     });
-    socket.on('rent', ({ rentTo, rentFrom, amount }) => {
-      console.log('rent');
-      console.log('rentTO', rentTo);
-      console.log('rentFrom', rentFrom);
-      console.log('amount', amount);
+    socket.on("rent", ({ rentTo, rentFrom, amount }) => {
+      console.log("rent");
+      console.log("rentTO", rentTo);
+      console.log("rentFrom", rentFrom);
+      console.log("amount", amount);
       if (team._id == rentTo) {
         setBalance(balance + amount);
         // alert(`rent from ${rentFrom.name}`);
         const toast = swal.mixin({
           toast: true,
-          position: 'top-end',
+          position: "top-end",
           showConfirmButton: false,
           timer: 3000,
         });
 
         toast({
-          type: 'success',
+          type: "success",
           title: `Rent Amount ${amount} from ${rentFrom.name}`,
         });
       } else if (team._id === rentFrom.id) {
         setBalance(balance - amount);
         swal({
-          title: 'Congratulations!',
-          text: 'Rent Paid!',
-          icon: 'success',
+          title: "Congratulations!",
+          text: "Rent Paid!",
+          icon: "success",
         });
       }
     });
 
-    socket.on('update_ownershipMap', ({ ownershipMap }) => {
-      console.log('update_ownershipMap ', { ownershipMap });
+    socket.on("update_ownershipMap", ({ ownershipMap }) => {
+      console.log("update_ownershipMap ", { ownershipMap });
       // setOwnershipMap(ownershipMap);
-      queryClient.setQueryData('roomData', (old) => {
+      queryClient.setQueryData("roomData", (old) => {
         return { ...old, ownershipMap };
       });
     });
 
-    socket.on('community_question', (data) => {
-      console.log('question data', data);
+    socket.on("community_question", (data) => {
+      console.log("question data", data);
       setSpecialQues(data.ques);
-      socket.emit('community_second', { ques: data.ques });
+      socket.emit("community_second", { ques: data.ques });
     });
 
-    socket.on('move_frontend', (data) => {
-      console.log('Community move index :- ', data.pos);
+    socket.on("move_frontend", (data) => {
+      console.log("Community move index :- ", data.pos);
       if (data.pos) {
         return move_com(data);
       }
     });
 
-    socket.on('allow_moving', () => {
-      console.log('alow moving ');
+    socket.on("allow_moving", () => {
+      console.log("alow moving ");
       setCanMove(true); //! change
     });
-    socket.on('allow_moving_same', (data) => {
-      console.log('alow moving team');
+    socket.on("allow_moving_same", (data) => {
+      console.log("alow moving team");
       allowMove(data.teamId);
       // setCanMove(true); //! change
     });
@@ -144,8 +144,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const move_com = (data) => {
     setIndex(data.pos);
     setCanMove(false);
-    console.log('moving');
-    socket.emit('move', {
+    console.log("moving");
+    socket.emit("move", {
       pos: data.pos,
     });
   };
@@ -153,7 +153,7 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   const movePlayer = () => {
     if (!socket) return;
     if (dice == 0) return;
-    console.log('dice in effect', dice);
+    console.log("dice in effect", dice);
     let i = index;
     // const d = Math.floor(Math.random() * 6) + 1;
 
@@ -191,18 +191,18 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
 
     // setCanMove(false);
 
-    console.log('moving');
+    console.log("moving");
 
     setLastMove(Date.now());
-    localStorage.setItem('t', Date.now());
-    socket.emit('move', {
+    localStorage.setItem("t", Date.now());
+    socket.emit("move", {
       pos: i,
       ...rent,
     });
   };
   const cornerTile = async (prevPos, currentPos) => {
-    console.log('corner', prevPos, currentPos);
-    socket.emit('corner_tile_actions', {
+    console.log("corner", prevPos, currentPos);
+    socket.emit("corner_tile_actions", {
       data: {
         prevPos,
         currentPos,
@@ -217,27 +217,25 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
   return (
     <>
       <div
-        id='canvas-container'
+        id="canvas-container"
         style={{
-          margin: 'auto',
-          position: 'relative',
-          top: '-200px',
-          left: '70px',
-          width: '880px',
-          height: '880px',
-        }}
-      >
+          margin: "auto",
+          position: "relative",
+          top: "-200px",
+          left: "70px",
+          width: "880px",
+          height: "880px",
+        }}>
         <Canvas>
           <Suspense fallback={null}>
             <group position={[-2, -2, -1]}>
-              <ambientLight brightness={2.6} color={'#bdefff'} />
+              <ambientLight brightness={2.6} color={"#bdefff"} />
 
               <Plane
                 index={index}
                 board={board}
                 dice={dice}
-                initPositionOffset={[-5.5, -5.5, 0]}
-              >
+                initPositionOffset={[-5.5, -5.5, 0]}>
                 <Player
                   board={board}
                   modelNumber={team.modelNumber}

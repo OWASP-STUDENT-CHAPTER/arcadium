@@ -253,10 +253,11 @@ module.exports = (io, socket, teamId, roomId) => {
 
     if (ownerTeamId === team._id) return;
 
-    let amt = property.rent; //! reduction
-    if (amt === undefined) {
-      amt = 100;
-    }
+    let amt = property.rent;
+    //  - property.rent*team.game.currentReduction/100   ; //! reduction
+    // if (amt === undefined) {
+    //   amt = 100;
+    // }
     amt = amt - (amt * team.game.currentReduction) / 100;
     const ownerTeam = await Team.findOneAndUpdate(
       { _id: ownerTeamId },

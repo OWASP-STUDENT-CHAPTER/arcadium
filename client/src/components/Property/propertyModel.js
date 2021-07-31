@@ -1,12 +1,12 @@
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../../context/authContext';
-import { GameContext } from '../../context/gameContext';
-import swal from 'sweetalert';
-import axios from '../../util/axios';
-import Timer from '../Timer/Timer';
-import { useState } from 'react/cjs/react.development';
-import classes from './propertyModel.module.css';
-import Spinner from '../Spinner/Spinner';
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../../context/authContext";
+import { GameContext } from "../../context/gameContext";
+import swal from "sweetalert";
+import axios from "../../util/axios";
+import Timer from "../Timer/Timer";
+import { useState } from "react/cjs/react.development";
+import classes from "./propertyModel.module.css";
+import Spinner from "../Spinner/Spinner";
 
 const PropertyModel = ({ socket }) => {
   const {
@@ -38,39 +38,39 @@ const PropertyModel = ({ socket }) => {
   const specialIndex = [2, 4, 7, 17, 22, 32, 36, 38];
 
   const buyProperty = async (id) => {
-    console.log('buys', id);
+    console.log("buys", id);
     try {
-      const { data } = await axios.post('/property/buy');
-      console.log('emit');
-      socket.emit('trigger_update_ownershipMap');
-      console.log('after buy', data.money);
+      const { data } = await axios.post("/property/buy");
+      console.log("emit");
+      socket.emit("trigger_update_ownershipMap");
+      console.log("after buy", data.money);
       setBalance(data.money);
 
-      socket.emit('g');
+      socket.emit("g");
       swal({
-        title: 'Congratulations!',
-        text: 'Property Bought!',
-        icon: 'success',
+        title: "Congratulations!",
+        text: "Property Bought!",
+        icon: "success",
       });
     } catch (error) {
       swal({
-        title: 'Oops!',
-        text: 'Insufficient Funds',
-        icon: 'warning',
+        title: "Oops!",
+        text: "Insufficient Funds",
+        icon: "warning",
       });
     }
   };
   // console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
   const payRent = () => {
-    socket.emit('pay_rent', {
+    socket.emit("pay_rent", {
       pos: index,
     });
-    console.log('paying rent ');
+    console.log("paying rent ");
   };
 
   const getQuestion = async () => {
-    const { data } = await axios.get('/question/').then(({ data }) => data);
+    const { data } = await axios.get("/question/").then(({ data }) => data);
 
     console.log(data);
 
@@ -78,11 +78,11 @@ const PropertyModel = ({ socket }) => {
     setQuestionLoading(false);
   };
   const checkAns = async (type) => {
-    const { data } = await axios.post('/question/checkAnswer', {
+    const { data } = await axios.post("/question/checkAnswer", {
       type,
     });
     console.log(data);
-    if (type == 'rent') setDiscount(30);
+    if (type == "rent") setDiscount(30);
     else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
@@ -92,24 +92,22 @@ const PropertyModel = ({ socket }) => {
     <div className={classes.popUp}>
       <button
         onClick={() => propertyModel.setShow(false)}
-        className={classes.closeModal}
-      >
-        <i className='fas fa-times fa-2x'></i>
+        className={classes.closeModal}>
+        <i className="fas fa-times fa-2x"></i>
       </button>
 
       <div className={classes.modalContainer}>
         <div
           className={
             classes.imgProperty +
-            ' ' +
+            " " +
             ((index >= 1 && index <= 9) || (index >= 31 && index <= 39)
               ? classes.rotImg
               : classes.doneImg)
-          }
-        >
+          }>
           <img
             src={propertyImage.default}
-            alt='Image'
+            alt="Image"
             className={index % 10 === 0 ? classes.corner : classes.tiles}
           />
         </div>
@@ -117,10 +115,9 @@ const PropertyModel = ({ socket }) => {
         <div
           className={
             (index % 10 === 0 ? classes.cornerContent : classes.tilesContent) +
-            ' ' +
+            " " +
             classes.modalContent
-          }
-        >
+          }>
           <div className={classes.timerModal}>
             <Timer time={timeStart} />
           </div>
@@ -154,49 +151,33 @@ const PropertyModel = ({ socket }) => {
                     <button onClick={payRent} className={classes.rentbtn}>
                       Pay Rent
                     </button>
-                    <span>OR</span>
-                    <button className={classes.linkbtn}>Question Link</button>
+                    <button className={classes.linkbtn} onClick={getQuestion}>
+                      Get Question
+                    </button>
+                    {question && (
+                      <>
+                        <div className={classes.quesLink}>
+                          <a
+                            href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                        </div>
+
+                        <button
+                          className={classes.rentbtn}
+                          onClick={() =>
+                            checkAns(
+                              ownershipMap[properties[index]._id]
+                                ? "rent"
+                                : "buy"
+                            )
+                          }>
+                          Check Answer
+                        </button>
+                      </>
+                    )}
                   </div>
                 </>
-                //   <div>
-                //   {!question && (
-                //     <>
-                //       <button className={classes.linkbtn} onClick={getQuestion}>
-                //         Get Question
-                //       </button>
-                //       <h4>OR</h4>
-                //     </>
-                //   )}
-
-                //   {question && (
-                //     <>
-                //       <h4>{question.questionLink}</h4>
-                //       <button className={classes.rentbtn} onClick={checkAns}>
-                //         Check Answer
-                //       </button>
-                //     </>
-                //   )}
-                //   {/* <h4>{properties[index].price - discount}</h4> */}
-                //   <button
-                //     className={classes.rentbtn}
-                //     onClick={() => buyProperty(properties[index]._id)}
-                //   >
-                //     Pay Rent
-                //   </button>
-                // </div>
               )
             ) : (
-              // <>
-              //   <div className={classes.buttons}>
-              //     <button
-              //       onClick={() => buyProperty(properties[index]._id)}
-              //       className={classes.buybtn}
-              //     >
-              //       Buy
-              //     </button>
-              //     <button className={classes.linkbtn}>Question Link</button>
-              //   </div>
-              // </>
               <div>
                 {!question && (
                   <>
@@ -211,18 +192,16 @@ const PropertyModel = ({ socket }) => {
                   <>
                     <div className={classes.quesLink}>
                       <a
-                        href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
-                      >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                        href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
                     </div>
 
                     <button
                       className={classes.rentbtn}
                       onClick={() =>
                         checkAns(
-                          ownershipMap[properties[index]._id] ? 'rent' : 'buy'
+                          ownershipMap[properties[index]._id] ? "rent" : "buy"
                         )
-                      }
-                    >
+                      }>
                       Check Answer
                     </button>
                   </>
@@ -230,8 +209,7 @@ const PropertyModel = ({ socket }) => {
                 {/* <h4>{properties[index].price - discount}</h4> */}
                 <button
                   className={classes.buybtn}
-                  onClick={() => buyProperty(properties[index]._id)}
-                >
+                  onClick={() => buyProperty(properties[index]._id)}>
                   Buy
                 </button>
               </div>

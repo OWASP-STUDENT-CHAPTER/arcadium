@@ -22,6 +22,7 @@ const Pawn = ({
     let {
       position: [x, y],
     } = board[index];
+    // console.log("sad", MODELS[modelNumber]);
     let fy = y;
     let fby = boxMesh.current.position.y;
     let fx = x;
