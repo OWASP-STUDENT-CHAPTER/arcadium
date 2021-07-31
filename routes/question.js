@@ -186,13 +186,13 @@ router.delete("/:id", async (req, res) => {
 
 router.post("/newton/callback", async (req, res) => {
   console.log(req.body);
-  if (req.body.web_hook_token !== "48670240059") {
+  if (req.body.web_hook_token !== "thapar-48670240059") {
     return res.status(403).send("invalid req");
   }
 
   const newSolve = new Solve({
     email: req.body.email,
-    question: req.body.assignment_hash,
+    question: req.body.assignment_question_hash,
     timestamp: Date.now(),
   });
   await newSolve.save();
