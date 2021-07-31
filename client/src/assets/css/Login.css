@@ -305,15 +305,10 @@ body {
   position: fixed;
   text-align: center;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .wrapper.darkBG {
-  background: url('../img/darkBG(1).png') no-repeat center center/cover;
-}
-.wrapper.lightBG {
-  background: url('../img/lightBG.png') no-repeat center center/cover;
+  background: url('../img/cube_3d_graphics_black_gray_background_3d_graphics_74555_1920x1080.jpg')
+    no-repeat center center/cover;
 }
 
 .label {
@@ -530,4 +525,14 @@ body {
 a {
   width: 100px;
   height: 100px;
+}
+form {
+  position: relative;
+  top: -240px;
+}
+.logo-img img {
+  position: relative;
+  top: -100px;
+  width: 500px;
+  margin-right: 55%;
 }
