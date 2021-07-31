@@ -17,8 +17,17 @@ import Leaderboard from '../components/Leaderboard/Leaderboard';
 const MainPage = ({ team, socket, teams }) => {
   const [leaderboard, setLeaderboard] = useState(false);
   const [dice, setDice] = useState(0);
-  const { properties, canMove, setCanMove } = useContext(GameContext);
-
+  const { properties, canMove, setCanMove, setShowPropertyModel } =
+    useContext(GameContext);
+  const setDiceUtil = (d) => {
+    let val = d;
+    if (d === dice) {
+      val++;
+    }
+    // if(val>6)
+    val = (val % 6) + 1;
+    setDice(val);
+  };
   const timeStart = { hours: 2, mins: 0, secs: 0 };
 
   useEffect(() => {
@@ -29,6 +38,10 @@ const MainPage = ({ team, socket, teams }) => {
     if (id === team._id) {
       setCanMove(true);
     }
+  };
+
+  const openModal = () => {
+    setShowPropertyModel(true);
   };
 
   const leaderboardHandler = () => {
@@ -65,7 +78,7 @@ const MainPage = ({ team, socket, teams }) => {
         <GameScene
           socket={socket}
           dice={dice}
-          setDice={setDice}
+          setDice={setDiceUtil}
           allowMove={allowMove}
           setCanMove={setCanMove}
         />
@@ -77,10 +90,13 @@ const MainPage = ({ team, socket, teams }) => {
         <div className='all-teams'>
           <AllTeamDetails teams={teams} />
         </div>
+        <button className='open-modal-button' onClick={openModal}>
+          Open Modal
+        </button>
         <RollDice
           socket={socket}
           dice={dice}
-          setDice={setDice}
+          setDice={setDiceUtil}
           canMove={canMove}
         />
       </div>

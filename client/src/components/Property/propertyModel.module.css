@@ -27,7 +27,7 @@
   padding: 8px 10px;
   box-shadow: 2px 2px 4px #090917;
   border-radius: 11px;
-  background-color: #21219d;
+  background-color: #067ce9;
   width: 110px;
 }
 .closeModal {
@@ -59,9 +59,6 @@
 .rotImg .tiles {
   transform: rotateZ(-90deg);
 }
-/* .rotImg .corner {
-  transform: rotateZ(90deg);
-} */
 .imgProperty .corner {
   height: 300px;
   margin-left: 40px;
@@ -73,8 +70,6 @@
   align-items: center;
   justify-content: center;
   color: #fff;
-  /* background-color: rgba(16, 29, 73, 0.924);
-  backdrop-filter: blur(5px); */
   text-align: center;
   border-radius: 10px;
   padding: 20px;
@@ -84,6 +79,9 @@
   height: 360px;
   position: relative;
   right: 50px;
+  border: 2px solid #fff;
+
+  border-radius: 30px;
 }
 .propName {
   margin-top: 0;
@@ -96,7 +94,6 @@ button.buybtn {
   padding: 10px 20px;
   color: rgb(255, 253, 253);
   border: none;
-  /* transform: scaleY(1.3); */
   font-family: 'Roboto', sans-serif;
   font-weight: 600;
   cursor: pointer;
@@ -112,7 +109,7 @@ button.buybtn:hover {
 button.rentbtn,
 .linkbtn {
   font-size: 1.1rem;
-  background-color: rgb(238, 159, 106);
+  background-color: #067ce9;
   border-radius: 8px;
   padding: 10px 20px;
   color: rgb(255, 253, 253);
@@ -145,10 +142,11 @@ button.rentbtn:hover {
   right: 0px;
 }
 .modalMsg {
-  background: #21219d;
+  background: rgb(176, 86, 236);
   color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
+  font-size: 1.3rem;
 }
 
 .prices {
@@ -170,10 +168,6 @@ button.rentbtn:hover {
   width: 80%;
 }
 
-.buyprice:hover,
-.rentprice:hover {
-  cursor: pointer;
-}
 .buyprice,
 .rentprice {
   padding: 8px 10px;

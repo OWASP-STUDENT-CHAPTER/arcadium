@@ -58,22 +58,20 @@ const PropertyModel = ({ socket }) => {
       pos: index,
     });
     console.log('paying rent ');
-    swal({
-      title: 'Congratulations!',
-      text: 'Rent Paid!',
-      icon: 'success',
-    });
   };
 
   const getQuestion = async () => {
     const { data } = await axios.get('/question/').then(({ data }) => data);
+
     console.log(data);
 
     setQuestion(data);
     setQuestionLoading(false);
   };
-  const checkAns = async () => {
-    const { data } = await axios.get('/question/checkAnswer');
+  const checkAns = async (type) => {
+    const { data } = await axios.post('/question/checkAnswer', {
+      type,
+    });
     console.log(data);
     setDiscount(question.rentReduction);
     // setPrice(properties[index].price - question.rentReduction);
@@ -118,12 +116,15 @@ const PropertyModel = ({ socket }) => {
           <h1 className={classes.propName}>{properties[index].name}</h1>
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
             <div className={classes.prices}>
-              <div className={classes.buyprice}>
-                Buy: ${properties[index].price - discount}
-              </div>
-              <div className={classes.rentprice}>
-                Rent: ${properties[index].rent}
-              </div>
+              {!ownershipMap[properties[index]._id] ? (
+                <div className={classes.buyprice}>
+                  Buy: ${properties[index].price - discount}
+                </div>
+              ) : (
+                <div className={classes.rentprice}>
+                  Rent: ${properties[index].rent}
+                </div>
+              )}
             </div>
           ) : null}
           {index % 10 !== 0 && !specialIndex.includes(index) ? (
@@ -186,15 +187,21 @@ const PropertyModel = ({ socket }) => {
                     <button className={classes.linkbtn} onClick={getQuestion}>
                       Get Question
                     </button>
-                    <h5>OR</h5>
+                    <span>OR</span>
                   </>
                 )}
-                {questionLoading && <Spinner width='100px' />}
 
                 {question && (
                   <>
                     <h4>{question.questionLink}</h4>
-                    <button className={classes.rentbtn} onClick={checkAns}>
+                    <button
+                      className={classes.rentbtn}
+                      onClick={() =>
+                        checkAns(
+                          ownershipMap[properties[index]._id] ? 'rent' : 'buy'
+                        )
+                      }
+                    >
                       Check Answer
                     </button>
                   </>

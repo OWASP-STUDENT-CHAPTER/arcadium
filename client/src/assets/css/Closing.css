@@ -1,0 +1,27 @@
+.closing-page {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  background: url('../img/image.png') no-repeat bottom center/cover;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+}
+.closing-page ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+.closing-page ul li {
+  margin: 0 14px;
+}
+.closing-page ul li a {
+  text-decoration: none;
+  color: #fff;
+}
+.closing-page ul li a i {
+  font-size: 2.6rem;
+}
