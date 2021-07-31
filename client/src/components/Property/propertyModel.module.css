@@ -158,7 +158,18 @@ button.rentbtn:hover {
   width: 80%;
   color: black;
 }
-
+.quesLink {
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 10px;
+  width: 400px;
+  overflow-x: hidden;
+  margin-bottom: 20px;
+}
+.quesLink a {
+  font-size: 0.7rem;
+  color: #111;
+}
 .buttons {
   display: flex;
   flex-direction: row;

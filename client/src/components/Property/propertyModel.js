@@ -47,11 +47,12 @@ const PropertyModel = ({ socket }) => {
         icon: 'success',
       });
     } catch (error) {
-      swal({
-        title: 'Oops!',
-        text: 'Insufficient Funds',
-        icon: 'warning',
-      });
+      if (error === 'insufficient balance')
+        swal({
+          title: 'Oops!',
+          text: 'Insufficient Funds',
+          icon: 'warning',
+        });
     }
   };
   // console.log(index);
@@ -147,6 +148,7 @@ const PropertyModel = ({ socket }) => {
                     <button onClick={payRent} className={classes.rentbtn}>
                       Pay Rent
                     </button>
+                    <span>OR</span>
                     <button className={classes.linkbtn}>Question Link</button>
                   </div>
                 </>
@@ -201,9 +203,12 @@ const PropertyModel = ({ socket }) => {
 
                 {question && (
                   <>
-                    <a
-                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
-                    >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    <div className={classes.quesLink}>
+                      <a
+                        href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}
+                      >{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    </div>
+
                     <button
                       className={classes.rentbtn}
                       onClick={() =>
