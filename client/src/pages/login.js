@@ -1,16 +1,14 @@
 import URL from '../util/URL';
 import '../assets/css/Login.css';
+import Logo from '../assets/img/arcadium logo.png';
 
 const Login = () => {
-  // const handleChange = () => {
-  //   const link = document.createElement('a');
-  //   link.href = `${URL}/api/auth/login`;
-  //   link.click();
-  // };
-
   return (
     <div className='login-component'>
       <div className='wrapper darkBG'>
+        <div className='logo-img'>
+          <img src={Logo} alt='' />
+        </div>
         <form>
           <label className='off label'>
             Click on the switch to <span>Login!</span>

@@ -6,10 +6,17 @@ import axios from "../../util/axios";
 import Timer from "../Timer/Timer";
 import { useState } from "react/cjs/react.development";
 import classes from "./propertyModel.module.css";
+import Spinner from "../Spinner/Spinner";
 
 const PropertyModel = ({ socket }) => {
-  const { propertyModel, properties, index, ownershipMap, setBalance } =
-    useContext(GameContext);
+  const {
+    propertyModel,
+    properties,
+    index,
+    ownershipMap,
+    setBalance,
+    specialQues,
+  } = useContext(GameContext);
   const { team } = useContext(AuthContext);
   // const [price, setPrice] = useState(properties[index].price);
   const [discount, setDiscount] = useState(0);
@@ -17,6 +24,7 @@ const PropertyModel = ({ socket }) => {
   const timeStart = { hours: 0, mins: 20, secs: 0 };
 
   const [question, setQuestion] = useState(null);
+  const [questionLoading, setQuestionLoading] = useState(true);
   const [solved, setSolved] = useState(true);
   useEffect(() => {
     setQuestion(null);
@@ -31,25 +39,26 @@ const PropertyModel = ({ socket }) => {
 
   const buyProperty = async (id) => {
     console.log("buys", id);
-    const { data } = await axios.post("/property/buy");
-    if (data.error)
-      swal({
-        title: "Oops!",
-        text: "Insufficient Funds",
-        icon: "warning",
-      });
-    if (data.msg)
+    try {
+      const { data } = await axios.post("/property/buy");
+      console.log("emit");
+      socket.emit("trigger_update_ownershipMap");
+      console.log("after buy", data.money);
+      setBalance(data.money);
+
+      socket.emit("g");
       swal({
         title: "Congratulations!",
         text: "Property Bought!",
         icon: "success",
       });
-    console.log("emit");
-    socket.emit("trigger_update_ownershipMap");
-    console.log("after buy", data.money);
-    setBalance(data.money);
-
-    socket.emit("g");
+    } catch (error) {
+      swal({
+        title: "Oops!",
+        text: "Insufficient Funds",
+        icon: "warning",
+      });
+    }
   };
   // console.log(index);
   const propertyImage = require(`../gameScene/properties/${index + 1}.jpg`);
@@ -66,6 +75,7 @@ const PropertyModel = ({ socket }) => {
     console.log(data);
 
     setQuestion(data);
+    setQuestionLoading(false);
   };
   const checkAns = async (type) => {
     const { data } = await axios.post("/question/checkAnswer", {
@@ -76,6 +86,7 @@ const PropertyModel = ({ socket }) => {
     else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
+  console.log(specialQues);
 
   return (
     <div className={classes.popUp}>
@@ -190,14 +201,17 @@ const PropertyModel = ({ socket }) => {
                     <button className={classes.linkbtn} onClick={getQuestion}>
                       Get Question
                     </button>
-                    <h5>OR</h5>
+                    <span>OR</span>
                   </>
                 )}
 
                 {question && (
                   <>
-                    <a
-                      href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    <div className={classes.quesLink}>
+                      <a
+                        href={`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}>{`https://my.newtonschool.co/course/qqwqaafu35/assignment/${question.link}`}</a>
+                    </div>
+
                     <button
                       className={classes.rentbtn}
                       onClick={() =>
@@ -223,7 +237,9 @@ const PropertyModel = ({ socket }) => {
                 You have paid a tax of 1000 points!
               </h2>
             ) : (
-              <h2 className={classes.modalMsg}>This is a Special Card!</h2>
+              <h2 className={classes.modalMsg}>
+                {specialQues ? specialQues.body : null}
+              </h2>
             )
           ) : index === 10 ? (
             <h2 className={classes.modalMsg}>You can win this!</h2>
@@ -236,7 +252,9 @@ const PropertyModel = ({ socket }) => {
               You have paid 500 points to get out of Jail!
             </h2>
           ) : (
-            <h2 className={classes.modalMsg}>Here's to new beginings</h2>
+            <h2 className={classes.modalMsg}>
+              2000 points have been added to your balance amount.
+            </h2>
           )}
         </div>
       </div>

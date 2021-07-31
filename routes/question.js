@@ -109,9 +109,13 @@ router.get("/", isAuthenticated, async (req, res) => {
       "req.user.game.questionAttempted",
       req.user.game.questionAttempted
     );
-    let nin = req.user.game.questionAttempted?.map((q) =>
-      mongoose.Types.ObjectId(q)
-    );
+    let nin;
+    if (req.user.game.questionAttempted === undefined) nin = [];
+    else {
+      nin = req.user.game.questionAttempted.map((q) =>
+        mongoose.Types.ObjectId(q)
+      );
+    }
     if (!nin) nin = [];
     const [question] = await Question.find({
       _id: {
