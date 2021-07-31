@@ -15,16 +15,6 @@ router.post('/question/add',(req,res)=>{
     return res.json({msg : "Community Question Added"});
 })
 
-router.post('/question/add',(req,res)=>{
-    const ques= new Community(
-        {
-            ...req.body
-        }
-    )
-    ques.save();
-    return res.json({msg : "Community Question Added"});
-})
-
 router.get('/que',isAuthenticated ,async (req,res)=>{
     const {category} = req.body;
     

@@ -24,6 +24,8 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
     balance,
     setBalance,
     ownershipMap,
+    specialQues,
+    setSpecialQues,
   } = useContext(GameContext);
   const { team } = useContext(AuthContext);
   const queryClient = useQueryClient();
@@ -71,7 +73,9 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
     socket.removeAllListeners('allow_moving'); //!
     socket.removeAllListeners('allow_moving_same'); //!
     socket.removeAllListeners('update_ownershipMap'); //!
-    socket.removeAllListeners('rent'); //!
+    socket.removeAllListeners('community_question'); //!
+    socket.removeAllListeners('move_frontend');
+    // socket.removeAllListeners("rent");
     socket.on('player_move', (data) => {
       console.log('oponnent move', data);
       updatePos(data.teamId, data.pos, team._id);
@@ -113,6 +117,19 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
       });
     });
 
+    socket.on('community_question', (data) => {
+      console.log('question data', data);
+      setSpecialQues(data.ques);
+      socket.emit('community_second', { ques: data.ques });
+    });
+
+    socket.on('move_frontend', (data) => {
+      console.log('Community move index :- ', data.pos);
+      if (data.pos) {
+        return move_com(data);
+      }
+    });
+
     socket.on('allow_moving', () => {
       console.log('alow moving ');
       setCanMove(true); //! change
@@ -123,6 +140,16 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
       // setCanMove(true); //! change
     });
   }, [socket, teams]);
+
+  const move_com = (data) => {
+    setIndex(data.pos);
+    setCanMove(false);
+    console.log('moving');
+    socket.emit('move', {
+      pos: data.pos,
+    });
+  };
+
   const movePlayer = () => {
     if (!socket) return;
     if (dice == 0) return;
@@ -141,6 +168,10 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
       (index <= 39 && index >= 32 && i >= 0 && i < 10)
     )
       cornerTile(index, i);
+    if (i == 2 || i == 7 || i == 17 || i == 22 || i == 32 || i == 36) {
+      console.log('Community GGG');
+      socket.emit('community', { i, type: 'uno' });
+    }
 
     const rent = {};
 

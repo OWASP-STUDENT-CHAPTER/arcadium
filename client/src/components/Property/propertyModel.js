@@ -9,8 +9,14 @@ import classes from './propertyModel.module.css';
 import Spinner from '../Spinner/Spinner';
 
 const PropertyModel = ({ socket }) => {
-  const { propertyModel, properties, index, ownershipMap, setBalance } =
-    useContext(GameContext);
+  const {
+    propertyModel,
+    properties,
+    index,
+    ownershipMap,
+    setBalance,
+    specialQues,
+  } = useContext(GameContext);
   const { team } = useContext(AuthContext);
   // const [price, setPrice] = useState(properties[index].price);
   const [discount, setDiscount] = useState(0);
@@ -47,12 +53,11 @@ const PropertyModel = ({ socket }) => {
         icon: 'success',
       });
     } catch (error) {
-      if (error === 'insufficient balance')
-        swal({
-          title: 'Oops!',
-          text: 'Insufficient Funds',
-          icon: 'warning',
-        });
+      swal({
+        title: 'Oops!',
+        text: 'Insufficient Funds',
+        icon: 'warning',
+      });
     }
   };
   // console.log(index);
@@ -81,6 +86,7 @@ const PropertyModel = ({ socket }) => {
     else setDiscount(50);
     // setPrice(properties[index].price - question.rentReduction);
   };
+  console.log(specialQues);
 
   return (
     <div className={classes.popUp}>
@@ -236,7 +242,9 @@ const PropertyModel = ({ socket }) => {
                 You have paid a tax of 1000 points!
               </h2>
             ) : (
-              <h2 className={classes.modalMsg}>This is a Special Card!</h2>
+              <h2 className={classes.modalMsg}>
+                {specialQues ? specialQues.body : null}
+              </h2>
             )
           ) : index === 10 ? (
             <h2 className={classes.modalMsg}>You can win this!</h2>
