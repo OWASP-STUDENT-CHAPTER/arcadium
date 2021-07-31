@@ -21,7 +21,7 @@ const MainPage = ({ team, socket, teams }) => {
     useContext(GameContext);
   const setDiceUtil = (d) => {
     let val = d;
-    if (d === dice) {
+    if (d == dice) {
       val++;
     }
     // if(val>6)
@@ -72,6 +72,7 @@ const MainPage = ({ team, socket, teams }) => {
           teamMembers={team.members}
           game={team.game}
           socket={socket}
+          teamId={team._id}
         />
       </div>
       <div className='main-board'>

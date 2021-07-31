@@ -25,7 +25,8 @@ module.exports = (io, socket, teamId, roomId) => {
     // const room = await Room.findById(roomId);
 
     team.game.currentQuestion = null;
-
+    team.game.currentQuestionTimestamp = null;
+    // timestamp: req.user.game.
     team.game.canMove = false;
 
     console.log("pos", team.game.posIndex);
@@ -135,7 +136,7 @@ module.exports = (io, socket, teamId, roomId) => {
   const trigger_update_ownershipMap = async () => {
     const room = await Room.findById(roomId);
     console.log("trigger");
-    console.log("room", room);
+    // console.log("room", room);
 
     socket.emit("update_ownershipMap", {
       ownershipMap: room.ownershipMap,

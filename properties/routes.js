@@ -31,7 +31,7 @@ router.get("/room", isAuthenticated, async (req, res) => {
     const properties = await Property.find();
 
     const room = await Room.findById(req.user.room);
-    console.log("room", room);
+    // console.log("room", room);
     const ownershipMap = room.ownershipMap;
     if (!room) {
       ownershipMap = {};
