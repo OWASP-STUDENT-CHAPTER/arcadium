@@ -140,7 +140,9 @@ const PropertyModel = ({ socket }) => {
                     <button onClick={payRent} className={classes.rentbtn}>
                       Pay Rent
                     </button>
-                    <button className={classes.linkbtn}>Question Link</button>
+                    <button className={classes.linkbtn} onClick={getQuestion}>
+                      Get Question
+                    </button>
                   </div>
                 </>
                 //   <div>

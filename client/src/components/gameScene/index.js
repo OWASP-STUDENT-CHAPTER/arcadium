@@ -84,7 +84,7 @@ const GameScene = ({ socket, dice, setDice, setCanMove, allowMove }) => {
       if (team._id == rentTo) {
         setBalance(balance + amount);
         alert(`rent from ${rentFrom.name}`);
-      } else if (team._id === rentFrom.id) {
+      } else if (team._id == rentFrom.id) {
         setBalance(balance - amount);
         swal({
           title: "Congratulations!",
